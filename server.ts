@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import { authRoute } from './src/routes/AuthRoutes'
+
 export const app: Application = express()
 
 app.use(express.json())

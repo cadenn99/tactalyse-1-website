@@ -6,4 +6,7 @@ const AuthControllerInstance = new AuthController()
 export const authRoute = Router();
 
 authRoute.route('/register')
-    .post((req: Request, res: Response) => AuthControllerInstance.registerUser)
+    .post(AuthControllerInstance.registerUser)
+
+authRoute.route('/login')
+    .post(AuthControllerInstance.loginUser)
