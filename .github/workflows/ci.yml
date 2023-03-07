@@ -5,14 +5,35 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+  
 jobs:
-  build:
+  build-test-api:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 14 #breaks with v16 or v18 idk why
-      - run: npm install
-      - run: npm run build
-      - run: npm run test
+          node-version: 16
+      - name: install packages
+        working-directory: ./api
+        run: sudo npm install
+      - name: build project
+        working-directory: ./api
+        run: sudo npm run build
+      - name: give jest required permissions
+        working-directory: ./api
+        run: chmod +x node_modules/.bin/jest
+      - name: run tests
+        working-directory: ./api
+        run: sudo npm run test
+
+  build-test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: install packages
+        working-directory: ./client
+        run: sudo npm install
