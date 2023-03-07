@@ -22,7 +22,7 @@ jobs:
         run: sudo npm run build
       - name: give jest required permissions
         working-directory: ./api
-        run: chmod +x node_modules/.bin/jest
+        run: sudo chmod +x node_modules/.bin/jest
       - name: run tests
         working-directory: ./api
         run: sudo npm run test
