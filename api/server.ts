@@ -1,3 +1,4 @@
+
 import express, { Application } from 'express'
 import { authRoute } from './src/routes/AuthRoutes'
 
