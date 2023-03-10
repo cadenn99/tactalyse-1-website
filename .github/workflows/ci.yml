@@ -17,6 +17,9 @@ jobs:
       - name: install packages
         working-directory: ./api
         run: sudo npm install
+      - name: build project
+        working-directory: ./api
+        run: sudo npm build
       - name: run tests
         working-directory: ./api
         run: sudo npm run test
