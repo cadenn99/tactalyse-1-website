@@ -1,12 +1,9 @@
 
-import express, { Application } from 'express'
-import { authRoute } from './src/routes/AuthRoutes'
-import mongoose from 'mongoose'
+import { Application } from 'express'
 import './src/models/db-models/User'
 import { createExpressApp } from './app'
 import { MongoDatabase } from './src/database/mongoDatabase'
-import { DatabaseInterface } from './typings'
-import { describe, expect, jest, test } from '@jest/globals';
+
 
 const app: Application = createExpressApp(new MongoDatabase())
 

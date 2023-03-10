@@ -1,4 +1,4 @@
-import { Request, Router, Response, Application } from "express";
+import { Request, Response } from "express";
 import { authSchema } from "../models/api-models";
 import { CError } from "../utils/CError";
 import jwt from 'jsonwebtoken'
