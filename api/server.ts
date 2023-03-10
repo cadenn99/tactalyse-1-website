@@ -1,12 +1,15 @@
 
-import express, { Application } from 'express'
-import { authRoute } from './src/routes/AuthRoutes'
+import { Application } from 'express'
+import './src/models/db-models/User'
+import { createExpressApp } from './app'
+import { MongoDatabase } from './src/database/mongoDatabase'
 
-export const app: Application = express()
 
-app.use(express.json())
-app.use('/auth', authRoute)
+const app: Application = createExpressApp(new MongoDatabase())
 
-app.listen(5000, () => {
-    console.log('Listening to port 5000');
-})
+app.get('db').connect()
+    .then(() => {
+        app.listen(5000, () => {
+            console.log('>> Listening to port 5000');
+        })
+    })
