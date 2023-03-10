@@ -19,7 +19,6 @@ export class MongoDatabase implements DatabaseInterface {
             }
             throw err
         }
-
     };
 
     public async loginUser(email: string, password: string) {
