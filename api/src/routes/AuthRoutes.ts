@@ -1,4 +1,4 @@
-import { Request, Router, Response } from 'express'
+import { Router } from 'express'
 import { AuthController } from '../controllers/AuthController';
 
 const AuthControllerInstance = new AuthController()
