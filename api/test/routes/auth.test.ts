@@ -1,4 +1,4 @@
-import { describe, expect, it, test, vi, beforeEach } from 'vitest';
+import { describe, expect, it, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '../../app';
 import { MongoDatabase } from '../../src/database/mongoDatabase';
@@ -19,6 +19,11 @@ beforeEach<TestContextAuth>((context) => {
     context.supertestInstance = supertest(context.app)
 })
 
+afterEach(() => {
+    vi.clearAllMocks();
+    vi.resetAllMocks();
+})
+
 describe("Test for registering a new user", () => {
     test<TestContextAuth>('Can a user register a new account', async ({ supertestInstance, app }) => {
         app.get('db').createUser.mockResolvedValueOnce({ user: 'Some fake user' })
@@ -29,7 +34,7 @@ describe("Test for registering a new user", () => {
                 password: '1234565789'
             })
 
-        expect(app.get('db').createUser).toHaveBeenCalled()
+        expect(app.get('db').createUser).toBeCalledTimes(1)
         expect(app.get('db').createUser).toBeCalledWith('examp464le@gmail.com', '1234565789')
         expect(response.body).toHaveProperty('token')
         expect(response.status).toBe(200)
@@ -43,7 +48,7 @@ describe("Test for registering a new user", () => {
                 email: 'examp464le@gmail.com',
                 password: '1234565789'
             })
-        expect(app.get('db').createUser).toHaveBeenCalled()
+        expect(app.get('db').createUser).toBeCalledTimes(1)
         expect(app.get('db').createUser).toBeCalledWith('examp464le@gmail.com', '1234565789')
         expect(response.status).toBe(409)
         expect(response.body).toEqual({ message: 'Email is already taken' })
@@ -82,7 +87,7 @@ describe("Tests for logging in a new user", () => {
                 password: '1234565789'
             })
 
-        expect(app.get('db').loginUser).toBeCalled()
+        expect(app.get('db').loginUser).toBeCalledTimes(1)
         expect(app.get('db').loginUser).toBeCalledWith('examp464le@gmail.com', '1234565789')
         expect(response.body).toHaveProperty('token')
         expect(response.status).toBe(200)
@@ -97,7 +102,7 @@ describe("Tests for logging in a new user", () => {
                 password: '1234565789'
             })
 
-        expect(app.get('db').loginUser).toBeCalled()
+        expect(app.get('db').loginUser).toBeCalledTimes(1)
         expect(app.get('db').loginUser).toBeCalledWith('examp464le@gmail.com', '1234565789')
         expect(response.status).toBe(401)
         expect(response.body).toEqual({ message: 'User doesn\'t exist or password incorrect' })

@@ -4,7 +4,9 @@
   "description": "Tactalyse API",
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
+    "test-watch": "vitest",
+    "build": "tsc",
     "dev": "nodemon server.ts"
   },
   "repository": {
