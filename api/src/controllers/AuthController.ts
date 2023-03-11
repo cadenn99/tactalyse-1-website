@@ -22,7 +22,7 @@ export class AuthController {
             const user = await req.app.get('db')
                 .createUser(req.body.email, req.body.password)
 
-            const token = jwt.sign(user, process.env.VITEST_JWT_SECRET as string)
+            const token = jwt.sign(user, process.env.JWT_SECRET as string)
 
             return res.status(200).json({
                 message: "Registered successfully",
@@ -54,7 +54,7 @@ export class AuthController {
             const user = await req.app.get('db')
                 .loginUser(req.body.email, req.body.password)
 
-            const token = jwt.sign(user, process.env.VITEST_JWT_SECRET as string)
+            const token = jwt.sign(user, process.env.JWT_SECRET as string)
 
             return res.status(200).json({
                 message: "Logged in successful",

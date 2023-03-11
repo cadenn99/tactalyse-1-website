@@ -30,10 +30,7 @@ export class MongoDatabase implements DatabaseInterface {
 
             const user = await model('User').findOne({ email })
 
-            if (user === null)
-                throw new CError('User doesn\'t exist or password incorrect', 401)
-
-            if (!(await bcrypt.compare(password, user.toJSON().hash)))
+            if (user === null || !(await bcrypt.compare(password, user.toJSON().hash)))
                 throw new CError('User doesn\'t exist or password incorrect', 401)
 
             return user.toJSON()
