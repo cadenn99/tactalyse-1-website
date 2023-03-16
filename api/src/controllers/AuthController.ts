@@ -4,7 +4,6 @@ import { CError } from "@src/utils";
 import jwt from 'jsonwebtoken'
 
 export class AuthController {
-    constructor() { }
 
     /**
      * Controller function for registering a new user

@@ -4,13 +4,23 @@ import { CError } from "@src/utils";
 import bcrypt from 'bcrypt'
 
 export class MongoDatabase implements DatabaseInterface {
-    constructor() { }
 
+    /**
+     * Method for connecting to a Mongodb instance
+     * 
+     */
     public async connect() {
         await mongoose.connect(process.env.DB_URI as string)
             .then(() => console.log('>> Connected with MongoDB'))
     };
 
+    /**
+     * Method for creating a new user and storing it in mongodb database
+     * 
+     * @param email User email
+     * @param password User password
+     * @returns 
+     */
     public async createUser(email: string, password: string) {
         try {
             const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS as string));
@@ -25,6 +35,13 @@ export class MongoDatabase implements DatabaseInterface {
         }
     };
 
+    /**
+     * Method for logging in a new user 
+     * 
+     * @param email User email
+     * @param password User password
+     * @returns 
+     */
     public async loginUser(email: string, password: string) {
         try {
 
