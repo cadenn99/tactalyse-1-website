@@ -1,6 +1,6 @@
 
 import { Application } from 'express'
-import '@src/models/db-models'
+import '@src/models/db-models/User'
 import { createExpressApp } from './app'
 import { MongoDatabase } from '@src/database/mongoDatabase'
 require('dotenv').config({ path: __dirname + '/.env' });
