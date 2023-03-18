@@ -4,8 +4,9 @@ import '@src/models/db-models/User'
 import { createExpressApp } from './app'
 import { MongoDatabase } from '@src/database/mongoDatabase'
 require('dotenv').config({ path: __dirname + '/.env' });
+const { createMollieClient } = require('@mollie/api-client');
 
-const app: Application = createExpressApp(new MongoDatabase())
+const app: Application = createExpressApp(new MongoDatabase(), createMollieClient({ apiKey: 'test_mKdenUnyR3FHCWMSndC4nSCEWVVyJD' }))
 
 app.get('db').connect()
     .then(() => {

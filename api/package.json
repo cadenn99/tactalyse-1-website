@@ -43,6 +43,7 @@
     "ext": "ts, js"
   },
   "dependencies": {
+    "@mollie/api-client": "^3.7.0",
     "@types/cors": "^2.8.13",
     "@types/jsonwebtoken": "^9.0.1",
     "bcrypt": "^5.1.0",
