@@ -77,6 +77,8 @@ export class PaymentController {
 
             const order = await model('Order').findOne({ orderId: req.body.id })
 
+            if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
+
             xlsx.writeFile(xlsx.read(order.file), `./src/uploads/${req.body.id}.xlsx`);
 
             const cp = spawn("python",
