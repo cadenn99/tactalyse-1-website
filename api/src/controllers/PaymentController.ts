@@ -1,10 +1,11 @@
-import { raw, Request, Response } from "express";
+import { Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
 import { FormResponseInterface } from "@root/typings";
 import fs from 'fs'
 import { model } from "mongoose";
 import xlsx from 'xlsx'
+import { spawn } from "child_process";
 
 export class PaymentController {
 
@@ -64,24 +65,35 @@ export class PaymentController {
         try {
             const mollieClient = req.app.get('mollie')
 
-            // TODO: If the payment expires remove files from in-memory storage
-
             const payment = await mollieClient.payments.get(req.body.id)
-
-            console.log(payment)
 
             if (payment.status === 'expired') {
                 throw new CError("Payment expired, try again", 404)
             }
 
             if (payment.status !== 'paid') {
-                throw new CError("Payment has not yet completed", 404)
+                throw new CError("Payment not yet completed", 404)
             }
 
             const order = await model('Order').findOne({ orderId: req.body.id })
 
-            // I dont think there is need to write it to a file, it can be passed directly to the script
-            xlsx.writeFile(xlsx.read(order.file), __dirname + `/uploads/${req.body.id}.xlsx`);
+            xlsx.writeFile(xlsx.read(order.file), `./src/uploads/${req.body.id}.xlsx`);
+
+            const cp = spawn("python",
+                ["-c", `import placeholder; placeholder.main('../../uploads/${req.body.id}.xlsx')`],
+                { cwd: './src/services/python' }
+            )
+
+            cp.stdout.on('data', (data) => {
+                res.status(200)
+                    .json({ message: 'Script processed data' })
+            });
+
+            cp.stderr.on('error', (err) => {
+                res.status(500)
+                    .json({ message: err })
+            });
+
         } catch (err: any) {
             console.log(err)
 
