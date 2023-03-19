@@ -30,6 +30,9 @@ export class PaymentController {
                     })
             })
 
+            if (!files.hasOwnProperty('file'))
+                throw new CError('Missing file', 404)
+
             const payment = await mollieClient.payments.create({
                 amount: {
                     value: "50.00",
@@ -46,9 +49,13 @@ export class PaymentController {
             res.status(200)
                 .json({ checkOutUrl: payment.getCheckoutUrl() })
         } catch (err: any) {
-            console.log(err)
+            if (err instanceof CError) {
+                return res.status(err.code)
+                    .json({ message: err.message })
+            }
 
-            // TODO: Handle errors
+            res.status(500)
+                .json({ message: err })
         }
     }
 

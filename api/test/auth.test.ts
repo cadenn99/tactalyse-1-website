@@ -24,7 +24,6 @@ beforeEach<TestContext>((context) => {
 
 afterEach(() => {
     vi.clearAllMocks();
-    vi.resetAllMocks();
 })
 
 describe("Tests for user registration", () => {
