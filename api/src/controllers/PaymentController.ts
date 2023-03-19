@@ -94,6 +94,9 @@ export class PaymentController {
                     .json({ message: err })
             });
 
+            cp.on('exit', () => {
+                fs.unlinkSync(`./src/uploads/${req.body.id}.xlsx`)
+            })
         } catch (err: any) {
             console.log(err)
 
