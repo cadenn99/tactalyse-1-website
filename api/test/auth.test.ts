@@ -2,20 +2,23 @@ import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
 import { MongoDatabase } from '@src/database/mongoDatabase';
-import { TestContextAuth } from '@root/typings';
+import { TestContext } from '@root/typings';
 import { CError } from '@src/utils';
 
 vi.mock('@src/database/mongoDatabase', () => {
     const MongoDatabase = vi.fn()
+
     MongoDatabase.prototype.createUser = vi.fn()
     MongoDatabase.prototype.connect = vi.fn()
     MongoDatabase.prototype.loginUser = vi.fn()
+    MongoDatabase.prototype.createOrder = vi.fn()
 
     return { MongoDatabase }
 })
 
-beforeEach<TestContextAuth>((context) => {
-    context.app = createExpressApp(new MongoDatabase())
+
+beforeEach<TestContext>((context) => {
+    context.app = createExpressApp(new MongoDatabase(), null) // Mollie isn't used in these tests
     context.supertestInstance = supertest(context.app)
 })
 
@@ -25,7 +28,7 @@ afterEach(() => {
 })
 
 describe("Tests for user registration", () => {
-    test<TestContextAuth>('Can register a new account', async ({ supertestInstance, app }) => {
+    test<TestContext>('Can register a new account', async ({ supertestInstance, app }) => {
         app.get('db').createUser.mockResolvedValueOnce({ user: 'Some fake user' })
 
         const response = await supertestInstance.post('/auth/register')
@@ -40,7 +43,7 @@ describe("Tests for user registration", () => {
         expect(response.status).toBe(200)
     })
 
-    test<TestContextAuth>('Rejects registration with existing email', async ({ supertestInstance, app }) => {
+    test<TestContext>('Rejects registration with existing email', async ({ supertestInstance, app }) => {
         app.get('db').createUser.mockRejectedValueOnce(new CError('Email is already taken', 409))
 
         const response = await supertestInstance.post('/auth/register')
@@ -54,7 +57,7 @@ describe("Tests for user registration", () => {
         expect(response.body).toEqual({ message: 'Email is already taken' })
     })
 
-    test<TestContextAuth>('Rejects registration with invalid password format', async ({ supertestInstance }) => {
+    test<TestContext>('Rejects registration with invalid password format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/register')
             .send({
                 email: 'example@gmail.com',
@@ -65,7 +68,7 @@ describe("Tests for user registration", () => {
         expect(response.body).toEqual({ message: "Invalid email or password format" })
     })
 
-    test<TestContextAuth>('Rejects registration with invalid email format', async ({ supertestInstance }) => {
+    test<TestContext>('Rejects registration with invalid email format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/register')
             .send({
                 email: 'examplegmail.com',
@@ -78,7 +81,7 @@ describe("Tests for user registration", () => {
 })
 
 describe("Tests for user login", () => {
-    test<TestContextAuth>("Can login with valid credentials", async ({ supertestInstance, app }) => {
+    test<TestContext>("Can login with valid credentials", async ({ supertestInstance, app }) => {
         app.get('db').loginUser.mockResolvedValueOnce({ user: 'Some fake user' })
 
         const response = await supertestInstance.post('/auth/login')
@@ -93,7 +96,7 @@ describe("Tests for user login", () => {
         expect(response.status).toBe(200)
     })
 
-    test<TestContextAuth>("Rejects login with invalid credentials", async ({ supertestInstance, app }) => {
+    test<TestContext>("Rejects login with invalid credentials", async ({ supertestInstance, app }) => {
         app.get('db').loginUser.mockRejectedValueOnce(new CError('User doesn\'t exist or password incorrect', 401))
 
         const response = await supertestInstance.post('/auth/login')
@@ -108,7 +111,7 @@ describe("Tests for user login", () => {
         expect(response.body).toEqual({ message: 'User doesn\'t exist or password incorrect' })
     })
 
-    test<TestContextAuth>("Rejects login with invalid password format", async ({ supertestInstance }) => {
+    test<TestContext>("Rejects login with invalid password format", async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/login')
             .send({
                 email: 'example@gmail.com',
@@ -119,7 +122,7 @@ describe("Tests for user login", () => {
         expect(response.body).toEqual({ message: "Invalid email or password format" })
     })
 
-    test<TestContextAuth>('Rejects login with invalid email format', async ({ supertestInstance }) => {
+    test<TestContext>('Rejects login with invalid email format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/login')
             .send({
                 email: 'examplegmail.com',

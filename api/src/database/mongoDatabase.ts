@@ -2,6 +2,7 @@ import mongoose, { model } from "mongoose";
 import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
 import bcrypt from 'bcryptjs'
+import fs from 'fs'
 
 export class MongoDatabase implements DatabaseInterface {
 
@@ -55,4 +56,26 @@ export class MongoDatabase implements DatabaseInterface {
             throw err
         }
     };
+
+    /**
+     * Method for creating a new order
+     * 
+     * @param file Excel file
+     * @param orderId Order id
+     * @returns 
+     */
+    public async createOrder(file: Buffer, orderId: string) {
+        try {
+            await model('Order').create({
+                file: file,
+                orderId: orderId,
+                creationTimestamp: new Date().getTime()
+            })
+        } catch (err: any) {
+            if (err?.code === 11000) {
+                throw new CError('An order with this ID already exists', 409)
+            }
+            throw err
+        }
+    }
 }

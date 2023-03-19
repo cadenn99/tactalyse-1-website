@@ -22,7 +22,7 @@ export class PaymentController {
 
             const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
                 formidable({ multiples: true })
-                    .parse(req, (err, fields, files) => {
+                    .parse(req, (err, _, files) => {
                         if (err) {
                             reject(err)
                         }
@@ -40,11 +40,8 @@ export class PaymentController {
                 webhookUrl: 'https://yourwebshop.example.org/webhook' // TODO: Change 
             });
 
-            await model('Order').create({
-                file: Buffer.from(fs.readFileSync(files.file.filepath)),
-                orderId: payment.id,
-                creationTimestamp: new Date().getTime()
-            })
+            await req.app.get('db')
+                .createOrder(Buffer.from(fs.readFileSync(files.file.filepath)), payment.id)
 
             res.status(200)
                 .json({ checkOutUrl: payment.getCheckoutUrl() })

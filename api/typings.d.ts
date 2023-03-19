@@ -4,9 +4,10 @@ export interface DatabaseInterface {
     connect: Function
     createUser: Function
     loginUser: Function
+    createOrder: Function
 }
 
-export interface TestContextAuth {
+export interface TestContext {
     app: Application
     supertestInstance: supertest.Test
 }
