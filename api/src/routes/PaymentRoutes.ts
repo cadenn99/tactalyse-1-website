@@ -8,3 +8,6 @@ export const paymentRoute = Router();
 paymentRoute.route('/pay')
     .post(PaymentControllerInstance.acceptPayment)
 
+paymentRoute.route('/completeOrder')
+    .post(PaymentControllerInstance.completePayment)
+
