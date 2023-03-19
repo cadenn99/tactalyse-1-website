@@ -19,19 +19,19 @@ export class PaymentController {
 
             const mollieClient = req.app.get('mollie')
 
-            const { fields, files }: FormResponseInterface = await new Promise((resolve, reject) => {
+            const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
                 formidable({ multiples: true })
                     .parse(req, (err, fields, files) => {
                         if (err) {
                             reject(err)
                         }
-                        resolve({ fields, files })
+                        resolve({ files })
                     })
             })
 
             const payment = await mollieClient.payments.create({
                 amount: {
-                    value: fields.price.toFixed(2),
+                    value: "50.00",
                     currency: 'EUR'
                 },
                 description: 'Purchase of report',
@@ -66,7 +66,17 @@ export class PaymentController {
 
             // TODO: If the payment expires remove files from in-memory storage
 
-            const payment = mollieClient.payments.get(req.body.id)
+            const payment = await mollieClient.payments.get(req.body.id)
+
+            console.log(payment)
+
+            if (payment.status === 'expired') {
+                throw new CError("Payment expired, try again", 404)
+            }
+
+            if (payment.status !== 'paid') {
+                throw new CError("Payment has not yet completed", 404)
+            }
 
             const order = await model('Order').findOne({ orderId: req.body.id })
 
@@ -75,7 +85,13 @@ export class PaymentController {
         } catch (err: any) {
             console.log(err)
 
-            // TODO: Handle errors
+            if (err instanceof CError) {
+                return res.status(err.code)
+                    .json({ message: err.message })
+            }
+
+            res.status(500)
+                .json({ message: "Something went wrong" })
         }
     }
 }

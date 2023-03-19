@@ -11,7 +11,7 @@ export interface TestContextAuth {
     supertestInstance: supertest.Test
 }
 
-export interface FormResponseInterface{
-    fields: formidable.Fields
+export interface FormResponseInterface {
+    fields?: formidable.Fields
     files: formidable.Files
 }
