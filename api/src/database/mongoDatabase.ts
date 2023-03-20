@@ -78,4 +78,26 @@ export class MongoDatabase implements DatabaseInterface {
             throw err
         }
     }
+
+    /**
+     * Method for finding an order
+     * 
+     * @param orderId Order id 
+     * @returns 
+     */
+    public async findOrder(orderId: string) {
+        try {
+            const order = await model('Order').findOne({ orderId })
+
+            if (order === null)
+                throw new CError('An order with this ID doesn\'t exists', 409)
+
+            return order
+        } catch (err: any) {
+            if (err?.code === 11000) {
+                throw new CError('An order with this ID doesn\'t exists', 409)
+            }
+            throw err
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { authSchema } from "@src/models/api-models";
+import { authReqSchema } from "@src/models/api-models";
 import { CError } from "@src/utils";
 import jwt from 'jsonwebtoken'
 
@@ -13,10 +13,8 @@ export class AuthController {
      */
     public async registerUser(req: Request, res: Response) {
         try {
-            if (!authSchema.safeParse(req.body).success)
-                return res.status(404).json({
-                    message: "Invalid email or password format",
-                });
+            if (!authReqSchema.safeParse(req.body).success)
+                throw new CError("Invalid email or password format", 404)
 
             const user = await req.app.get('db')
                 .createUser(req.body.email, req.body.password)
@@ -44,11 +42,8 @@ export class AuthController {
      */
     public async loginUser(req: Request, res: Response) {
         try {
-            if (!authSchema.safeParse(req.body).success) {
-                return res.status(404).json({
-                    message: 'Invalid email or password format'
-                })
-            }
+            if (!authReqSchema.safeParse(req.body).success)
+                throw new CError("Invalid email or password format", 404)
 
             const user = await req.app.get('db')
                 .loginUser(req.body.email, req.body.password)

@@ -6,6 +6,7 @@ import fs from 'fs'
 import { model } from "mongoose";
 import xlsx from 'xlsx'
 import { spawn } from "child_process";
+import { paymentCompleteReqSchema } from "@src/models/api-models";
 
 export class PaymentController {
 
@@ -67,6 +68,9 @@ export class PaymentController {
      */
     public async completePayment(req: Request, res: Response) {
         try {
+            if (!paymentCompleteReqSchema.safeParse(req.body).success)
+                throw new CError("Missing order id", 404)
+
             const mollieClient = req.app.get('mollie')
 
             const payment = await mollieClient.payments.get(req.body.id)
@@ -79,7 +83,9 @@ export class PaymentController {
                 throw new CError("Payment not yet completed", 404)
             }
 
-            const order = await model('Order').findOne({ orderId: req.body.id })
+            const order = await req.app.get("db").findOrder(req.body.id)
+
+            //------------ Maybe want to find a cleaner way of doing this ------------//
 
             if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
 
@@ -103,6 +109,7 @@ export class PaymentController {
             cp.on('exit', () => {
                 fs.unlinkSync(`./src/uploads/${req.body.id}.xlsx`)
             })
+            //------------ --------------------------------------------- ------------//
         } catch (err: any) {
             console.log(err)
 
@@ -112,7 +119,7 @@ export class PaymentController {
             }
 
             res.status(500)
-                .json({ message: "Something went wrong" })
+                .json({ message: "Something went wrong", err })
         }
     }
 }

@@ -5,6 +5,7 @@ export interface DatabaseInterface {
     createUser: Function
     loginUser: Function
     createOrder: Function
+    findOrder: Function
 }
 
 export interface TestContext {

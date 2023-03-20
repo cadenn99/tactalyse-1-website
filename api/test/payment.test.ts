@@ -25,6 +25,9 @@ vi.mock('@mollie/api-client', () => {
             create: vi.fn(() => ({
                 id: 10,
                 getCheckoutUrl: vi.fn(() => 'test')
+            })),
+            get: vi.fn(() => ({
+                status: "paid"
             }))
         }
     }))
@@ -62,6 +65,34 @@ describe("Tests for order creation", () => {
         expect(app.get('db').createOrder).toBeCalledTimes(0)
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: 'Missing file' })
+    })
+
+    test<TestContext>("Rejects order creation with existing id", async ({ supertestInstance, app }) => {
+        app.get('db').createOrder.mockRejectedValueOnce(new CError('An order with this ID already exists', 409))
+
+        const response = await supertestInstance.post("/checkout/pay")
+            .attach('file', path.resolve(__dirname + "/test.xlsx"))
+
+
+        expect(app.get("mollie").payments.create).toBeCalledTimes(1)
+        expect(app.get('db').createOrder).toBeCalledTimes(1)
+        expect(app.get('db').createOrder).toBeCalledWith(Buffer.from(fs.readFileSync(path.resolve(__dirname + "/test.xlsx"))), 10)
+        expect(response.status).toBe(409)
+        expect(response.body).toEqual({ message: 'An order with this ID already exists' })
+    })
+})
+
+// Still broken
+describe("Tests for order completion", () => {
+    test<TestContext>("Can complete an order", async ({ supertestInstance, app }) => {
+
+        const response = await supertestInstance.post("/checkout/completeOrder")
+            .send({ id: "test" })
+
+        expect(app.get("mollie").payments.get).toBeCalledTimes(1)
+        // expect(app.get("db").findOrder).toBeCalledTimes(1)
+        // expect(app.get("db").findOrder).toBeCalledWith("test")
+
     })
 })
 

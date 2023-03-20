@@ -8,6 +8,7 @@ const orderSchema = new Schema({
     orderId: {
         type: String,
         required: true,
+        unique: true
     },
     completed: {
         type: Boolean,
