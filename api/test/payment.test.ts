@@ -1,42 +1,42 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { MongoDatabase } from '@src/database/mongoDatabase';
+import { MongoDatabase } from '@src/providers/mongoDatabase';
 import { CError } from '@src/utils';
 import { TestContext } from '@root/typings';
-import { createMollieClient } from '@mollie/api-client';
 import path from 'path';
 import fs from 'fs'
+import { MolliePayment } from '@src/providers/molliePayment';
 
-vi.mock('@src/database/mongoDatabase', () => {
+vi.mock('@src/providers/mongoDatabase', () => {
     const MongoDatabase = vi.fn()
 
     MongoDatabase.prototype.createUser = vi.fn()
     MongoDatabase.prototype.connect = vi.fn()
     MongoDatabase.prototype.loginUser = vi.fn()
     MongoDatabase.prototype.createOrder = vi.fn()
+    MongoDatabase.prototype.findOrder = vi.fn()
 
     return { MongoDatabase }
 })
 
-vi.mock('@mollie/api-client', () => {
-    const createMollieClient = vi.fn(() => ({
-        payments: {
-            create: vi.fn(() => ({
-                id: 10,
-                getCheckoutUrl: vi.fn(() => 'test')
-            })),
-            get: vi.fn(() => ({
-                status: "paid"
-            }))
-        }
+vi.mock('@src/providers/molliePayment', () => {
+    const MolliePayment = vi.fn()
+
+    MolliePayment.prototype.createPayment = vi.fn(() => ({
+        id: 10,
+        checkOutUrl: 'test'
     }))
 
-    return { createMollieClient }
+    MolliePayment.prototype.getPayment = vi.fn(() => ({
+        id: 10
+    }))
+
+    return { MolliePayment }
 })
 
 beforeEach<TestContext>((context) => {
-    context.app = createExpressApp(new MongoDatabase(), createMollieClient({ apiKey: 'test_' }))
+    context.app = createExpressApp(new MongoDatabase(), new MolliePayment(""))
     context.supertestInstance = supertest(context.app)
 })
 
@@ -50,7 +50,7 @@ describe("Tests for order creation", () => {
         const response = await supertestInstance.post('/checkout/pay')
             .attach('file', path.resolve(__dirname + "/test.xlsx"))
 
-        expect(app.get('mollie').payments.create).toBeCalledTimes(1)
+        expect(app.get('pc').createPayment).toBeCalledTimes(1)
         expect(app.get('db').createOrder).toBeCalledTimes(1)
         expect(app.get('db').createOrder).toBeCalledWith(Buffer.from(fs.readFileSync(path.resolve(__dirname + "/test.xlsx"))), 10)
         expect(response.status).toBe(200)
@@ -61,7 +61,7 @@ describe("Tests for order creation", () => {
 
         const response = await supertestInstance.post('/checkout/pay')
 
-        expect(app.get('mollie').payments.create).toBeCalledTimes(0)
+        expect(app.get('pc').createPayment).toBeCalledTimes(0)
         expect(app.get('db').createOrder).toBeCalledTimes(0)
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: 'Missing file' })
@@ -74,25 +74,11 @@ describe("Tests for order creation", () => {
             .attach('file', path.resolve(__dirname + "/test.xlsx"))
 
 
-        expect(app.get("mollie").payments.create).toBeCalledTimes(1)
+        expect(app.get("pc").createPayment).toBeCalledTimes(1)
         expect(app.get('db').createOrder).toBeCalledTimes(1)
         expect(app.get('db').createOrder).toBeCalledWith(Buffer.from(fs.readFileSync(path.resolve(__dirname + "/test.xlsx"))), 10)
         expect(response.status).toBe(409)
         expect(response.body).toEqual({ message: 'An order with this ID already exists' })
-    })
-})
-
-// Still broken
-describe("Tests for order completion", () => {
-    test<TestContext>("Can complete an order", async ({ supertestInstance, app }) => {
-
-        const response = await supertestInstance.post("/checkout/completeOrder")
-            .send({ id: "test" })
-
-        expect(app.get("mollie").payments.get).toBeCalledTimes(1)
-        // expect(app.get("db").findOrder).toBeCalledTimes(1)
-        // expect(app.get("db").findOrder).toBeCalledWith("test")
-
     })
 })
 

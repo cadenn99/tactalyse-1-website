@@ -1,24 +1,33 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { MongoDatabase } from '@src/database/mongoDatabase';
+import { MongoDatabase } from '@src/providers/mongoDatabase';
 import { TestContext } from '@root/typings';
 import { CError } from '@src/utils';
+import { MolliePayment } from '@src/providers/molliePayment';
 
-vi.mock('@src/database/mongoDatabase', () => {
+vi.mock('@src/providers/mongoDatabase', () => {
     const MongoDatabase = vi.fn()
 
     MongoDatabase.prototype.createUser = vi.fn()
     MongoDatabase.prototype.connect = vi.fn()
     MongoDatabase.prototype.loginUser = vi.fn()
     MongoDatabase.prototype.createOrder = vi.fn()
+    MongoDatabase.prototype.findOrder = vi.fn()
 
     return { MongoDatabase }
 })
 
+vi.mock('@src/providers/molliePayment', () => {
+    const MolliePayment = vi.fn()
+
+    MolliePayment.prototype.createPayment = vi.fn()
+
+    return { MolliePayment }
+})
 
 beforeEach<TestContext>((context) => {
-    context.app = createExpressApp(new MongoDatabase(), null) // Mollie isn't used in these tests
+    context.app = createExpressApp(new MongoDatabase(), new MolliePayment(""))
     context.supertestInstance = supertest(context.app)
 })
 

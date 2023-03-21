@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
-import { FormResponseInterface } from "@root/typings";
+import { DatabaseInterface, FormResponseInterface, PaymentProcessorInterface } from "@root/typings";
 import fs from 'fs'
-import { model } from "mongoose";
 import xlsx from 'xlsx'
 import { spawn } from "child_process";
 import { paymentCompleteReqSchema } from "@src/models/api-models";
@@ -19,7 +18,8 @@ export class PaymentController {
     public acceptPayment = async (req: Request, res: Response) => {
         try {
 
-            const mollieClient = req.app.get('mollie')
+            const paymentClient: PaymentProcessorInterface = req.app.get('pc')
+            const databaseClient: DatabaseInterface = req.app.get('db')
 
             const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
                 formidable({ multiples: true })
@@ -34,21 +34,14 @@ export class PaymentController {
             if (!files.hasOwnProperty('file'))
                 throw new CError('Missing file', 404)
 
-            const payment = await mollieClient.payments.create({
-                amount: {
-                    value: "50.00",
-                    currency: 'EUR'
-                },
-                description: 'Purchase of report',
-                redirectUrl: 'https://yourwebshop.example.org/order/123456', // TODO: Change 
-                webhookUrl: 'https://yourwebshop.example.org/webhook' // TODO: Change 
-            });
+            const payment = await paymentClient
+                .createPayment("50.00", "EUR", "xxx")
 
-            await req.app.get('db')
+            await databaseClient
                 .createOrder(Buffer.from(fs.readFileSync(files.file.filepath)), payment.id)
 
             res.status(200)
-                .json({ checkOutUrl: payment.getCheckoutUrl() })
+                .json({ checkOutUrl: payment.checkOutUrl })
         } catch (err: any) {
             if (err instanceof CError) {
                 return res.status(err.code)
@@ -71,19 +64,18 @@ export class PaymentController {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
 
-            const mollieClient = req.app.get('mollie')
+            const paymentClient: PaymentProcessorInterface = req.app.get('pc')
+            const databaseClient: DatabaseInterface = req.app.get('db')
 
-            const payment = await mollieClient.payments.get(req.body.id)
+            const payment = await paymentClient.getPayment(req.body.id)
 
-            if (payment.status === 'expired') {
+            if (payment.status === 'expired')
                 throw new CError("Payment expired, try again", 404)
-            }
 
-            if (payment.status !== 'paid') {
+            if (payment.status !== 'paid')
                 throw new CError("Payment not yet completed", 404)
-            }
 
-            const order = await req.app.get("db").findOrder(req.body.id)
+            const order = await databaseClient.findOrder(req.body.id)
 
             //------------ Maybe want to find a cleaner way of doing this ------------//
 

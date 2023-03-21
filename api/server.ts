@@ -3,11 +3,11 @@ import { Application } from 'express'
 import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
-import { MongoDatabase } from '@src/database/mongoDatabase'
+import { MongoDatabase } from '@src/providers/mongoDatabase'
+import { MolliePayment } from '@src/providers/molliePayment'
 require('dotenv').config({ path: __dirname + '/.env' });
-const { createMollieClient } = require('@mollie/api-client');
 
-const app: Application = createExpressApp(new MongoDatabase(), createMollieClient({ apiKey: process.env.MOLLIE_API_KEY as string }))
+const app: Application = createExpressApp(new MongoDatabase(), new MolliePayment(process.env.MOLLIE_API_KEY as string))
 
 app.get('db').connect()
     .then(() => {

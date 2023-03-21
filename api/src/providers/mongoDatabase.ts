@@ -2,7 +2,6 @@ import mongoose, { model } from "mongoose";
 import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
 import bcrypt from 'bcryptjs'
-import fs from 'fs'
 
 export class MongoDatabase implements DatabaseInterface {
 

@@ -8,6 +8,11 @@ export interface DatabaseInterface {
     findOrder: Function
 }
 
+export interface PaymentProcessorInterface {
+    createPayment: (price: string, currency: string, description: string) => any
+    getPayment: (id: string) => any
+}
+
 export interface TestContext {
     app: Application
     supertestInstance: supertest.Test
