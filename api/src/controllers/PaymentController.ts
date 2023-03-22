@@ -73,7 +73,7 @@ export class PaymentController {
                 throw new CError("Payment expired, try again", 404)
 
             if (payment.status !== 'paid')
-                throw new CError("Payment not yet completed", 404)
+                throw new CError("Payment not yet completed", 402)
 
             const order = await databaseClient.findOrder(req.body.id)
 
