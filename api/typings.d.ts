@@ -22,3 +22,9 @@ export interface FormResponseInterface {
     fields?: formidable.Fields
     files: formidable.Files
 }
+
+export interface TokenInterface {
+    email: string
+    isEmployee: boolean
+    _id: string
+}

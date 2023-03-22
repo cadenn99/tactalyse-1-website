@@ -1,9 +1,13 @@
 import { Schema, model } from 'mongoose';
 
 const orderSchema = new Schema({
-    file: {
+    leagueFile: {
         type: Buffer,
         required: true,
+    },
+    playerFile: {
+        type: Buffer,
+        required: true
     },
     orderId: {
         type: String,
@@ -18,6 +22,11 @@ const orderSchema = new Schema({
     creationTimestamp: {
         type: Number,
         required: true
+    },
+    pdf: {
+        type: Buffer,
+        required: false,
+        default: undefined
     }
 })
 

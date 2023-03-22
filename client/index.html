@@ -8,21 +8,28 @@
 </head>
 <body>
     <form>
-        <input type="file" name="file" id="files" multiple>
+        <input type="file" name="file" id="player" multiple>
+        <input type="file" name="file" id="league" multiple>
+        <input type="text" placeholder="Token">
         <button type="submit">Submit</button>
     </form>
     <script>
         const form = document.querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const files = document.getElementById("files");
+            const filesPlayer = document.getElementById("player");
+            const filesLeague = document.getElementById("league");
             const formData = new FormData();
             
-            formData.append("file", files.files[0]);
-            formData.append("price", 50)
+            formData.append("player", filesPlayer.files[0]);
+            formData.append("league", filesLeague.files[0]);
+
             fetch("http://192.168.1.160:5000/checkout/pay", {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjJAMi5jb20iLCJoYXNoIjoiJDJhJDEwJGJHVjhzWFRDUkc1TjVlTmwyN0JTZE9RNWtmaHU5L0RlajYzRncyLnVGVXRYcEV2aDhVZmN5IiwiaXNFbXBsb3llZSI6ZmFsc2UsIm9yZGVySGlzdG9yeSI6W10sIl9pZCI6IjY0MWIyM2Q4YzI0NTk5OTZkNmI2MGU0OCIsIl9fdiI6MCwiaWF0IjoxNjc5NTAwMjQ5fQ.BCl8ZwjbrG4q7II7aRv5jMb5ufHcMcAW9e6i0dsN3fg`
+                }
             })
             .then(res => res.json())
             .then(data => console.log(data))

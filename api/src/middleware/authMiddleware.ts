@@ -9,10 +9,9 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     try {
         const token = req.headers.authorization?.split(' ')[1]
 
-        if (token) {
+        if (token)
             if (jwt.verify(token, process.env.JWT_SECRET as string))
                 return next()
-        }
 
         throw new Error()
 

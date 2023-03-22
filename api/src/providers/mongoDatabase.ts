@@ -57,19 +57,29 @@ export class MongoDatabase implements DatabaseInterface {
     };
 
     /**
-     * Method for creating a new order
+     * Method for creating a new order and adding it to the user
      * 
-     * @param file Excel file
+     * @param playerFile Excel file for the player
+     * @param leagueFile Excel file for the league
      * @param orderId Order id
+     * @param userId User id
      * @returns 
      */
-    public async createOrder(file: Buffer, orderId: string) {
+    public async createOrder(playerFile: Buffer, leagueFile: Buffer, orderId: string, userId: string) {
         try {
-            await model('Order').create({
-                file: file,
-                orderId: orderId,
-                creationTimestamp: new Date().getTime()
-            })
+            const order = await model('Order')
+                .create({
+                    playerFile,
+                    leagueFile,
+                    orderId,
+                    creationTimestamp: new Date().getTime()
+                })
+
+            await model('User')
+                .updateOne(
+                    { _id: userId },
+                    { $push: { orderHistory: order._id } }
+                )
         } catch (err: any) {
             if (err?.code === 11000) {
                 throw new CError('An order with this ID already exists', 409)

@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
-import { DatabaseInterface, FormResponseInterface, PaymentProcessorInterface } from "@root/typings";
+import { DatabaseInterface, FormResponseInterface, PaymentProcessorInterface, TokenInterface } from "@root/typings";
 import fs from 'fs'
 import xlsx from 'xlsx'
 import { spawn } from "child_process";
 import { paymentCompleteReqSchema } from "@src/models/api-models";
+import jwt from 'jsonwebtoken'
 
 export class PaymentController {
 
@@ -20,6 +21,7 @@ export class PaymentController {
 
             const paymentClient: PaymentProcessorInterface = req.app.get('pc')
             const databaseClient: DatabaseInterface = req.app.get('db')
+            const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
 
             const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
                 formidable({ multiples: true })
@@ -31,14 +33,19 @@ export class PaymentController {
                     })
             })
 
-            if (!files.hasOwnProperty('file'))
+            if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
                 throw new CError('Missing file', 404)
 
             const payment = await paymentClient
                 .createPayment("50.00", "EUR", "xxx")
 
             await databaseClient
-                .createOrder(Buffer.from(fs.readFileSync(files.file.filepath)), payment.id)
+                .createOrder(
+                    Buffer.from(fs.readFileSync(files.player.filepath)),
+                    Buffer.from(fs.readFileSync(files.league.filepath)),
+                    payment.id,
+                    payload._id
+                )
 
             res.status(200)
                 .json({ checkOutUrl: payment.checkOutUrl })
@@ -113,5 +120,13 @@ export class PaymentController {
             res.status(500)
                 .json({ message: "Something went wrong", err })
         }
+    }
+
+    /**
+     * Method for getting a report as an employee
+     * 
+     */
+    public async noPayment() {
+
     }
 }
