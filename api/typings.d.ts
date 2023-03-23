@@ -13,6 +13,10 @@ export interface PaymentProcessorInterface {
     getPayment: (id: string) => any
 }
 
+export interface MailerInterface {
+    sendEmail: (email: string, orderId: string) => void
+}
+
 export interface TestContext {
     app: Application
     supertestInstance: supertest.Test

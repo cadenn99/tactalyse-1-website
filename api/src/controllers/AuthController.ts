@@ -60,11 +60,11 @@ export class AuthController {
                 token
             })
         } catch (err: any) {
-            if (err instanceof CError) {
+            if (err instanceof CError)
                 return res.status(err.code).json({
                     message: err.message
                 })
-            }
+
             return res.status(500).json({ message: 'Something went wrong' })
         }
     }

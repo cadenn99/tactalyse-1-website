@@ -5,9 +5,20 @@ import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
 import { MongoDatabase } from '@src/providers/mongoDatabase'
 import { MolliePayment } from '@src/providers/molliePayment'
+import { nodemailerMailer } from '@src/providers/nodemailerMailer'
 require('dotenv').config({ path: __dirname + '/.env' });
 
-const app: Application = createExpressApp(new MongoDatabase(), new MolliePayment(process.env.MOLLIE_API_KEY as string))
+const app: Application = createExpressApp(
+    new MongoDatabase(),
+    new MolliePayment({ apiKey: process.env.MOLLIE_API_KEY as string }),
+    new nodemailerMailer({
+        host: 'smtp-relay.sendinblue.com',
+        port: 587,
+        user: 'snowboard8442@gmail.com',
+        pass: '1NcGnXO24vHSDh6U',
+        email: `<h1>Hello from tactalyse</h1>`
+    })
+)
 
 app.get('db').connect()
     .then(() => {

@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
-import { DatabaseInterface, FormResponseInterface, PaymentProcessorInterface, TokenInterface } from "@root/typings";
+import { DatabaseInterface, FormResponseInterface, MailerInterface, PaymentProcessorInterface, TokenInterface } from "@root/typings";
 import fs from 'fs'
 import xlsx from 'xlsx'
 import { spawn } from "child_process";
 import { paymentCompleteReqSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
+import { model } from "mongoose";
 
 export class PaymentController {
 
@@ -50,10 +52,9 @@ export class PaymentController {
             res.status(200)
                 .json({ checkOutUrl: payment.checkOutUrl })
         } catch (err: any) {
-            if (err instanceof CError) {
+            if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
-            }
 
             res.status(500)
                 .json({ message: err })
@@ -73,6 +74,7 @@ export class PaymentController {
 
             const paymentClient: PaymentProcessorInterface = req.app.get('pc')
             const databaseClient: DatabaseInterface = req.app.get('db')
+            const mailer: MailerInterface = req.app.get('nm')
 
             const payment = await paymentClient.getPayment(req.body.id)
 
@@ -83,12 +85,15 @@ export class PaymentController {
                 throw new CError("Payment not yet completed", 402)
 
             const order = await databaseClient.findOrder(req.body.id)
-
+            const orderOwner = await model('User').findOne(
+                { orderHistory: order._id }
+            )
             //------------ Maybe want to find a cleaner way of doing this ------------//
 
             if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
 
-            xlsx.writeFile(xlsx.read(order.file), `./src/uploads/${req.body.id}.xlsx`);
+            xlsx.writeFile(xlsx.read(order.leagueFile), `./src/uploads/league_${req.body.id}.xlsx`);
+            xlsx.writeFile(xlsx.read(order.playerFile), `./src/uploads/player_${req.body.id}.xlsx`);
 
             const cp = spawn("python",
                 ["-c", `import placeholder; placeholder.main('../../uploads/${req.body.id}.xlsx')`],
@@ -106,16 +111,18 @@ export class PaymentController {
             });
 
             cp.on('exit', () => {
-                fs.unlinkSync(`./src/uploads/${req.body.id}.xlsx`)
+                fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
+                fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
             })
             //------------ --------------------------------------------- ------------//
+
+            mailer.sendEmail(orderOwner.toJSON().email, order.orderId)
         } catch (err: any) {
             console.log(err)
 
-            if (err instanceof CError) {
+            if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
-            }
 
             res.status(500)
                 .json({ message: "Something went wrong", err })
@@ -126,7 +133,23 @@ export class PaymentController {
      * Method for getting a report as an employee
      * 
      */
-    public async noPayment() {
+    public async noPayment(req: Request, res: Response) {
+        try {
+            const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
 
+            if (!payload.isEmployee)
+                throw new CError("Missing required authorization", 401)
+
+
+
+        } catch (err: any) {
+
+            if (err instanceof CError)
+                return res.status(err.code)
+                    .json({ message: err.message })
+
+            res.status(500)
+                .json({ message: 'Something went wrong' })
+        }
     }
 }

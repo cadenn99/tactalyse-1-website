@@ -1,9 +1,13 @@
 import './src/models/db-models/User'
 import express, { Application } from 'express'
 import { authRoute, paymentRoute } from './src/routes'
-import { DatabaseInterface, PaymentProcessorInterface } from './typings'
+import { DatabaseInterface, MailerInterface, PaymentProcessorInterface } from './typings'
 
-export function createExpressApp(database: DatabaseInterface, paymentClient: PaymentProcessorInterface) {
+export function createExpressApp(
+    database: DatabaseInterface,
+    paymentClient: PaymentProcessorInterface,
+    mailer: MailerInterface
+) {
     const app: Application = express()
 
     app.use(express.json())
@@ -12,6 +16,7 @@ export function createExpressApp(database: DatabaseInterface, paymentClient: Pay
 
     app.set('db', database)
     app.set('pc', paymentClient)
+    app.set('nm', mailer)
     return app
 }
 
