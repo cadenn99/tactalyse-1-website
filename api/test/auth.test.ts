@@ -1,10 +1,10 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { MongoDatabase } from '@src/providers/mongoDatabase';
+import { MongoDatabase } from '@src/services/mongoDatabase.service';
 import { TestContext } from '@root/typings';
 import { CError } from '@src/utils';
-import { MolliePayment } from '@src/providers/molliePayment';
+import { MolliePayment } from '@src/services/molliePayment.service';
 
 vi.mock('@src/providers/mongoDatabase', () => {
     const MongoDatabase = vi.fn()

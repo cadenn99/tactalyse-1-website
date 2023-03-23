@@ -48,3 +48,7 @@ export class MolliePayment implements PaymentProcessorInterface {
         return await this.client.payments.get(id)
     }
 }
+
+function Injectable() {
+    throw new Error("Function not implemented.");
+}
