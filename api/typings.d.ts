@@ -14,7 +14,7 @@ export interface PaymentProcessorInterface {
 }
 
 export interface MailerInterface {
-    sendEmail: (email: string, orderId: string, filePath: string) => void
+    sendEmail: (email: string, orderId: string, filePath: string) => Promise<any>
 }
 
 export interface TestContext {

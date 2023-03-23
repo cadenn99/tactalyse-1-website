@@ -26,8 +26,15 @@ export class nodemailerMailer implements MailerInterface {
         this.email = email
     }
 
+    /**
+     * Method for sending a report to the client
+     * 
+     * @param email Email of the receiver
+     * @param orderId Order id
+     * @param filePath Path to the PDF
+     */
     public async sendEmail(email: string, orderId?: string, filePath?: string) {
-        await this.transporter.sendMail({
+        return await this.transporter.sendMail({
             from: "tactalysetest@tactalysetest.com",
             to: email,
             subject: `Report - #${orderId}`,

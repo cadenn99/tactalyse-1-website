@@ -7,7 +7,6 @@ import xlsx from 'xlsx'
 import { spawn } from "child_process";
 import { paymentCompleteReqSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
-import nodemailer from 'nodemailer'
 import { model } from "mongoose";
 
 export class PaymentController {
@@ -85,39 +84,28 @@ export class PaymentController {
                 throw new CError("Payment not yet completed", 402)
 
             const order = await databaseClient.findOrder(req.body.id)
-            const orderOwner = await model('User').findOne(
-                { orderHistory: order._id }
-            )
-            //------------ Maybe want to find a cleaner way of doing this ------------//
+            const orderOwner = await model('User')                          // FIXME: Change this to use the databaseClient
+                .findOne(
+                    { orderHistory: order._id }
+                )
 
             if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
 
             xlsx.writeFile(xlsx.read(order.leagueFile), `./src/uploads/league_${req.body.id}.xlsx`);
             xlsx.writeFile(xlsx.read(order.playerFile), `./src/uploads/player_${req.body.id}.xlsx`);
 
-            const cp = spawn("python",
-                ["-c", `import placeholder; placeholder.main('../../uploads/${req.body.id}.xlsx')`],
-                { cwd: './src/services/python' }
-            )
+            // TODO: Call script API
 
-            cp.stdout.on('data', (data) => {
-                res.status(200)
-                    .json({ message: 'Script processed data' })
-            });
+            const info = await mailer.sendEmail(orderOwner.toJSON().email, order.orderId, `./src/uploads/league_${req.body.id}.xlsx`)
 
-            cp.stderr.on('error', (err) => {
-                res.status(500)
-                    .json({ message: err })
-            });
+            if (info.accepted.length == 0)
+                throw new CError(info.err, 500)
 
-            cp.on('exit', async () => {
-                await mailer.sendEmail(orderOwner.toJSON().email, order.orderId, `./src/uploads/league_${req.body.id}.xlsx`)
+            fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
+            fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
 
-                fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
-                fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
-            })
-            //------------ --------------------------------------------- ------------//
-
+            res.status(200)
+                .json({ message: 'Emailed report!' })
 
         } catch (err: any) {
             console.log(err)
@@ -134,6 +122,8 @@ export class PaymentController {
     /**
      * Method for getting a report as an employee
      * 
+     * @param req Request object
+     * @param res Response object
      */
     public async noPayment(req: Request, res: Response) {
         try {
