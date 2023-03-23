@@ -26,12 +26,16 @@ export class nodemailerMailer implements MailerInterface {
         this.email = email
     }
 
-    public async sendEmail(email: string, orderId: string) {
+    public async sendEmail(email: string, orderId?: string, filePath?: string) {
         await this.transporter.sendMail({
             from: "tactalysetest@tactalysetest.com",
             to: email,
             subject: `Report - #${orderId}`,
-            html: this.email
+            html: this.email,
+            attachments: [{
+                filename: 'Report.xlsx',
+                path: filePath
+            }]
         });
     }
 }

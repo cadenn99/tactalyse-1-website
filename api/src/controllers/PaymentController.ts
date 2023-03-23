@@ -110,13 +110,15 @@ export class PaymentController {
                     .json({ message: err })
             });
 
-            cp.on('exit', () => {
+            cp.on('exit', async () => {
+                await mailer.sendEmail(orderOwner.toJSON().email, order.orderId, `./src/uploads/league_${req.body.id}.xlsx`)
+
                 fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
                 fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
             })
             //------------ --------------------------------------------- ------------//
 
-            mailer.sendEmail(orderOwner.toJSON().email, order.orderId)
+
         } catch (err: any) {
             console.log(err)
 
