@@ -47,7 +47,7 @@ vi.mock('@src/services/mailer.service', () => {
 beforeEach<TestContext>((context) => {
     context.app = createExpressApp(
         new MongoDatabase(),
-        new MolliePayment({ apiKey: "" }),
+        new MolliePayment(""),
         new NodemailerMailer({
             host: '',
             port: 0,

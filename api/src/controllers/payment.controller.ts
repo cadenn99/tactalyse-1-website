@@ -58,7 +58,7 @@ export class PaymentController {
     }
 
     /**
-     * Fullfilling order after payment completed (the hook which gets called)
+     * Fullfilling order after payment completed (the hook which gets called by mollie)
      * 
      * @param req Request object
      * @param res Response object

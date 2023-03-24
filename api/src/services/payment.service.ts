@@ -1,16 +1,12 @@
 import { PaymentProcessorInterface } from "@root/typings";
 const { createMollieClient } = require('@mollie/api-client');
 
-interface ConstructorInterface {
-    apiKey: string
-}
-
 export class MolliePayment implements PaymentProcessorInterface {
 
     private client
 
-    constructor({ apiKey }: ConstructorInterface) {
-        this.client = createMollieClient({ apiKey })
+    constructor(apiKey: string) {
+        this.client = createMollieClient(apiKey)
     }
 
     /**
