@@ -1,4 +1,5 @@
 import { MailerInterface } from "@root/typings";
+import { CError } from "@src/utils";
 import nodemailer from "nodemailer";
 
 interface ConstructorInterface {
@@ -34,7 +35,7 @@ export class NodemailerMailer implements MailerInterface {
      * @param filePath Path to the PDF
      */
     public async sendEmail(email: string, orderId?: string, filePath?: string) {
-        return await this.transporter.sendMail({
+        const info = await this.transporter.sendMail({
             from: "tactalysetest@tactalysetest.com",
             to: email,
             subject: `Report - #${orderId}`,
@@ -44,5 +45,10 @@ export class NodemailerMailer implements MailerInterface {
                 path: filePath
             }]
         });
+
+        if (info.accepted.length === 0)
+            throw new CError(info.err, 500)
+
+        return info
     }
 }

@@ -11,7 +11,28 @@ import { model } from "mongoose";
 export class PaymentController {
 
     /**
-     * Creating a payment and store files (arrow function to preserve `this`)
+     * Method for extracting files from a request
+     * 
+     * @param req Request object
+     * @returns 
+     */
+    private async fileExtractor(req: Request) {
+        const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
+            formidable({ multiples: true })
+                .parse(req, (err, _, files) => {
+                    if (err) reject(err)
+                    resolve({ files })
+                })
+        })
+
+        if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
+            throw new CError('Missing file', 404)
+
+        return files
+    }
+
+    /**
+     * Creating a payment and store files
      * 
      * @param req Request object
      * @param res Response object
@@ -23,16 +44,7 @@ export class PaymentController {
             const databaseClient: DatabaseInterface = req.app.get('db')
             const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
 
-            const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
-                formidable({ multiples: true })
-                    .parse(req, (err, _, files) => {
-                        if (err) reject(err)
-                        resolve({ files })
-                    })
-            })
-
-            if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
-                throw new CError('Missing file', 404)
+            const files = await this.fileExtractor(req)
 
             const payment = await paymentClient
                 .createPayment("50.00", "EUR", "xxx")
@@ -90,14 +102,11 @@ export class PaymentController {
 
             // TODO: Call script API
 
-            const info = await mailer.sendEmail(
+            await mailer.sendEmail(
                 orderOwner.email,
                 order.orderId,
                 `./src/uploads/league_${req.body.id}.xlsx` // FIXME: Change to file name of report
             )
-
-            if (info.accepted.length == 0)
-                throw new CError(info.err, 500)
 
             fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
             fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
@@ -132,16 +141,7 @@ export class PaymentController {
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
 
-            const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
-                formidable({ multiples: true })
-                    .parse(req, (err, _, files) => {
-                        if (err) reject(err)
-                        resolve({ files })
-                    })
-            })
-
-            if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
-                throw new CError('Missing file', 404)
+            const files = await this.fileExtractor(req)
 
             const orderId = `employee_purchase_${new Date().getTime()}`
 
@@ -155,14 +155,11 @@ export class PaymentController {
 
             // TODO: Call script API
 
-            const info = await mailer.sendEmail(
+            await mailer.sendEmail(
                 payload.email,
                 orderId,
                 files.player.filepath // FIXME: Change to file name of report
             )
-
-            if (info.accepted.length == 0)
-                throw new CError(info.err, 500)
 
             res.status(200)
                 .json({ message: 'Emailed report!' })
