@@ -6,6 +6,7 @@ export interface DatabaseInterface {
     loginUser: Function
     createOrder: Function
     findOrder: Function
+    findUserByOrder: Function
 }
 
 export interface PaymentProcessorInterface {

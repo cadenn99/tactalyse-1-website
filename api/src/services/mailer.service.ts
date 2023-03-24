@@ -9,7 +9,7 @@ interface ConstructorInterface {
     email: string
 }
 
-export class nodemailerMailer implements MailerInterface {
+export class NodemailerMailer implements MailerInterface {
     private transporter: nodemailer.Transporter;
     private email: string
 

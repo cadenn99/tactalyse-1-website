@@ -26,9 +26,7 @@ export class PaymentController {
             const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
                 formidable({ multiples: true })
                     .parse(req, (err, _, files) => {
-                        if (err) {
-                            reject(err)
-                        }
+                        if (err) reject(err)
                         resolve({ files })
                     })
             })
@@ -83,10 +81,7 @@ export class PaymentController {
                 throw new CError("Payment not yet completed", 402)
 
             const order = await databaseClient.findOrder(req.body.id)
-            const orderOwner = await model('User')                          // FIXME: Change this to use the databaseClient
-                .findOne(
-                    { orderHistory: order._id }
-                )
+            const orderOwner = await databaseClient.findUserByOrder(req.body.id)
 
             if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
 
@@ -96,9 +91,9 @@ export class PaymentController {
             // TODO: Call script API
 
             const info = await mailer.sendEmail(
-                orderOwner.toJSON().email,
+                orderOwner.email,
                 order.orderId,
-                `./src/uploads/league_${req.body.id}.xlsx`
+                `./src/uploads/league_${req.body.id}.xlsx` // FIXME: Change to file name of report
             )
 
             if (info.accepted.length == 0)
@@ -131,12 +126,46 @@ export class PaymentController {
     public async noPayment(req: Request, res: Response) {
         try {
             const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
+            const databaseClient: DatabaseInterface = req.app.get('db')
+            const mailer: MailerInterface = req.app.get('nm')
 
             if (!payload.isEmployee)
-                throw new CError("Missing required authorization", 401)
+                throw new CError("Missing required authorization" + payload.email, 401)
 
+            const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
+                formidable({ multiples: true })
+                    .parse(req, (err, _, files) => {
+                        if (err) reject(err)
+                        resolve({ files })
+                    })
+            })
 
+            if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
+                throw new CError('Missing file', 404)
 
+            const orderId = `employee_purchase_${new Date().getTime()}`
+
+            await databaseClient
+                .createOrder(
+                    Buffer.from(fs.readFileSync(files.player.filepath)),
+                    Buffer.from(fs.readFileSync(files.league.filepath)),
+                    orderId,
+                    payload._id
+                )
+
+            // TODO: Call script API
+
+            const info = await mailer.sendEmail(
+                payload.email,
+                orderId,
+                files.player.filepath // FIXME: Change to file name of report
+            )
+
+            if (info.accepted.length == 0)
+                throw new CError(info.err, 500)
+
+            res.status(200)
+                .json({ message: 'Emailed report!' })
         } catch (err: any) {
 
             if (err instanceof CError)

@@ -57,6 +57,28 @@ export class MongoDatabase implements DatabaseInterface {
     };
 
     /**
+     * Method for finding a user given an orderid
+     * 
+     * @param orderId Order id
+     * @returns 
+     */
+    public async findUserByOrder(orderId: string) {
+        try {
+            const user = await model('User')                          // FIXME: Change this to use the databaseClient
+                .findOne(
+                    { orderHistory: orderId }
+                )
+
+            if (user === null)
+                throw new CError('No user with this order id', 404)
+
+            return user.toJSON()
+        } catch (err: any) {
+            throw err
+        }
+    }
+
+    /**
      * Method for creating a new order and adding it to the user
      * 
      * @param playerFile Excel file for the player

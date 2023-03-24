@@ -1,2 +1,2 @@
-export * from './AuthRoutes'
-export * from './PaymentRoutes'
+export * from './auth.route'
+export * from './payment.route'

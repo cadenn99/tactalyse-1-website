@@ -6,14 +6,14 @@ import { createExpressApp } from './app'
 import {
     MongoDatabase,
     MolliePayment,
-    nodemailerMailer
+    NodemailerMailer
 } from '@src/services'
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const app: Application = createExpressApp(
     new MongoDatabase(),
     new MolliePayment({ apiKey: process.env.MOLLIE_API_KEY as string }),
-    new nodemailerMailer({
+    new NodemailerMailer({
         host: 'smtp-relay.sendinblue.com',
         port: 587,
         user: 'snowboard8442@gmail.com',

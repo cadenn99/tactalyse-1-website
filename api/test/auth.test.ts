@@ -1,12 +1,11 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { MongoDatabase } from '@src/services/database.service';
+import { MongoDatabase, MolliePayment, NodemailerMailer } from '@src/services';
 import { TestContext } from '@root/typings';
 import { CError } from '@src/utils';
-import { MolliePayment } from '@src/services/payment.service';
 
-vi.mock('@src/providers/mongoDatabase', () => {
+vi.mock('@src/services/database.service', () => {
     const MongoDatabase = vi.fn()
 
     MongoDatabase.prototype.createUser = vi.fn()
@@ -18,7 +17,7 @@ vi.mock('@src/providers/mongoDatabase', () => {
     return { MongoDatabase }
 })
 
-vi.mock('@src/providers/molliePayment', () => {
+vi.mock('@src/services/payment.service', () => {
     const MolliePayment = vi.fn()
 
     MolliePayment.prototype.createPayment = vi.fn()
@@ -26,8 +25,24 @@ vi.mock('@src/providers/molliePayment', () => {
     return { MolliePayment }
 })
 
+vi.mock('@src/services/mailer.service', () => {
+    const NodeMailer = vi.fn()
+
+    return { NodeMailer }
+})
+
 beforeEach<TestContext>((context) => {
-    context.app = createExpressApp(new MongoDatabase(), new MolliePayment(""))
+    context.app = createExpressApp(
+        new MongoDatabase(),
+        new MolliePayment({ apiKey: "" }),
+        new NodemailerMailer({
+            host: '',
+            port: 0,
+            user: '',
+            pass: '',
+            email: ''
+        })
+    )
     context.supertestInstance = supertest(context.app)
 })
 
