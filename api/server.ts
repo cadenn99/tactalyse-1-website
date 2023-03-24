@@ -3,9 +3,11 @@ import { Application } from 'express'
 import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
-import { MongoDatabase } from '@src/services/mongoDatabase.service'
-import { MolliePayment } from '@src/services/molliePayment.service'
-import { nodemailerMailer } from '@src/services/nodemailerMailer.service'
+import {
+    MongoDatabase,
+    MolliePayment,
+    nodemailerMailer
+} from '@src/services'
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const app: Application = createExpressApp(

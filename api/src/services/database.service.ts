@@ -1,7 +1,7 @@
 import mongoose, { model } from "mongoose";
 import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
 
 export class MongoDatabase implements DatabaseInterface {
 
@@ -101,7 +101,7 @@ export class MongoDatabase implements DatabaseInterface {
             if (order === null)
                 throw new CError('An order with this ID doesn\'t exists', 409)
 
-            return order
+            return order.toJSON()
         } catch (err: any) {
             if (err?.code === 11000) {
                 throw new CError('An order with this ID doesn\'t exists', 409)

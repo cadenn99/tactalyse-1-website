@@ -4,7 +4,6 @@ import formidable from 'formidable';
 import { DatabaseInterface, FormResponseInterface, MailerInterface, PaymentProcessorInterface, TokenInterface } from "@root/typings";
 import fs from 'fs'
 import xlsx from 'xlsx'
-import { spawn } from "child_process";
 import { paymentCompleteReqSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
 import { model } from "mongoose";
@@ -96,7 +95,11 @@ export class PaymentController {
 
             // TODO: Call script API
 
-            const info = await mailer.sendEmail(orderOwner.toJSON().email, order.orderId, `./src/uploads/league_${req.body.id}.xlsx`)
+            const info = await mailer.sendEmail(
+                orderOwner.toJSON().email,
+                order.orderId,
+                `./src/uploads/league_${req.body.id}.xlsx`
+            )
 
             if (info.accepted.length == 0)
                 throw new CError(info.err, 500)
