@@ -26,9 +26,9 @@ vi.mock('@src/services/payment.service', () => {
 })
 
 vi.mock('@src/services/mailer.service', () => {
-    const NodeMailer = vi.fn()
+    const NodemailerMailer = vi.fn()
 
-    return { NodeMailer }
+    return { NodemailerMailer }
 })
 
 beforeEach<TestContext>((context) => {

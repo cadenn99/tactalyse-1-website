@@ -35,13 +35,13 @@ vi.mock('@src/services/payment.service', () => {
 })
 
 vi.mock('@src/services/mailer.service', () => {
-    const NodeMailer = vi.fn()
+    const NodemailerMailer = vi.fn()
 
-    NodeMailer.prototype.send = vi.fn(() => {
+    NodemailerMailer.prototype.send = vi.fn(() => ({
 
-    })
+    }))
 
-    return { NodeMailer }
+    return { NodemailerMailer }
 })
 
 beforeEach<TestContext>((context) => {
@@ -82,8 +82,8 @@ describe("Tests for order creation", () => {
 
         expect(app.get('pc').createPayment).toBeCalledTimes(0)
         expect(app.get('db').createOrder).toBeCalledTimes(0)
-        expect(response.status).toBe(404)
-        expect(response.body).toEqual({ message: 'Missing file' })
+        expect(response.status).toBe(401)
+        expect(response.body).toEqual({ message: 'Unauthorized - Missing or invalid token' })
     })
 
     test<TestContext>("Rejects order creation with existing id", async ({ supertestInstance, app }) => {

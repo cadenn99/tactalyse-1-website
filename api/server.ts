@@ -12,7 +12,7 @@ require('dotenv').config({ path: __dirname + '/.env' });
 
 const app: Application = createExpressApp(
     new MongoDatabase(),
-    new MolliePayment({ apiKey: process.env.MOLLIE_API_KEY as string }),
+    new MolliePayment(process.env.MOLLIE_API_KEY as string),
     new NodemailerMailer({
         host: 'smtp-relay.sendinblue.com',
         port: 587,
