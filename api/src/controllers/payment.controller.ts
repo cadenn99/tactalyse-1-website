@@ -10,12 +10,17 @@ import jwt from 'jsonwebtoken'
 export class PaymentController {
 
     /**
-     * Method for extracting files from a request
+     * Method for extracting app data from the request object
      * 
      * @param req Request object
      * @returns 
      */
-    private async getFiles(req: Request) {
+    private async getAppData(req: Request) {
+        const paymentClient: PaymentProcessorInterface = req.app.get('pc')
+        const databaseClient: DatabaseInterface = req.app.get('db')
+        const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
+        const mailer: MailerInterface = req.app.get('nm')
+
         const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
             formidable({ multiples: true })
                 .parse(req, (err, _, files) => {
@@ -27,22 +32,7 @@ export class PaymentController {
         if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
             throw new CError('Missing file', 404)
 
-        return files
-    }
-
-    /**
-     * Method for extracting app data from the request object
-     * 
-     * @param req Request object
-     * @returns 
-     */
-    private getAppData(req: Request) {
-        const paymentClient: PaymentProcessorInterface = req.app.get('pc')
-        const databaseClient: DatabaseInterface = req.app.get('db')
-        const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
-        const mailer: MailerInterface = req.app.get('nm')
-
-        return { paymentClient, databaseClient, payload, mailer }
+        return { paymentClient, databaseClient, payload, mailer, files }
     }
 
     /**
@@ -53,9 +43,7 @@ export class PaymentController {
      */
     public acceptPayment = async (req: Request, res: Response) => {
         try {
-            const { paymentClient, databaseClient, payload } = this.getAppData(req)
-
-            const files = await this.getFiles(req)
+            const { paymentClient, databaseClient, payload, files } = await this.getAppData(req)
 
             const payment = await paymentClient
                 .createPayment("50.00", "EUR", "xxx")
@@ -91,7 +79,7 @@ export class PaymentController {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
 
-            const { paymentClient, databaseClient, mailer } = this.getAppData(req)
+            const { paymentClient, databaseClient, mailer } = await this.getAppData(req)
 
             const payment = await paymentClient.getPayment(req.body.id)
 
@@ -143,12 +131,10 @@ export class PaymentController {
      */
     public async noPayment(req: Request, res: Response) {
         try {
-            const { payload, databaseClient, mailer } = this.getAppData(req)
+            const { payload, databaseClient, mailer, files } = await this.getAppData(req)
 
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
-
-            const files = await this.getFiles(req)
 
             const orderId = `employee_purchase_${new Date().getTime()}`
 
