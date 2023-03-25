@@ -6,7 +6,6 @@ import fs from 'fs'
 import xlsx from 'xlsx'
 import { paymentCompleteReqSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
-import { model } from "mongoose";
 
 export class PaymentController {
 
@@ -16,7 +15,7 @@ export class PaymentController {
      * @param req Request object
      * @returns 
      */
-    private async fileExtractor(req: Request) {
+    private async getFiles(req: Request) {
         const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
             formidable({ multiples: true })
                 .parse(req, (err, _, files) => {
@@ -32,6 +31,21 @@ export class PaymentController {
     }
 
     /**
+     * Method for extracting app data from the request object
+     * 
+     * @param req Request object
+     * @returns 
+     */
+    private getAppData(req: Request) {
+        const paymentClient: PaymentProcessorInterface = req.app.get('pc')
+        const databaseClient: DatabaseInterface = req.app.get('db')
+        const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
+        const mailer: MailerInterface = req.app.get('nm')
+
+        return { paymentClient, databaseClient, payload, mailer }
+    }
+
+    /**
      * Creating a payment and store files
      * 
      * @param req Request object
@@ -39,12 +53,9 @@ export class PaymentController {
      */
     public acceptPayment = async (req: Request, res: Response) => {
         try {
+            const { paymentClient, databaseClient, payload } = this.getAppData(req)
 
-            const paymentClient: PaymentProcessorInterface = req.app.get('pc')
-            const databaseClient: DatabaseInterface = req.app.get('db')
-            const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
-
-            const files = await this.fileExtractor(req)
+            const files = await this.getFiles(req)
 
             const payment = await paymentClient
                 .createPayment("50.00", "EUR", "xxx")
@@ -80,9 +91,7 @@ export class PaymentController {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
 
-            const paymentClient: PaymentProcessorInterface = req.app.get('pc')
-            const databaseClient: DatabaseInterface = req.app.get('db')
-            const mailer: MailerInterface = req.app.get('nm')
+            const { paymentClient, databaseClient, mailer } = this.getAppData(req)
 
             const payment = await paymentClient.getPayment(req.body.id)
 
@@ -134,14 +143,12 @@ export class PaymentController {
      */
     public async noPayment(req: Request, res: Response) {
         try {
-            const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
-            const databaseClient: DatabaseInterface = req.app.get('db')
-            const mailer: MailerInterface = req.app.get('nm')
+            const { payload, databaseClient, mailer } = this.getAppData(req)
 
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
 
-            const files = await this.fileExtractor(req)
+            const files = await this.getFiles(req)
 
             const orderId = `employee_purchase_${new Date().getTime()}`
 
