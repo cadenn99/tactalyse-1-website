@@ -3,7 +3,7 @@ import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
 import bcrypt from 'bcryptjs';
 
-export class MongoDatabase implements DatabaseInterface {
+export class DatabaseService implements DatabaseInterface {
 
     /**
      * Method for connecting to a Mongodb instance
@@ -26,7 +26,8 @@ export class MongoDatabase implements DatabaseInterface {
             const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS as string));
             const hash = await bcrypt.hash(password, salt);
 
-            return (await model('User').create({ email, hash })).toJSON();
+            return (await mongoose.model('User')
+                .create({ email, hash })).toJSON();
         } catch (err: any) {
             if (err?.code === 11000) {
                 throw new CError('Email is already taken', 409)
@@ -64,7 +65,7 @@ export class MongoDatabase implements DatabaseInterface {
      */
     public async findUserByOrder(orderId: string) {
         try {
-            const user = await model('User')                          // FIXME: Change this to use the databaseClient
+            const user = await model('User')
                 .findOne(
                     { orderHistory: orderId }
                 )

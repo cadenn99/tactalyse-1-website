@@ -18,9 +18,14 @@ export interface MailerInterface {
     sendEmail: (email: string, orderId: string, filePath: string) => Promise<any>
 }
 
+
 export interface TestContext {
     app: Application
     supertestInstance: supertest.Test
+    db?: DatabaseInterface
+    mockReq?: Partial<Request>
+    mockRes?: Partial<Response>
+    mockNext?: Partial<NextFunction>
 }
 
 export interface FormResponseInterface {

@@ -8,7 +8,3 @@ export const authReqSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8)
 })
-
-export const authResSchema = z.object({
-    email: z.string().email()
-})

@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
-import { DatabaseInterface, FormResponseInterface, MailerInterface, PaymentProcessorInterface, TokenInterface } from "@root/typings";
+import {
+    DatabaseInterface,
+    FormResponseInterface,
+    MailerInterface,
+    PaymentProcessorInterface,
+    TokenInterface
+} from "@root/typings";
 import fs from 'fs'
 import xlsx from 'xlsx'
 import { paymentCompleteReqSchema } from "@src/models/api-models";
@@ -16,10 +22,13 @@ export class PaymentController {
      * @returns 
      */
     private async getAppData(req: Request) {
+
+        if (req.headers.authorization === undefined) throw new CError('Unauthorized - Missing or invalid token', 401)
+
         const paymentClient: PaymentProcessorInterface = req.app.get('pc')
         const databaseClient: DatabaseInterface = req.app.get('db')
         const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
-        const mailer: MailerInterface = req.app.get('nm')
+        const mailerClient: MailerInterface = req.app.get('nm')
 
         const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
             formidable({ multiples: true })
@@ -32,7 +41,7 @@ export class PaymentController {
         if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
             throw new CError('Missing file', 404)
 
-        return { paymentClient, databaseClient, payload, mailer, files }
+        return { paymentClient, databaseClient, payload, mailerClient, files }
     }
 
     /**
@@ -59,6 +68,7 @@ export class PaymentController {
             res.status(200)
                 .json({ checkOutUrl: payment.checkOutUrl })
         } catch (err: any) {
+            console.log(err)
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
@@ -79,7 +89,7 @@ export class PaymentController {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
 
-            const { paymentClient, databaseClient, mailer } = await this.getAppData(req)
+            const { paymentClient, databaseClient, mailerClient } = await this.getAppData(req)
 
             const payment = await paymentClient.getPayment(req.body.id)
 
@@ -90,6 +100,7 @@ export class PaymentController {
                 throw new CError("Payment not yet completed", 402)
 
             const order = await databaseClient.findOrder(req.body.id)
+
             const orderOwner = await databaseClient.findUserByOrder(req.body.id)
 
             if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
@@ -99,7 +110,7 @@ export class PaymentController {
 
             // TODO: Call script API
 
-            await mailer.sendEmail(
+            await mailerClient.sendEmail(
                 orderOwner.email,
                 order.orderId,
                 `./src/uploads/league_${req.body.id}.xlsx` // FIXME: Change to file name of report
@@ -112,7 +123,6 @@ export class PaymentController {
                 .json({ message: 'Emailed report!' })
 
         } catch (err: any) {
-            console.log(err)
 
             if (err instanceof CError)
                 return res.status(err.code)
@@ -129,16 +139,16 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public async noPayment(req: Request, res: Response) {
+    public noPayment = async (req: Request, res: Response) => {
         try {
-            const { payload, databaseClient, mailer, files } = await this.getAppData(req)
+            const { payload, databaseClient, mailerClient, files } = await this.getAppData(req)
 
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
 
             const orderId = `employee_purchase_${new Date().getTime()}`
 
-            await databaseClient
+            await databaseClient // FIXME: I Think using Sync blocks double check if yes find async method
                 .createOrder(
                     Buffer.from(fs.readFileSync(files.player.filepath)),
                     Buffer.from(fs.readFileSync(files.league.filepath)),
@@ -148,7 +158,7 @@ export class PaymentController {
 
             // TODO: Call script API
 
-            await mailer.sendEmail(
+            await mailerClient.sendEmail(
                 payload.email,
                 orderId,
                 files.player.filepath // FIXME: Change to file name of report
@@ -157,7 +167,7 @@ export class PaymentController {
             res.status(200)
                 .json({ message: 'Emailed report!' })
         } catch (err: any) {
-
+            console.log(err)
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })

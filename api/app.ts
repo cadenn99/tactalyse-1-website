@@ -1,4 +1,5 @@
 import './src/models/db-models/User'
+import './src/models/db-models/Order'
 import express, { Application } from 'express'
 import { authRoute, paymentRoute } from './src/routes'
 import { DatabaseInterface, MailerInterface, PaymentProcessorInterface } from './typings'

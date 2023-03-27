@@ -1,2 +1,2 @@
-export * from './auth.controller'
-export * from './payment.controller'
+export * from './AuthController'
+export * from './PaymentController'

@@ -20,7 +20,7 @@
             const filesPlayer = document.getElementById("player");
             const filesLeague = document.getElementById("league");
             const formData = new FormData();
-            
+
             formData.append("player", filesPlayer.files[0]);
             formData.append("league", filesLeague.files[0]);
 
@@ -28,7 +28,7 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDFiMjNkOGMyNDU5OTk2ZDZiNjBlNDgiLCJlbWFpbCI6ImNhZGVubjk5QGdtYWlsLmNvbSIsImhhc2giOiIkMmEkMTAkYkdWOHNYVENSRzVONWVObDI3QlNkT1E1a2ZodTkvRGVqNjNGdzIudUZVdFhwRXZoOFVmY3kiLCJpc0VtcGxveWVlIjp0cnVlLCJvcmRlckhpc3RvcnkiOlsiNjQxYjI5ZTFmNzk1NmQ4MWY4Y2YyZDMxIiwiNjQxYjJhYzU4YjM5ODVhYjE0NDgyZTliIiwiNjQxY2IzZDhmY2E0N2U4ZmViZTY0ZWQxIiwiNjQxY2I2Mjg2NGYwZDU2NmJhOGE3MmQxIl0sIl9fdiI6MCwiaWF0IjoxNjc5NjkxNjIwfQ.UJ1VVz27qqCKw9adK0mxW2-EE2WSTBq2t8VAtu4dbjw`
+                    authorization: `Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDFiMjNkOGMyNDU5OTk2ZDZiNjBlNDgiLCJlbWFpbCI6ImNhZGVubjk5QGdtYWlsLmNvbSIsImhhc2giOiIkMmEkMTAkYkdWOHNYVENSRzVONWVObDI3QlNkT1E1a2ZodTkvRGVqNjNGdzIudUZVdFhwRXZoOFVmY3kiLCJpc0VtcGxveWVlIjp0cnVlLCJvcmRlckhpc3RvcnkiOlsiNjQxYjI5ZTFmNzk1NmQ4MWY4Y2YyZDMxIiwiNjQxYjJhYzU4YjM5ODVhYjE0NDgyZTliIiwiNjQxY2IzZDhmY2E0N2U4ZmViZTY0ZWQxIiwiNjQxY2I2Mjg2NGYwZDU2NmJhOGE3MmQxIl0sIl9fdiI6MCwiaWF0IjoxNjc5NjkxNjIwfQ.UJ1VVz27qqCKw9adK0mxW2-EE2WSTBq2t8VAtu4dbjw`
                 }
             })
             .then(res => res.json())

@@ -1,12 +1,12 @@
 import { PaymentProcessorInterface } from "@root/typings";
 const { createMollieClient } = require('@mollie/api-client');
 
-export class MolliePayment implements PaymentProcessorInterface {
+export class PaymentService implements PaymentProcessorInterface {
 
     private client
 
     constructor(apiKey: string) {
-        this.client = createMollieClient(apiKey)
+        this.client = createMollieClient({ apiKey: apiKey })
     }
 
     /**
@@ -43,8 +43,4 @@ export class MolliePayment implements PaymentProcessorInterface {
     public async getPayment(id: string) {
         return await this.client.payments.get(id)
     }
-}
-
-function Injectable() {
-    throw new Error("Function not implemented.");
 }

@@ -3,17 +3,14 @@ import { Application } from 'express'
 import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
-import {
-    MongoDatabase,
-    MolliePayment,
-    NodemailerMailer
-} from '@src/services'
+import { DatabaseService, PaymentService, MailerService } from '@src/services';
+
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const app: Application = createExpressApp(
-    new MongoDatabase(),
-    new MolliePayment(process.env.MOLLIE_API_KEY as string),
-    new NodemailerMailer({
+    new DatabaseService(),
+    new PaymentService(process.env.MOLLIE_API_KEY as string),
+    new MailerService({
         host: 'smtp-relay.sendinblue.com',
         port: 587,
         user: 'snowboard8442@gmail.com',
