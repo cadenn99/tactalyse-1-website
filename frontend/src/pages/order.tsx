@@ -12,7 +12,6 @@ interface Props {
 
 export default function order({ sampleReports }: Props) {
   const [report, setReport] = useState<Report | null>(null)
-  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     setReport(

@@ -42,15 +42,12 @@ function Header() {
 
       <div className="flex items-center space-x-4 text-sm font-light">
         <ul className="hidden space-x-4 md:flex">
-          <li className="headerLink"><Link href="/login">Login</Link></li>
+          <li className="headerLink"><Link href="/login">Login</Link></li> {/* TODO: change to Logout if already logged in */}
           <li className="headerLink"><Link href="/register">Register</Link></li>
         </ul>
       </div>
     </header>
   )
 }
-
-
-// FIXME: Order endpoint to be determined
 
 export default Header
