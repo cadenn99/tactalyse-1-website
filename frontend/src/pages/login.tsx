@@ -17,7 +17,7 @@ export default function login() {
   } = useForm<Inputs>()
   
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    
+    await login()
   }
 
   return (
