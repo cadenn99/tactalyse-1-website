@@ -1,9 +1,9 @@
 import { vi, describe, beforeEach, afterEach, test, expect } from 'vitest'
 import { Request, Response, NextFunction } from 'express'
 import { TestContext } from '@root/typings'
-import { authMiddleware } from '@src/middleware'
+import { authMiddleware } from '@src/middleware/index'
 import jwt from 'jsonwebtoken'
-import { CError } from '@src/utils'
+import { CError } from '@src/utils/index'
 
 vi.mock('jsonwebtoken')
 

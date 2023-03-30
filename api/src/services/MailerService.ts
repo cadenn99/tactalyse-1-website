@@ -1,5 +1,5 @@
 import { MailerInterface } from "@root/typings";
-import { CError } from "@src/utils";
+import { CError } from "@src/utils/index";
 import nodemailer from "nodemailer";
 
 interface ConstructorInterface {

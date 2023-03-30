@@ -1,6 +1,6 @@
 import mongoose, { model } from "mongoose";
 import { DatabaseInterface } from "@root/typings";
-import { CError } from "@src/utils";
+import { CError } from "@src/utils/index";
 import bcrypt from 'bcryptjs';
 
 export class DatabaseService implements DatabaseInterface {

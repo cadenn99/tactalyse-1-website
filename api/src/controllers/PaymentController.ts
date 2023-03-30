@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CError } from "@src/utils";
+import { CError } from "@src/utils/index";
 import formidable from 'formidable';
 import {
     DatabaseInterface,
@@ -92,7 +92,7 @@ export class PaymentController {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
 
-            const { paymentClient, databaseClient, mailerClient } = await this.getAppData(req)
+            const { paymentClient, databaseClient } = await this.getAppData(req)
 
             const payment = await paymentClient.getPayment(req.body.id)
 

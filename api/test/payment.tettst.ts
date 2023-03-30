@@ -1,7 +1,7 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { DatabaseService, PaymentService, MailerService } from '@src/services';
+import { DatabaseService, PaymentService, MailerService } from '@src/services/index';
 import { CError } from '@src/utils';
 import { TestContext } from '@root/typings';
 import path from 'path';
