@@ -110,5 +110,6 @@
           "transform": "typescript-transform-paths",
       }
     ]
-  }
+  },
+  "include": ["**/**/*.ts"]
 }
