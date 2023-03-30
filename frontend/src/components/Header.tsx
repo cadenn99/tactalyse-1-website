@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { useEffect, useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react"
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { data: session } = useSession()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,8 +44,9 @@ function Header() {
 
       <div className="flex items-center space-x-4 text-sm font-light">
         <ul className="hidden space-x-4 md:flex">
-          <li className="headerLink"><Link href="/login">Login</Link></li> {/* TODO: change to Logout if already logged in */}
-          <li className="headerLink"><Link href="/register">Register</Link></li>
+          {!session && <li className="headerLink"><button onClick={() => signIn()}>Sign in</button></li>}
+          { session && <li className="headerLink"><button onClick={() => signOut()}>Sign out</button></li>}
+          { !session && <li className="headerLink"><Link href="/auth/register">Register</Link></li>}
         </ul>
       </div>
     </header>

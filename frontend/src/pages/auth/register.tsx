@@ -1,3 +1,4 @@
+import Background from '@/components/Background';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.css'
 import Head from 'next/head'
@@ -12,6 +13,7 @@ export default function register() {
           <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header/>
+      <Background/>
       <main className={styles.main}>
         <div className={styles.description}>
           <p>

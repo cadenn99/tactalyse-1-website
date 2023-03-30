@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
-import Header from '../components/Header';
+import Header from '../components/Header'
+import Background from '@/components/Background'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header/>
+      <Background/>
 
       <main className={styles.main}>
           Text goes here describing the product (and workflow?)

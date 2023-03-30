@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { Report } from "../../typings";
 import { useEffect, useState } from "react"
 import Image from 'next/image'
+import Background from "@/components/Background";
 
 
 
@@ -29,6 +30,8 @@ export default function order({ sampleReports }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header/>
+      <Background/>
+      
       <div className="flex items-center "> {/* FIXME: Not happy with the positioning of this one */}
         <Image
           width={500}
@@ -43,6 +46,7 @@ export default function order({ sampleReports }: Props) {
     </div>
   )
 }
+//TODO: add logic to only show form for a pdf request when logged in
 
 export const getServerSideProps = async () => {
   return {
