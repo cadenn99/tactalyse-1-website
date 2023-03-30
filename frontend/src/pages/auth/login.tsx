@@ -80,6 +80,7 @@ function NotLoggedIn() {
 
 export default function componentSwitcher() {
   const { data: session} = useSession()
+  
 
   return (
     <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">

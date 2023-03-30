@@ -24,7 +24,7 @@ function Header() {
 
   
   return (
-    <header className={`${isScrolled && 'bg-white/90' || 'bg-white'}`}>
+    <header className={`${isScrolled && 'bg-white/90 ' || 'bg-white'} shadow-md`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <Link href="/">
           <img 
@@ -39,6 +39,7 @@ function Header() {
         <ul className="hidden space-x-4 md:flex">
           <li className="headerLink"><Link href="/">Home</Link></li>
           <li className="headerLink"><Link href="/order">Order</Link></li>
+          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/generate">Generate</Link></li> } {/* TODO: Test this when the backend works */}
         </ul>
       </div>
 
