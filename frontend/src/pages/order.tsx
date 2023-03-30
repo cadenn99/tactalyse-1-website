@@ -37,6 +37,8 @@ export default function order({ sampleReports }: Props) {
           width={500}
           height={200}
           src={`${report?.graph_path || "/failed_report_loading.png"}`}
+          blurDataURL="/failed_report_loading.png"
+          placeholder="blur"
           alt="example report"  //FIXME: incorporate this into Report datatype? 
         />
       </div>

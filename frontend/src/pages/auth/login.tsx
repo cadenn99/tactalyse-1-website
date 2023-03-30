@@ -58,22 +58,22 @@ function NotLoggedIn() {
         <div className="space-y-2">
           <label className="inline-block w-full">
             <input type="email" placeholder="Email" className="input" {...register('email', {required: true})} />
-            { errors.email && <p className="p-1 text-[13px] font-light  text-orange-500">Please enter a valid email.</p>}
+            { errors.email && <p className="error">Please enter a valid email.</p>}
           </label>
           <label className="inline-block w-full">
             <input type="password" placeholder="Password" className="input" {...register('password', {required: true, minLength: 8})} />
-            { errors.password && <p className="p-1 text-[13px] font-light  text-orange-500">Please enter a password of at least 8 characters.</p>}
+            { errors.password && <p className="error">Please enter a password of at least 8 characters.</p>}
           </label>
         </div>
         { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-        { error != null && <p className="p-1 text-[15px] font-semibold text-orange-600">{error}</p>}
+        { error != null && <p className="error">{error}</p>}
 
         <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Sign In</button>
 
         <div className="text-[gray]">
           Don't have an account yet?{' '}
-        <button className="text-[#303030] hover:underline" onClick={() => router.push('/auth/register')}> Sign up here</button>
-    </div>
+          <button className="text-[#303030] hover:underline" onClick={() => router.push('/auth/register')}> Sign up here</button>
+        </div>
     </form>
   )
 }
@@ -83,7 +83,7 @@ export default function componentSwitcher() {
   
 
   return (
-    <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">
+    <div className="toplevel">
       <Head>
         <title>Tactalyse</title>
         <meta name="description" content="Login page for the Tactalyse PDF generation service" />

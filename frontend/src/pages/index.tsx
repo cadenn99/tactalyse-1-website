@@ -6,7 +6,7 @@ import Background from '@/components/Background'
 
 export default function Home() {
   return (
-    <div className="relative h-screen lg:h-[140vh]">
+    <div className="relative h-screen lg:h-[100vh]">
       <Head>
         <title>Tactalyse PDFs</title>
         <meta name="description" content="Homepage for football report generation by Tactalyse" />

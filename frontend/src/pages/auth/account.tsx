@@ -27,7 +27,7 @@ export default function componentSwitcher() {
   const { data: session} = useSession()
 
   return (
-    <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">
+    <div className="toplevel">
       <Head>
         <title>Tactalyse</title>
         <meta name="description" content="Login page for the Tactalyse PDF generation service" />

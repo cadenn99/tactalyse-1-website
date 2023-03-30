@@ -6,7 +6,7 @@ import Background from "@/components/Background";
 
 export default function error() {
   return (
-    <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">
+    <div className="toplevel">
       <Head>
        <title>Tactalyse PDFs</title>
         <meta name="description" content="Errorpage" />
@@ -23,5 +23,5 @@ export default function error() {
       </div>
     </div>
   )
-  // FIXME: spend some more time on this page
+  // TODO: spend some more time on styling this page
 }

@@ -12,6 +12,10 @@
   header {
     @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-5;
   }
+
+  .toplevel {
+    @apply relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh];
+  }
 }
 
 /* custom classNames */
@@ -23,6 +27,10 @@
 
   .input {
     @apply w-full rounded bg-[#b6b6b6] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#e9e9e9];
+  }
+
+  .error {
+    @apply p-1 text-[13px] font-light  text-orange-500;
   }
 }
 

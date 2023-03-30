@@ -5,6 +5,8 @@ import Head from 'next/head'
 import router from "next/router"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { Alert } from "@material-tailwind/react";
+import { CheckCircleIcon } from "@heroicons/react/24/solid"
 
 interface Inputs {
   email: string
@@ -23,34 +25,53 @@ function NotLoggedIn() {
   const {
     register,
     handleSubmit,
+    watch,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
-    const res = await signIn('credentials', {
-      redirect: false,
-      email: values.email,
-      password: values.password,
-      callbackUrl: `${window.location.origin}`,
+    await fetch("/backend/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: values.email, 
+        password: values.password
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
     })
-    console.log(res?.status)
-    if (res?.error) {
-      switch (res?.error) {
-        case "fetch failed":
-          router.replace('/serverError')
-          break
+    .then(((res) => {
+      console.log(res.status)
+      console.log(res)
+      setLoading(false)
+      switch (res.status) {
+        case 500:
+          router.push("/serverError")
+          break;
+        case 200:
+          setSuccess(true)
+          break;
         default:
-          setError(res.error)
+          res.json()
+          .then((data) => {
+            setError(data.message)
+            setLoading(false)
+          })
       }
-    } else {
-      setError(null)
-    }
-    if (res?.url) router.push(res.url)
-    setLoading(false)
+    }))
+    .catch((e) => {
+      console.log(e)
+      router.push("/serverError")
+    })
+    .finally(() => {
+      setLoading(false)
+    });
   }
 
   return (
@@ -59,21 +80,23 @@ function NotLoggedIn() {
         <div className="space-y-2">
           <label className="inline-block w-full">
             <input type="email" placeholder="Email" className="input" {...register('email', {required: true})} />
-            { errors.email && <p className="p-1 text-[13px] font-light  text-orange-500">Please enter a valid email.</p>}
+            { errors.email && <p className="error">Please enter a valid email.</p>}
           </label>
           <label className="inline-block w-full">
             <input type="password" placeholder="Password" className="input" {...register('password', {required: true, minLength: 8})} />
-            { errors.password && <p className="p-1 text-[13px] font-light  text-orange-500">Please enter a password of at least 8 characters.</p>}
+            { errors.password && <p className="error">Please enter a password of at least 8 characters.</p>}
           </label>
           <label className="inline-block w-full">
-            <input type="password" placeholder="Confirmation Password" className="input" {...register('password', {required: true, minLength: 8})} />
+            <input type="password" placeholder="Confirmation Password" className="input" {...register('confirmPassword', {required: true, minLength: 8})} />
           </label>
-           {/* TOOD: add password matching  */}
+           { watch("password") !== watch("confirmPassword") && getValues("confirmPassword") && <p className="error">Passwords don't match!</p>}
         </div>
         { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-        { error != null && <p className="p-1 text-[15px] font-semibold text-orange-600">{error}</p>}
+        { error != null && <p className="error">{error}</p>}
 
         <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Sign Up</button>
+
+        {success && <Alert className="max-w-screen-md" icon={<CheckCircleIcon className="mt-px h-6 w-6" />}>Signup successful! You can now login on the Sign in page</Alert>}
     </form>
   )
 }
@@ -82,7 +105,7 @@ export default function componentSwitcher() {
   const { data: session} = useSession()
 
   return (
-    <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">
+    <div className="toplevel">
       <Head>
         <title>Tactalyse</title>
         <meta name="description" content="Register page for the Tactalyse PDF generation service" />

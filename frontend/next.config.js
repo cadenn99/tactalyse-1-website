@@ -4,7 +4,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/auth/login",
+        source: "/backend/auth/login",
         destination: "http://localhost:5000/auth/login",
       },
     ];
