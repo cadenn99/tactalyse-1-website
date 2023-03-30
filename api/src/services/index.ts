@@ -1,3 +1,3 @@
-export * from './PaymentService'
-export * from './DatabaseService'
-export * from './MailerService'
+export { PaymentService } from './PaymentService'
+export { DatabaseService } from './DatabaseService'
+export { MailerService } from './MailerService'

@@ -1,1 +1,1 @@
-export * from './CError'
+export { CError } from './CError'

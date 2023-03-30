@@ -1,1 +1,1 @@
-export * from './AuthMiddleware'
+export { authMiddleware } from './AuthMiddleware'
