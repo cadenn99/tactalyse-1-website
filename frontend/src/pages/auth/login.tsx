@@ -38,8 +38,8 @@ function NotLoggedIn() {
     })
     console.log(res?.status)
     if (res?.error) {
-      switch (res?.status) {
-        case 500:
+      switch (res?.error) {
+        case "fetch failed":
           router.replace('/serverError')
           break
         default:

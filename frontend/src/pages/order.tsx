@@ -22,7 +22,7 @@ export default function order({ sampleReports }: Props) {
 
 
   return (
-    <div className="relative h-screen lg:h-[140vh]">
+    <div className="relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh]">
       <Head>
         <title>Order</title>
         <meta name="description" content="Orderpage for football report generation by Tactalyse" />
@@ -32,7 +32,7 @@ export default function order({ sampleReports }: Props) {
       <Header/>
       <Background/>
       
-      <div className="flex items-center "> {/* FIXME: Not happy with the positioning of this one */}
+      <div className="relative items-start py-10"> {/* FIXME: Not happy with the positioning of this one */}
         <Image
           width={500}
           height={200}
