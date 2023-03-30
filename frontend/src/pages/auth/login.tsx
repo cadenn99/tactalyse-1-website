@@ -25,7 +25,7 @@ function NotLoggedIn() {
     formState: { errors },
   } = useForm<Inputs>()
 
-    const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
@@ -37,11 +37,14 @@ function NotLoggedIn() {
       callbackUrl: `${window.location.origin}`,
     })
     console.log(res?.status)
-    if (res?.status === 401) { //TODO: proper error handling here
-      router.push('/serverError')
-    }
     if (res?.error) {
-      setError(res.error)
+      switch (res?.status) {
+        case 500:
+          router.replace('/serverError')
+          break
+        default:
+          setError(res.error)
+      }
     } else {
       setError(null)
     }
@@ -69,7 +72,7 @@ function NotLoggedIn() {
 
         <div className="text-[gray]">
           Don't have an account yet?{' '}
-        <button className="text-[#303030] hover:underline" onClick={() => router.push('/register')}> Sign up here</button>
+        <button className="text-[#303030] hover:underline" onClick={() => router.push('/auth/register')}> Sign up here</button>
     </div>
     </form>
   )

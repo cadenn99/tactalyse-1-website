@@ -45,8 +45,9 @@ function Header() {
       <div className="flex items-center space-x-4 text-sm font-light">
         <ul className="hidden space-x-4 md:flex">
           {!session && <li className="headerLink"><button onClick={() => signIn()}>Sign in</button></li>}
-          { session && <li className="headerLink"><button onClick={() => signOut()}>Sign out</button></li>}
           { !session && <li className="headerLink"><Link href="/auth/register">Register</Link></li>}
+          { session && <li className="headerLink"><button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button></li>}
+          { session && <li className="headerLink"><Link href="/auth/account">Account</Link></li>}
         </ul>
       </div>
     </header>
