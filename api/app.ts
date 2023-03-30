@@ -12,6 +12,7 @@ export function createExpressApp(
     const app: Application = express()
 
     app.use(express.json())
+    app.use(express.urlencoded())
     app.use('/auth', authRoute)
     app.use('/checkout', paymentRoute)
 

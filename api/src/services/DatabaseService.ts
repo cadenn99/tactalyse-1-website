@@ -88,12 +88,11 @@ export class DatabaseService implements DatabaseInterface {
      * @param userId User id
      * @returns 
      */
-    public async createOrder(playerFile: Buffer, leagueFile: Buffer, orderId: string, userId: string) {
+    public async createOrder(playerName: string, orderId: string, userId: string) {
         try {
             const order = await model('Order')
                 .create({
-                    playerFile,
-                    leagueFile,
+                    playerName,
                     orderId,
                     creationTimestamp: new Date().getTime()
                 })
@@ -129,6 +128,25 @@ export class DatabaseService implements DatabaseInterface {
             if (err?.code === 11000) {
                 throw new CError('An order with this ID doesn\'t exists', 409)
             }
+            throw err
+        }
+    }
+
+    /**
+     * Method for completing an order
+     * 
+     * @param orderId Order id
+     */
+    public async completePayment(orderId: string) {
+        try {
+            const res = await model('Order')
+                .updateOne(
+                    { orderId },
+                    { $set: { completedPayment: true } }
+                )
+
+            console.log(res)
+        } catch (err: any) {
             throw err
         }
     }

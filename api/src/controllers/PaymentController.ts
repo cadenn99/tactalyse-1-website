@@ -3,14 +3,12 @@ import { CError } from "@src/utils";
 import formidable from 'formidable';
 import {
     DatabaseInterface,
-    FormResponseInterface,
     MailerInterface,
     PaymentProcessorInterface,
-    TokenInterface
+    TokenInterface,
+    FormResponseInterface
 } from "@root/typings";
-import fs from 'fs'
-import xlsx from 'xlsx'
-import { paymentCompleteReqSchema } from "@src/models/api-models";
+import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
 
 export class PaymentController {
@@ -30,18 +28,21 @@ export class PaymentController {
         const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
         const mailerClient: MailerInterface = req.app.get('nm')
 
-        const { files }: FormResponseInterface = await new Promise((resolve, reject) => {
+        const form: FormResponseInterface = await new Promise((resolve, reject) => {
+            if (!req.headers["content-type"]!.match(/multipart\/form-data/))
+                resolve({})
+
             formidable({ multiples: true })
-                .parse(req, (err, _, files) => {
+                .parse(req, (err, fields, files) => {
                     if (err) reject(err)
-                    resolve({ files })
+                    resolve({ files, fields })
                 })
         })
 
-        if (!files.hasOwnProperty('player') || !files.hasOwnProperty('league'))
+        if (req.path === '/noPayment' && (!form.files.hasOwnProperty('player') || !form.files.hasOwnProperty('league')))
             throw new CError('Missing file', 404)
 
-        return { paymentClient, databaseClient, payload, mailerClient, files }
+        return { paymentClient, databaseClient, payload, mailerClient, form }
     }
 
     /**
@@ -52,15 +53,17 @@ export class PaymentController {
      */
     public acceptPayment = async (req: Request, res: Response) => {
         try {
-            const { paymentClient, databaseClient, payload, files } = await this.getAppData(req)
+            if (!createPaymentSchema.safeParse(req.body).success)
+                throw new CError("Missing required fields", 404)
+
+            const { paymentClient, databaseClient, payload } = await this.getAppData(req)
 
             const payment = await paymentClient
                 .createPayment("50.00", "EUR", "xxx")
 
             await databaseClient
                 .createOrder(
-                    Buffer.from(fs.readFileSync(files.player.filepath)),
-                    Buffer.from(fs.readFileSync(files.league.filepath)),
+                    req.body.playerName,
                     payment.id,
                     payload._id
                 )
@@ -84,7 +87,7 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public async completePayment(req: Request, res: Response) {
+    public completePayment = async (req: Request, res: Response) => {
         try {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
@@ -99,31 +102,19 @@ export class PaymentController {
             if (payment.status !== 'paid')
                 throw new CError("Payment not yet completed", 402)
 
-            const order = await databaseClient.findOrder(req.body.id)
+            databaseClient.completePayment(req.body.id)
 
-            const orderOwner = await databaseClient.findUserByOrder(req.body.id)
-
-            if (!fs.existsSync('./src/uploads')) fs.mkdirSync('./src/uploads');
-
-            xlsx.writeFile(xlsx.read(order.leagueFile), `./src/uploads/league_${req.body.id}.xlsx`);
-            xlsx.writeFile(xlsx.read(order.playerFile), `./src/uploads/player_${req.body.id}.xlsx`);
-
-            // TODO: Call script API
-
-            await mailerClient.sendEmail(
-                orderOwner.email,
-                order.orderId,
-                `./src/uploads/league_${req.body.id}.xlsx` // FIXME: Change to file name of report
-            )
-
-            fs.unlinkSync(`./src/uploads/league_${req.body.id}.xlsx`)
-            fs.unlinkSync(`./src/uploads/player_${req.body.id}.xlsx`)
+            // await mailerClient.sendEmail(
+            //     orderOwner.email,
+            //     form.fields.id,
+            //     form.files.player.filepath // FIXME: Change to file name of report
+            // )
 
             res.status(200)
-                .json({ message: 'Emailed report!' })
+                .json({ message: 'Payment completed, your report will be sent within 24 hours' })
 
         } catch (err: any) {
-
+            console.log(err)
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
@@ -141,27 +132,20 @@ export class PaymentController {
      */
     public noPayment = async (req: Request, res: Response) => {
         try {
-            const { payload, databaseClient, mailerClient, files } = await this.getAppData(req)
+            const { payload, databaseClient, mailerClient, form } = await this.getAppData(req)
 
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
 
-            const orderId = `employee_purchase_${new Date().getTime()}`
-
-            await databaseClient // FIXME: I Think using Sync blocks double check if yes find async method
-                .createOrder(
-                    Buffer.from(fs.readFileSync(files.player.filepath)),
-                    Buffer.from(fs.readFileSync(files.league.filepath)),
-                    orderId,
-                    payload._id
-                )
+            const order = await databaseClient.findOrder(form.fields.id)
+            const orderOwner = await databaseClient.findUserByOrder(order._id)
 
             // TODO: Call script API
 
             await mailerClient.sendEmail(
-                payload.email,
-                orderId,
-                files.player.filepath // FIXME: Change to file name of report
+                orderOwner.email,
+                form.fields.id,
+                form.files.player.filepath // FIXME: Change to file name of report
             )
 
             res.status(200)

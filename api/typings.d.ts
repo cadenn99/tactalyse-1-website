@@ -7,6 +7,7 @@ export interface DatabaseInterface {
     createOrder: Function
     findOrder: Function
     findUserByOrder: Function
+    completePayment: Function
 }
 
 export interface PaymentProcessorInterface {
@@ -29,8 +30,8 @@ export interface TestContext {
 }
 
 export interface FormResponseInterface {
-    fields?: formidable.Fields
-    files: formidable.Files
+    files?: formidable.Files
+    fields?: formidable.fields
 }
 
 export interface TokenInterface {

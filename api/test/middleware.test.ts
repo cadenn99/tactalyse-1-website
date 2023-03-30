@@ -12,7 +12,7 @@ beforeEach<TestContext>((context) => {
     context.mockRes = {
         status: vi.fn(() => context.mockRes),
         json: vi.fn()
-    }
+    } as any
     context.mockNext = vi.fn()
 })
 

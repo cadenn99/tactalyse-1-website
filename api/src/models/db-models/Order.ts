@@ -1,12 +1,8 @@
 import { Schema, model } from 'mongoose';
 
 const orderSchema = new Schema({
-    leagueFile: {
-        type: Buffer,
-        required: true,
-    },
-    playerFile: {
-        type: Buffer,
+    playerName: {
+        type: String,
         required: true
     },
     orderId: {
@@ -14,7 +10,7 @@ const orderSchema = new Schema({
         required: true,
         unique: true
     },
-    completed: {
+    completedPayment: {
         type: Boolean,
         required: true,
         default: false

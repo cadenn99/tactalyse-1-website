@@ -5,11 +5,11 @@ services:
     image: mongo
     container_name: tactalyse-db
     restart: always
-    ports: 
-    - 27017:27017
-    
+    ports:
+    - 27018:27017
+
   api:
-    depends_on: 
+    depends_on:
       - mongodb
     build: ./api
     container_name: tactalyse-api
