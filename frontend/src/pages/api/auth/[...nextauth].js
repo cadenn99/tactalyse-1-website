@@ -17,7 +17,7 @@ export default NextAuth({
           password: credentials.password,
         }
 
-        const res = await fetch(process.env.BACKEND_URL, { //TODO: move to env variable
+        const res = await fetch('localhost:5000/auth/login', { //TODO: Switch to ENV variable
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
@@ -61,9 +61,9 @@ export default NextAuth({
     },
 
     async session({ session, token }) {
-      session.user.accessToken = token.accessToken
-      session.user.refreshToken = token.refreshToken
-      session.user.accessTokenExpires = token.accessTokenExpires
+      session.accessToken = token.accessToken
+      session.refreshToken = token.refreshToken
+      session.accessTokenExpires = token.accessTokenExpires
       return session
     },
   },

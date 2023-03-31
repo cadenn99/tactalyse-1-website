@@ -1,5 +1,6 @@
 import Background from "@/components/Background";
 import Header from "@/components/Header";
+import { getToken } from "next-auth/jwt";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -25,6 +26,7 @@ function Access() {
 
 export default function componentSwitcher() {
   const { data: session} = useSession()
+  console.log(session?.accessToken) //FIXME: test this works, then remove
 
   return (
     <div className="toplevel">

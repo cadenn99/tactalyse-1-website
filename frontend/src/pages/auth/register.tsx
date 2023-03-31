@@ -36,7 +36,7 @@ function NotLoggedIn() {
   
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
-    await fetch("/backend/auth/login", {
+    await fetch("/backend/auth/register", {
       method: "POST",
       body: JSON.stringify({
         email: values.email, 
@@ -47,8 +47,6 @@ function NotLoggedIn() {
       },
     })
     .then(((res) => {
-      console.log(res.status)
-      console.log(res)
       setLoading(false)
       switch (res.status) {
         case 500:
@@ -75,7 +73,7 @@ function NotLoggedIn() {
   }
 
   return (
-    <form className="relative mt-24 space-y-8 rounded bg-red-100/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14">
+    <form className="form">
         <h1 className="text-4xl font-semibold">Sign Up</h1>
         <div className="space-y-2">
           <label className="inline-block w-full">

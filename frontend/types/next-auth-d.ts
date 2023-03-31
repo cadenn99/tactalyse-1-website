@@ -8,6 +8,9 @@ declare module "next-auth" {
     user: {
       email: string,
       isEmployee: boolean
-    }
+    },
+    accessToken: string,
+    refreshToken: string,
+    accessTokenExpires: string
   }
 }

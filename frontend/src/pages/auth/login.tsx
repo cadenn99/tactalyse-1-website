@@ -81,7 +81,6 @@ function NotLoggedIn() {
 export default function componentSwitcher() {
   const { data: session} = useSession()
   
-
   return (
     <div className="toplevel">
       <Head>

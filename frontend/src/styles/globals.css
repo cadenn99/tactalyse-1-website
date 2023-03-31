@@ -25,6 +25,10 @@
     hover:text-red-600;
   }
 
+  .form {
+    @apply relative mt-24 space-y-8 rounded bg-red-100/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14;
+  }
+
   .input {
     @apply w-full rounded bg-[#b6b6b6] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#e9e9e9];
   }
