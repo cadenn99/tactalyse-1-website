@@ -88,10 +88,12 @@ function LoggedIn() {
       <Header/>
       <Background/>
 
-      <main className="w-fill min-w-[50vw]">
-        <Carousel images={generateImages()}/>
+      <main className="flex flex-row gap-10 align-middle">
+        <div className="w-fill min-w-[30vw] min-h-[40vh]">
+          <Carousel images={generateImages()}/>
+        </div>
 
-        <form className="form">
+        <form className="form text-center">
           <input type="text" placeholder="Name" className="input" {...register('name', {required: true})}/> 
           { errors.name && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
@@ -112,8 +114,10 @@ function NotLoggedIn() {
       </Head>
       <Header/>
       <Background/>
-      <main className="w-fill min-w-[50vw]">
-        <Carousel images={generateImages()}/>
+      <main className="flex flex-row gap-10 align-middle">
+        <div className="w-fill min-w-[30vw] min-h-[40vh]">
+          <Carousel images={generateImages()}/>
+        </div>
 
         <div className="form text-[gray] text-center">
           <p>Looks like you're not logged in!
