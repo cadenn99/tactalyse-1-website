@@ -1,7 +1,7 @@
 import { vi, describe, beforeEach, afterEach, test, expect } from 'vitest'
 import { Request, Response, NextFunction } from 'express'
 import { TestContext } from '@root/typings'
-import { authMiddleware } from '@src/middleware'
+import { AuthMiddleware as authMiddleware } from '@src/middleware'
 import jwt from 'jsonwebtoken'
 import { CError } from '@src/utils'
 
