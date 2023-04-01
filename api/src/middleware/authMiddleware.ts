@@ -23,4 +23,4 @@ const AuthMiddleware: any = async (req: Request, res: Response, next: NextFuncti
     }
 }
 
-export { AuthMiddleware }
+export default AuthMiddleware
