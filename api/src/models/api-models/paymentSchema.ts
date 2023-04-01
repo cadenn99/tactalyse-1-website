@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-export const createPaymentSchema = z.object({
+export const createPaymentSchema: any = z.object({
     playerName: z.string(),
 })
 
-export const paymentCompleteReqSchema = z.object({
+export const paymentCompleteReqSchema: any = z.object({
     id: z.string()
 })

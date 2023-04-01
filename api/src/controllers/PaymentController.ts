@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CError } from "@src/utils/CError";
+import { CError } from "@src/utils";
 import formidable from 'formidable';
 import {
     DatabaseInterface,
