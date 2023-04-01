@@ -1,2 +1,4 @@
-export { authRoute } from './AuthRoute'
-export { paymentRoute } from './PaymentRoute'
+import { authRoute } from './AuthRoute'
+export { authRoute }
+import { paymentRoute } from './PaymentRoute'
+export { paymentRoute } 

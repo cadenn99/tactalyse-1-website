@@ -1,1 +1,2 @@
-export { CError } from './CError'
+import { CError } from './CError'
+export { CError }
