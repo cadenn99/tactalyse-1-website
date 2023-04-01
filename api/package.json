@@ -7,7 +7,6 @@
     "test": "vitest run",
     "test-watch": "vitest",
     "build": "ttsc -P ./tsconfig.json",
-    "build2": "etsc",
     "dev": "nodemon server.ts"
   },
   "repository": {
