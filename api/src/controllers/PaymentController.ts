@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CError } from "@src/utils/index";
+import { CError } from "@src/utils/CError";
 import formidable from 'formidable';
 import {
     DatabaseInterface,
@@ -8,7 +8,7 @@ import {
     TokenInterface,
     FormResponseInterface
 } from "@root/typings";
-import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models";
+import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models/PaymentSchema";
 import jwt from 'jsonwebtoken'
 
 export class PaymentController {

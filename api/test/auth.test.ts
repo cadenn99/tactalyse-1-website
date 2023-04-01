@@ -1,9 +1,11 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { DatabaseService, PaymentService, MailerService } from '@src/services/index';
+import { DatabaseService } from '@src/services/DatabaseService';
+import { PaymentService } from '@src/services/PaymentService';
+import { MailerService } from '@src/services/MailerService';
 import { TestContext } from '@root/typings';
-import { CError } from '@src/utils/index';
+import { CError } from '@src/utils/CError';
 import config from '@root/config';
 
 vi.mock('@src/services/DatabaseService')
