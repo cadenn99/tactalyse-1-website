@@ -1,2 +1,1 @@
-import { CError } from './CError'
-export { CError }
+export { CError } from './CError'

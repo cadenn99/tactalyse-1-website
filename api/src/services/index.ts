@@ -1,6 +1,3 @@
-import { PaymentService } from './PaymentService'
-export { PaymentService } 
-import { DatabaseService } from './DatabaseService'
-export { DatabaseService } 
-import { MailerService } from './MailerService'
-export { MailerService } 
+export { PaymentService } from './PaymentService'
+export { DatabaseService } from './DatabaseService'
+export { MailerService } from './MailerService'

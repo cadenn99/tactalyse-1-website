@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { authReqSchema } from "@src/models/api-models";
+import { authReqSchema } from "@src/models/api-models/AuthSchema";
 import { CError } from "@src/utils/CError";
 import jwt from 'jsonwebtoken'
 import { DatabaseInterface } from "@root/typings";
