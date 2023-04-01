@@ -1,1 +1,1 @@
-export { AuthMiddleware } from './AuthMiddleware'
+export { AuthMiddleware } from './AuthMiddleware.js'
