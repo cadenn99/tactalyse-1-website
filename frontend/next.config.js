@@ -8,12 +8,16 @@ const nextConfig = {
         destination: "http://localhost:5000/auth/login",
       },
       {
+        source: "/backend/auth/register",
+        destination: "http://localhost:5000/auth/register",
+      },
+      {
         source: "/backend/checkout/noPayment",
         destination: "http://localhost:5000/checkout/noPayment"
       },
       {
-        source: "/backend/checkout/completeOrder",
-        destination: "http://localhost:5000/checkout/completeOrder"
+        source: "/backend/checkout/pay",
+        destination: "http://localhost:5000/checkout/pay"
       }
     ];
   },

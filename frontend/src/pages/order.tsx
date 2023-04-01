@@ -31,6 +31,7 @@ function LoggedIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>()
+  const {data: session} = useSession()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -38,20 +39,20 @@ function LoggedIn() {
   
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
-    await fetch("/api/completeOrder", {
+    await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
-        name: values.name,
+        playerName: values.name,
         // position: values.position,
         // league: values.league
       }),
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${session?.accessToken || ""}` //TODO: this is definitely safe practice and not at all a catastrophic oversight in security/routing
       },
     })
     .then(((res) => {
       console.log(res.status)
-      console.log(res.json()) //TODO: check with backend, then rmeove
       setLoading(false)
       switch (res.status) {
         case 500:
@@ -59,13 +60,21 @@ function LoggedIn() {
           break;
         case 200:
           setSuccess(true)
-          break;
-        default:
           res.json()
           .then((data) => {
-            setError(data.message)
-            setLoading(false)
+            router.replace(data.checkOutUrl)
           })
+          .catch((e) => {
+            router.replace('/serverError')
+          })
+          .finally(() => {
+            setLoading(false)
+            setError("our backend ran into a problem")
+          })
+          break;
+        default:
+          setError(res.statusText)
+          setLoading(false)
       }
     }))
     .catch((e) => {
@@ -97,6 +106,7 @@ function LoggedIn() {
           <input type="text" placeholder="Name" className="input" {...register('name', {required: true})}/> 
           { errors.name && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
+          { success && <p>Success! you'll be redirected to the payment page soon.</p> } {/*  TODO: styling */}
         </form>
       </main>
     </div>

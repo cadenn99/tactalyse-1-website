@@ -17,7 +17,7 @@ export default NextAuth({
           password: credentials.password,
         }
 
-        const res = await fetch('localhost:5000/auth/login', { //TODO: Switch to ENV variable
+        const res = await fetch('http://localhost:5000/auth/login', { //TODO: Switch to ENV variable
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
