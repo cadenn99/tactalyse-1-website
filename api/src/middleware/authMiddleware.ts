@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
  * Middleware function to protect routes
  * 
  */
-const AuthMiddleware: any = async (req: Request, res: Response, next: NextFunction) => {
+export const AuthMiddleware: any = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization?.split(' ')[1]
 
@@ -22,5 +22,3 @@ const AuthMiddleware: any = async (req: Request, res: Response, next: NextFuncti
             })
     }
 }
-
-export default AuthMiddleware
