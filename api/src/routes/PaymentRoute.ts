@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { PaymentController } from '@src/controllers/PaymentController';
-import { authMiddleware } from '@src/middleware/AuthMiddleware';
+import { PaymentController } from '@src/controllers';
+import { authMiddleware } from '@src/middleware';
 
 const PaymentControllerInstance = new PaymentController()
 

@@ -8,7 +8,7 @@ import {
     TokenInterface,
     FormResponseInterface
 } from "@root/typings";
-import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models/PaymentSchema";
+import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
 
 export class PaymentController {
