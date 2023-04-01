@@ -7,7 +7,7 @@
     "test": "vitest run",
     "test-watch": "vitest",
     "build2": "ttsc -P ./tsconfig.json",
-    "build": "node build.js",
+    "build": "etsc",
     "dev": "nodemon server.ts"
   },
   "repository": {
@@ -58,6 +58,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "esbuild": "0.17.14",
+    "esbuild-node-tsc": "^2.0.5",
     "express": "^4.18.2",
     "formidable": "^2.1.2",
     "jsonwebtoken": "^9.0.0",
