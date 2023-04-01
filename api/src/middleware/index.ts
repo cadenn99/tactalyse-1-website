@@ -1,1 +1,1 @@
-export { AuthMiddleware } from '@src/middleware/AuthMiddleware'
+export { authMiddleware } from './authMiddleware'
