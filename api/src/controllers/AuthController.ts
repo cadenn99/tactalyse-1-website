@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { authSchema } from "@src/models/api-models";
-import { CError } from "@src/utils";
+import { authReqSchema } from "@src/models/api-models";
+import { CError } from "@src/utils/CError";
 import jwt from 'jsonwebtoken'
+import { DatabaseInterface } from "@root/typings";
 
 export class AuthController {
 
@@ -13,13 +14,15 @@ export class AuthController {
      */
     public async registerUser(req: Request, res: Response) {
         try {
-            if (!authSchema.safeParse(req.body).success)
-                return res.status(404).json({
-                    message: "Invalid email or password format",
-                });
+            if (!authReqSchema.safeParse(req.body).success)
+                throw new CError("Invalid email or password format", 404)
 
-            const user = await req.app.get('db')
+            const databaseClient: DatabaseInterface = req.app.get('db')
+
+            const user = await databaseClient
                 .createUser(req.body.email, req.body.password)
+
+            // TODO: Remove hashed password from user document
 
             const token = jwt.sign(user, process.env.JWT_SECRET as string)
 
@@ -44,14 +47,15 @@ export class AuthController {
      */
     public async loginUser(req: Request, res: Response) {
         try {
-            if (!authSchema.safeParse(req.body).success) {
-                return res.status(404).json({
-                    message: 'Invalid email or password format'
-                })
-            }
+            if (!authReqSchema.safeParse(req.body).success)
+                throw new CError("Invalid email or password format", 404)
 
-            const user = await req.app.get('db')
+            const databaseClient: DatabaseInterface = req.app.get('db')
+
+            const user = await databaseClient
                 .loginUser(req.body.email, req.body.password)
+
+            // TODO: Remove hashed password from user document
 
             const token = jwt.sign(user, process.env.JWT_SECRET as string)
 
@@ -60,11 +64,12 @@ export class AuthController {
                 token
             })
         } catch (err: any) {
-            if (err instanceof CError) {
+
+            if (err instanceof CError)
                 return res.status(err.code).json({
                     message: err.message
                 })
-            }
+
             return res.status(500).json({ message: 'Something went wrong' })
         }
     }
