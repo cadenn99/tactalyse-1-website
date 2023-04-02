@@ -98,12 +98,12 @@ function LoggedIn() {
       <Header/>
       <Background/>
 
-      <main className="flex flex-row gap-10 align-middle">
-        <div className="w-fill min-w-[30vw] min-h-[40vh]">
+      <main className="container">
+        <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
           <Carousel images={generateImages()}/>
         </div>
 
-        <form className="form text-center">
+        <form className="right-column form text-center">
           <input type="text" placeholder="Name" className="input" {...register('playerName', {required: true})}/> 
           { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
@@ -152,7 +152,7 @@ function NotLoggedIn() {
  * This function loads the appropriate function depending on session state.
  * @returns HTML for the /order page.
  */
-export default function COmponentSwitcher() {
+export default function ComponentSwitcher() {
   const {data: session} = useSession()
 
   if (session) {
