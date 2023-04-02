@@ -26,8 +26,7 @@ function Access() {
 
 export default function componentSwitcher() {
   const { data: session} = useSession()
-  console.log(session?.accessToken) //FIXME: test this works, then remove
-
+  
   return (
     <div className="toplevel">
       <Head>
@@ -38,7 +37,9 @@ export default function componentSwitcher() {
       </Head>
       <Header/>
       <Background/>
-      { session?.user.isEmployee && <Access/> || <NoAccess/>}
+      <main>
+        { session?.user.isEmployee && <Access/> || <NoAccess/>}
+      </main>
     </div>
   )
 }

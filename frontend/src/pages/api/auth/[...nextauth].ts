@@ -1,21 +1,20 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import jwt from 'jsonwebtoken'
+import {TokenInterface} from '../../../../typings'
 
 export default NextAuth({
   providers: [
     CredentialsProvider({
       id: 'credentials',
       name: 'email',
-      credentials: {
-        email: {label: 'email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
+      credentials: {},
 
       async authorize(credentials, req) {
-        const payload = {
-          email: credentials.email,
-          password: credentials.password,
-        }
+        const payload = credentials as {
+          email: string,
+          password: string,
+        };
 
         const res = await fetch('http://localhost:5000/auth/login', { //TODO: Switch to ENV variable
           method: 'POST',
@@ -25,7 +24,7 @@ export default NextAuth({
           },
         })
 
-        //TODO: figure out isEmployee status in res here; also consult with Caden wrt backend response body
+        //No user object could be created for whatever reason
         const user = await res.json()
         if (!res.ok) {
           throw new Error(user.message)
@@ -42,7 +41,7 @@ export default NextAuth({
     }),
   ],
 
-  secret: process.env.JWT_SECRET,
+  jwt: {secret: "JWTSECRETTOKEN"},
   pages: {
     signIn: '/auth/login',
     signOut: '/auth/logout',
@@ -51,19 +50,16 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user, account }) {
       if (account && user) {
-        return {
-          ...token,
-          accessToken: user.token,
-          refreshToken: user.refreshToken,
-        }
+        token.accessToken = user.token
       }
       return token
     },
 
     async session({ session, token }) {
-      session.accessToken = token.accessToken
-      session.refreshToken = token.refreshToken
-      session.accessTokenExpires = token.accessTokenExpires
+      const payload = jwt.decode(token.accessToken as string) as TokenInterface      
+      session.accessToken = token.accessToken as string
+      session.user.email = payload.email
+      session.user.isEmployee = payload.isEmployee
       return session
     },
   },

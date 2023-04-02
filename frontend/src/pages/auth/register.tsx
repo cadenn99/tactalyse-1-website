@@ -54,6 +54,7 @@ function NotLoggedIn() {
           break;
         case 200:
           setSuccess(true)
+          setError(null)
           break;
         default:
           res.json()
