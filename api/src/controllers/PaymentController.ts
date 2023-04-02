@@ -71,7 +71,6 @@ export class PaymentController {
             res.status(200)
                 .json({ checkOutUrl: payment.checkOutUrl })
         } catch (err: any) {
-            console.log(err)
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
@@ -104,11 +103,7 @@ export class PaymentController {
 
             databaseClient.completePayment(req.body.id)
 
-            // await mailerClient.sendEmail(
-            //     orderOwner.email,
-            //     form.fields.id,
-            //     form.files.player.filepath // FIXME: Change to file name of report
-            // )
+            // TODO: Send customer payment complete payment + will receive report within 24 hours email
 
             res.status(200)
                 .json({ message: 'Payment completed, your report will be sent within 24 hours' })

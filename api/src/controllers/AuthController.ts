@@ -22,6 +22,8 @@ export class AuthController {
             const user = await databaseClient
                 .createUser(req.body.email, req.body.password)
 
+            // TODO: Remove hashed password from user document
+
             const token = jwt.sign(user, process.env.JWT_SECRET as string)
 
             return res.status(200).json({
@@ -52,6 +54,8 @@ export class AuthController {
 
             const user = await databaseClient
                 .loginUser(req.body.email, req.body.password)
+
+            // TODO: Remove hashed password from user document
 
             const token = jwt.sign(user, process.env.JWT_SECRET as string)
 

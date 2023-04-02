@@ -139,13 +139,12 @@ export class DatabaseService implements DatabaseInterface {
      */
     public async completePayment(orderId: string) {
         try {
-            const res = await model('Order')
+            await model('Order')
                 .updateOne(
                     { orderId },
                     { $set: { completedPayment: true } }
                 )
 
-            console.log(res)
         } catch (err: any) {
             throw err
         }

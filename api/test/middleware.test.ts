@@ -1,9 +1,8 @@
-import { vi, describe, beforeEach, afterEach, test, expect } from 'vitest'
+import { vi, describe, beforeEach, afterEach, test, expect, Mock } from 'vitest'
 import { Request, Response, NextFunction } from 'express'
 import { TestContext } from '@root/typings'
 import { authMiddleware } from '@src/middleware'
 import jwt from 'jsonwebtoken'
-import { CError } from '@src/utils'
 
 vi.mock('jsonwebtoken')
 
@@ -21,9 +20,9 @@ afterEach(() => {
 })
 
 describe('Tests for auth middleware', () => {
-    test<TestContext>('Requests with missing authorization header get rejected', ({ mockReq, mockRes, mockNext }) => {
+    test<TestContext>('Requests with missing authorization header get rejected', async ({ mockReq, mockRes, mockNext }) => {
 
-        authMiddleware(mockReq as unknown as Request, mockRes as unknown as Response, mockNext)
+        await authMiddleware(mockReq as unknown as Request, mockRes as unknown as Response, mockNext as unknown as NextFunction)
 
         expect(jwt.verify).not.toBeCalled()
         expect(mockRes?.status).toBeCalledWith(401)
@@ -33,29 +32,34 @@ describe('Tests for auth middleware', () => {
 
     })
 
-    // test<TestContext>("Request with invalid authorization header gets rejected", ({ mockReq, mockRes, mockNext }) => {
-    //     jwt.verify.mockRejectedValueOnce(new Error())
+    test<TestContext>("Request with invalid authorization header gets rejected", async ({ mockReq, mockRes, mockNext }) => {
+        (jwt.verify as Mock).mockRejectedValueOnce(new Error())
 
-    //     mockReq = {
-    //         headers: {
-    //             "authorization": "Test Test"
-    //         }
-    //     }
+        mockReq = {
+            headers: {
+                authorization: "Tes Test"
+            }
+        } as any
 
-    //     authMiddleware(mockReq as unknown as Request, mockRes as unknown as Response, mockNext)
-    //     console.log(jwt.verify)
-    //     expect(mockRes?.status).toBeCalledWith(401)
-    //     expect(mockRes?.json).toBeCalledWith({
-    //         message: 'Unauthorized - Missing or invalid token'
-    //     })
+        await authMiddleware(mockReq as unknown as Request, mockRes as unknown as Response, mockNext as unknown as NextFunction)
 
-    // })
+        expect(mockRes?.status).toBeCalledWith(401)
+        expect(mockRes?.json).toBeCalledWith({
+            message: 'Unauthorized - Missing or invalid token'
+        })
 
-    // test<TestContext>("Request with valid authorization header gets passed on", ({ mockReq, mockRes, mockNext }) => {
-    //     mockReq = {
-    //         headers: {
-    //             "authorization": jwt
-    //         }
-    //     }
-    // })
+    })
+
+    test<TestContext>("Request with valid authorization header gets passed on", async ({ mockReq, mockRes, mockNext }) => {
+
+        mockReq = {
+            headers: {
+                authorization: "Test valid"
+            }
+        } as any
+
+        await authMiddleware(mockReq as unknown as Request, mockRes as unknown as Response, mockNext as unknown as NextFunction)
+
+        expect(mockNext).toBeCalled()
+    })
 })
