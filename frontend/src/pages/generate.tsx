@@ -6,6 +6,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ReportInput } from "../../types/types";
 
 /**
  * This function loads when the user is not logged in.
@@ -22,16 +23,6 @@ function NoAccess() {
 }
 
 /**
- * This interface represents the Inputs visible on this page.
- */
-interface Inputs {
-  playerName: string,
-  playerFile: FileList,
-  leagueFile: FileList,
-  
-}
-
-/**
  * This function loads the appropriate things when the user is a (logged in) employee.
  * @returns HTMl for if there is session state and the user is an employee.
  */
@@ -43,7 +34,7 @@ function Access() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<ReportInput>()
   
   /**
    * Constants for managing state.
@@ -57,14 +48,14 @@ function Access() {
    * Constant for submitting to backend and dealing with the response.
    * @param values inputs of the form Inputs.
    */
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+  const onSubmit: SubmitHandler<ReportInput> = async (values) => {
     setLoading(true)
     setError(null)
     setSuccess(false)
     const formData = new FormData();
 
     formData.append("email", `${session?.user.email || ""}`)
-    formData.append("playerName", values.playerName)
+    formData.append("playerName", values.id)
     formData.append("player", values.playerFile[0])
     formData.append("league", values.leagueFile[0])
     await fetch("/backend/checkout/noPayment", {
@@ -100,8 +91,8 @@ function Access() {
   return (
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
-          <input type="text" placeholder="Player Name" className="input" {...register('playerName', {required: true})}/> 
-          { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
+          <input type="text" placeholder="Player Name" className="input" {...register('id', {required: true})}/> 
+          { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
           <input type="file" className="input" {...register('playerFile', {required: true})}/>
           { errors.playerFile && <p className="error">Please select the excel file containing player data.</p>}
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>

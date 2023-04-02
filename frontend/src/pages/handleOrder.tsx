@@ -6,6 +6,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ReportInput } from "../../types/types";
 
 /**
  * This function loads when the user is not an employee.
@@ -22,16 +23,6 @@ function NoAccess() {
 }
 
 /**
- * Interface used to deal with inputs on this page.
- */
-interface Inputs {
-  orderId: string,
-  playerFile: FileList,
-  leagueFile: FileList,
-  
-}
-
-/**
  * This function loads when the user is an employee.
  * @returns HTML for users who have access to this page (employees).
  */
@@ -43,7 +34,7 @@ function Access() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<ReportInput>()
 
   /**
    * Constants for managing state on this page.
@@ -57,13 +48,13 @@ function Access() {
    * Constant that submits to backend and deals with response.
    * @param values 
    */
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+  const onSubmit: SubmitHandler<ReportInput> = async (values) => {
     setLoading(true)
     setSuccess(false)
     setError(null)
     const formData = new FormData();
 
-    formData.append("id", values.orderId)
+    formData.append("id", values.id)
     formData.append("player", values.playerFile[0])
     formData.append("league", values.leagueFile[0])
     await fetch("/backend/checkout/fullfillOrder", {
@@ -99,8 +90,8 @@ function Access() {
   return (
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
-          <input type="text" placeholder="order ID" className="input" {...register('orderId', {required: true})}/> 
-          { errors.orderId && <p className="error">Please enter the order id you're resolving.</p>}
+          <input type="text" placeholder="order ID" className="input" {...register('id', {required: true})}/> 
+          { errors.id && <p className="error">Please enter the order id you're resolving.</p>}
           <input type="file" className="input" {...register('playerFile', {required: true})}/>
           { errors.playerFile && <p className="error">Please select the excel file containing player data.</p>}
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>

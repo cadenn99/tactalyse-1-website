@@ -5,15 +5,8 @@ import Background from "@/components/Background";
 import { SubmitHandler, useForm } from "react-hook-form";
 import router from "next/router";
 import { useSession } from "next-auth/react";
-import { CarouselImage } from "../../typings";
+import { CarouselImage, ReportInput } from "../../types/types";
 import Carousel from "@/components/Carousel";
-
-/**
- * This interface is used with react-hook-form to create and manage the input on this page.
- */
-interface Inputs {
-  playerName: string
-}
 
 /**
  * Tgus function loads and returns the appropriate code for a logged in user.
@@ -27,7 +20,7 @@ function LoggedIn() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<ReportInput>()
   const {data: session} = useSession()
 
   /**
@@ -41,14 +34,14 @@ function LoggedIn() {
    * This constant submits input values to our backend and appropriately deals with the response.
    * @param values input values following the form of the Inputs interface.
    */
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+  const onSubmit: SubmitHandler<ReportInput> = async (values) => {
     setLoading(true)
     setSuccess(false)
     setError(null)
     await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
-        playerName: values.playerName
+        playerName: values.id
       }),
       headers: {
         "Content-Type": "application/json",
@@ -106,8 +99,8 @@ function LoggedIn() {
         </div>
 
         <form className="right-column form text-center">
-          <input type="text" placeholder="Name" className="input" {...register('playerName', {required: true})}/> 
-          { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
+          <input type="text" placeholder="Name" className="input" {...register('id', {required: true})}/> 
+          { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! you'll be redirected to the payment page soon.</p> }
           { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}

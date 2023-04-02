@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import jwt from 'jsonwebtoken'
-import {TokenInterface} from '../../../../typings'
+import {TokenInterface} from '../../../../types/types'
 
 /**
  * This function does setup for Nextauth, the authentication library we're using in this project.

@@ -28,5 +28,8 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
-    env_file:
-      - ./frontend/.env
+    environment:
+       - NEXTAUTH_SECRET=JWTSECRETTOKEN #very secret
+       - NEXTAUTH_URL=http://localhost:3000
+       - NODE_ENV=development
+       - BACKEND_URL=http://localhost:5000

@@ -7,15 +7,7 @@ import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Alert } from "@material-tailwind/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
-
-/**
- * Interface to deal with inputs on this page.
- */
-interface Inputs {
-  email: string
-  password: string
-  confirmPassword: string
-}
+import { LoginInput } from "../../../types/types"
 
 /**
  * This function loads when the user is already logged in.
@@ -41,7 +33,7 @@ function NotLoggedIn() {
     watch,
     getValues,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<LoginInput>()
 
   /**
    * Constants for managing state on this page.

@@ -5,14 +5,7 @@ import Head from 'next/head'
 import router from "next/router"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-
-/**
- * Interface for inputs on this page.
- */
-interface Inputs {
-  email: string
-  password: string
-}
+import { LoginInput } from "../../../types/types"
 
 /**
  * This function loads when the user is already logged in.
@@ -36,7 +29,7 @@ function NotLoggedIn() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<LoginInput>()
 
   /**
    * Constants for managing state on this page.
@@ -48,7 +41,7 @@ function NotLoggedIn() {
    * constant that deals with backend and its' response.
    * @param values input of the form Inputs
    */
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+  const onSubmit: SubmitHandler<LoginInput> = async (values) => {
     setLoading(true)
     const res = await signIn('credentials', {
       redirect: false,
