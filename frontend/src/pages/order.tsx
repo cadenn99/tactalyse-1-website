@@ -44,6 +44,7 @@ function LoggedIn() {
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     setSuccess(false)
+    setError(null)
     await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
@@ -55,7 +56,6 @@ function LoggedIn() {
       },
     })
     .then(((res) => {
-      console.log(res.status)
       setLoading(false)
       switch (res.status) {
         case 500:
@@ -109,7 +109,7 @@ function LoggedIn() {
           <input type="text" placeholder="Name" className="input" {...register('playerName', {required: true})}/> 
           { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-          { success && <p>Success! you'll be redirected to the payment page soon.</p> } {/*  TODO: styling */}
+          { success && <p>Success! you'll be redirected to the payment page soon.</p> }
           { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
         </form>
       </main>

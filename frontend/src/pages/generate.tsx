@@ -59,6 +59,8 @@ function Access() {
    */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
+    setError(null)
+    setSuccess(false)
     const formData = new FormData();
 
     formData.append("email", `${session?.user.email || ""}`)
@@ -73,7 +75,6 @@ function Access() {
       },
     })
     .then(((res) => {
-      console.log(res.status)
       setLoading(false)
       switch (res.status) {
         case 500:
@@ -96,8 +97,6 @@ function Access() {
     });
   }
 
-  //TODO: edit when Caden implements the generate endpoint
-
   return (
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
@@ -110,7 +109,7 @@ function Access() {
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! expect to receive the generated report in your inbox soon.</p> }
           { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-          { error && <p className="error">{error}</p> } {/*  TODO: styling */}
+          { error && <p className="error">{error}</p> }
         </form>
       </main>
   )

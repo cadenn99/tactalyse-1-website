@@ -10,28 +10,28 @@ const nextConfig = {
     return [
       {
         source: "/backend/auth/login",
-        destination: "http://localhost:5000/auth/login",
+        destination: `${process.env.BACKEND_URL}/auth/login`
       },
       {
         source: "/backend/auth/register",
-        destination: "http://localhost:5000/auth/register",
+        destination: `${process.env.BACKEND_URL}auth/register`
       },
       {
         source: "/backend/checkout/noPayment",
-        destination: "http://localhost:5000/checkout/noPayment"
+        destination: `${process.env.BACKEND_URL}checkout/noPayment`
       },
       {
         source: "/backend/checkout/fullfillOrder",
-        destination: "http://localhost:5000/checkout/fulfillOrder"
+        destination: `${process.env.BACKEND_URL}checkout/fulfillOrder`
       },
       {
         source: "/backend/checkout/pay",
-        destination: "http://localhost:5000/checkout/pay"
+        destination: `${process.env.BACKEND_URL}checkout/pay`
       }
     ];
   },
 };
 
-// TODO: replace the above with ENV variables
+// TODO: the above rewrites are defined at build time; To fix this issue, we need to make some dynamic API routes that can work with env variables instead.
 
 module.exports = nextConfig

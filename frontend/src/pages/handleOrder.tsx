@@ -60,6 +60,7 @@ function Access() {
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     setSuccess(false)
+    setError(null)
     const formData = new FormData();
 
     formData.append("id", values.orderId)
@@ -73,7 +74,6 @@ function Access() {
       },
     })
     .then(((res) => {
-      console.log(res.status)
       setLoading(false)
       switch (res.status) {
         case 500:
@@ -106,9 +106,9 @@ function Access() {
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>
           { errors.leagueFile && <p className="error">Please select the excel file containing league data.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-          { success && <p>Success! This order has been resolved.</p> } {/*  TODO: styling */}
+          { success && <p>Success! This order has been resolved.</p> }
           { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-          { error && <p className="error">{error}</p> } {/*  TODO: styling */}
+          { error && <p className="error">{error}</p> }
         </form>
       </main>
   )

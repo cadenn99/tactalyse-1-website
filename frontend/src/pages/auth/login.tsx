@@ -56,7 +56,6 @@ function NotLoggedIn() {
       password: values.password,
       callbackUrl: `${window.location.origin}`,
     })
-    console.log(res?.status)
     if (res?.error) {
       switch (res?.error) {
         case "fetch failed":
@@ -82,7 +81,7 @@ function NotLoggedIn() {
           </label>
           <label className="inline-block w-full">
             <input type="password" placeholder="Password" className="input" {...register('password', {required: true, minLength: 8})} />
-            { errors.password && <p className="error">Please enter a password of at least 8 characters.</p>}
+            { errors.password && <p className="error">Your password should be at least 8 characters long.</p>}
           </label>
         </div>
         { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}

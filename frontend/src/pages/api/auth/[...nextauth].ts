@@ -30,7 +30,7 @@ export default NextAuth({
         /**
          * Calls the backend and stores the result.
          */
-        const res = await fetch('http://localhost:5000/auth/login', { //TODO: Switch to ENV variable
+        const res = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
@@ -64,7 +64,9 @@ export default NextAuth({
   /**
    * Options necessary for decoding JWT tokens.
    */
-  jwt: {secret: "JWTSECRETTOKEN"}, //Todo: replace with ENV var
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET
+  },
 
   /**
    * Custom pages which override the Next-auth defaults.
