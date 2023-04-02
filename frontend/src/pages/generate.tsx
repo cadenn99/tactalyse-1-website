@@ -44,11 +44,11 @@ function Access() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>()
-  const {data: session} = useSession()
-
+  
   /**
    * Constants for managing state.
    */
+  const {data: session} = useSession()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)

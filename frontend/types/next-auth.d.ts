@@ -16,13 +16,6 @@ declare module "next-auth" {
     }
     accessToken: string
   }
-
-  /**
-   * Unused interface; TODO: REMOVE
-   */
-  interface User {
-    token: string
-  }
 }
 
 
