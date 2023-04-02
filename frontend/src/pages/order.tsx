@@ -73,7 +73,7 @@ function LoggedIn() {
           })
           break;
         default:
-          setError(res.statusText)
+          setError(res.statusText)  //TODO: expand on this
           setLoading(false)
       }
     }))

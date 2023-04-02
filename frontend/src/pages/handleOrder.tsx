@@ -1,5 +1,6 @@
 import Background from "@/components/Background";
 import Header from "@/components/Header";
+import { getToken } from "next-auth/jwt";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -86,19 +87,17 @@ function Access() {
     });
   }
 
-  //TODO: edit when Caden implements the generate endpoint
-
   return (
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
-          <input type="text" placeholder="playerName" className="input" {...register('orderId', {required: true})}/> 
-          { errors.orderId && <p className="error">Please enter the name of the player you want a report on.</p>}
+          <input type="text" placeholder="order ID" className="input" {...register('orderId', {required: true})}/> 
+          { errors.orderId && <p className="error">Please enter the order id you're resolving.</p>}
           <input type="file" className="input" {...register('playerFile', {required: true})}/>
           { errors.playerFile && <p className="error">Please select the excel file containing player data.</p>}
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>
           { errors.leagueFile && <p className="error">Please select the excel file containing league data.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-          { success && <p>Success! expect to receive the generated report in your inbox soon.</p> } {/*  TODO: styling */}
+          { success && <p>Success! This order has been resolved.</p> } {/*  TODO: styling */}
           { error && <p className="error">{error}</p> } {/*  TODO: styling */}
         </form>
       </main>

@@ -18,7 +18,7 @@ export default function Page() {
       
       <main>
         <p>
-          The order has gone through successfully! Expect a confirmation email soon!
+          The order has gone through successfully! Expect a confirmation email soon.
         </p>
       </main>
     </div>

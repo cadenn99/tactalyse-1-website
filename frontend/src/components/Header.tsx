@@ -39,7 +39,8 @@ function Header() {
         <ul className="hidden space-x-4 md:flex">
           <li className="headerLink"><Link href="/">Home</Link></li>
           <li className="headerLink"><Link href="/order">Order</Link></li>
-          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/generate">Generate</Link></li> } {/* TODO: Test this when the backend works */}
+          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/generate">Generate</Link></li> }
+          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/handleOrder">Resolve Outstanding</Link></li> }
         </ul>
       </div>
 
