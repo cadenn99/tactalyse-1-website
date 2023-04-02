@@ -25,7 +25,7 @@ function NoAccess() {
  * This interface represents the Inputs visible on this page.
  */
 interface Inputs {
-  orderId: string,
+  playerName: string,
   playerFile: FileList,
   leagueFile: FileList,
   
@@ -61,7 +61,8 @@ function Access() {
     setLoading(true)
     const formData = new FormData();
 
-    formData.append("id", values.orderId)
+    formData.append("email", `${session?.user.email || ""}`)
+    formData.append("playerName", values.playerName)
     formData.append("player", values.playerFile[0])
     formData.append("league", values.leagueFile[0])
     await fetch("/backend/checkout/noPayment", {
@@ -80,18 +81,6 @@ function Access() {
           break;
         case 200:
           setSuccess(true)
-          res.json()
-          .then((data) => {
-            router.replace(data.checkOutUrl)
-          })
-          .catch((e) => {
-            // router.replace('/serverError')
-            setError("our backend ran into a problem")
-            console.log(e)
-          })
-          .finally(() => {
-            setLoading(false)
-          })
           break;
         default:
           setError(res.statusText)  //TODO: expand on this
@@ -112,14 +101,15 @@ function Access() {
   return (
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
-          <input type="text" placeholder="playerName" className="input" {...register('orderId', {required: true})}/> 
-          { errors.orderId && <p className="error">Please enter the name of the player you want a report on.</p>}
+          <input type="text" placeholder="Player Name" className="input" {...register('playerName', {required: true})}/> 
+          { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
           <input type="file" className="input" {...register('playerFile', {required: true})}/>
           { errors.playerFile && <p className="error">Please select the excel file containing player data.</p>}
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>
           { errors.leagueFile && <p className="error">Please select the excel file containing league data.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! expect to receive the generated report in your inbox soon.</p> }
+          { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
           { error && <p className="error">{error}</p> } {/*  TODO: styling */}
         </form>
       </main>

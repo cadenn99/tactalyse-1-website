@@ -43,9 +43,11 @@ function LoggedIn() {
    */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
+    setSuccess(false)
     await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
+        playerName: values.playerName
       }),
       headers: {
         "Content-Type": "application/json",
@@ -108,6 +110,7 @@ function LoggedIn() {
           { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! you'll be redirected to the payment page soon.</p> } {/*  TODO: styling */}
+          { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
         </form>
       </main>
     </div>
@@ -129,12 +132,12 @@ function NotLoggedIn() {
       </Head>
       <Header/>
       <Background/>
-      <main className="flex flex-row gap-10 align-middle">
-        <div className="w-fill min-w-[30vw] min-h-[40vh]">
+      <main className="container">
+        <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
           <Carousel images={generateImages()}/>
         </div>
 
-        <div className="form text-[gray] text-center">
+        <div className="form right-column text-[gray] text-center">
           <p>Looks like you're not logged in!
           Interested in diagrams like these?</p>
           <p>

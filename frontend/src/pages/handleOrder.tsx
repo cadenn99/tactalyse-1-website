@@ -59,12 +59,13 @@ function Access() {
    */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
+    setSuccess(false)
     const formData = new FormData();
 
     formData.append("id", values.orderId)
     formData.append("player", values.playerFile[0])
     formData.append("league", values.leagueFile[0])
-    await fetch("/backend/checkout/noPayment", {
+    await fetch("/backend/checkout/fullfillOrder", {
       method: "POST",
       body: formData,
       headers: {
@@ -80,18 +81,6 @@ function Access() {
           break;
         case 200:
           setSuccess(true)
-          res.json()
-          .then((data) => {
-            router.replace(data.checkOutUrl)
-          })
-          .catch((e) => {
-            // router.replace('/serverError')
-            setError("our backend ran into a problem")
-            console.log(e)
-          })
-          .finally(() => {
-            setLoading(false)
-          })
           break;
         default:
           setError(res.statusText)  //TODO: expand on this
@@ -118,6 +107,7 @@ function Access() {
           { errors.leagueFile && <p className="error">Please select the excel file containing league data.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! This order has been resolved.</p> } {/*  TODO: styling */}
+          { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
           { error && <p className="error">{error}</p> } {/*  TODO: styling */}
         </form>
       </main>

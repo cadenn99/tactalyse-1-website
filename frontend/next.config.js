@@ -21,6 +21,10 @@ const nextConfig = {
         destination: "http://localhost:5000/checkout/noPayment"
       },
       {
+        source: "/backend/checkout/fullfillOrder",
+        destination: "http://localhost:5000/checkout/fulfillOrder"
+      },
+      {
         source: "/backend/checkout/pay",
         destination: "http://localhost:5000/checkout/pay"
       }
