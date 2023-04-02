@@ -4,12 +4,14 @@ import jwt from 'jsonwebtoken'
 import {TokenInterface} from '../../../../typings'
 
 export default NextAuth({
+  // we are only using the credentialsprovider (email + password)
   providers: [
     CredentialsProvider({
       id: 'credentials',
       name: 'email',
       credentials: {},
 
+      // This function does the actual authentication
       async authorize(credentials, req) {
         const payload = credentials as {
           email: string,
@@ -41,13 +43,19 @@ export default NextAuth({
     }),
   ],
 
-  jwt: {secret: "JWTSECRETTOKEN"},
+  // options necessary for successfull JWT decoding
+  jwt: {secret: "JWTSECRETTOKEN"}, //Todo: replace with ENV var
+
+  // These are our custom pages, overriding the nextauth defaults
   pages: {
     signIn: '/auth/login',
     signOut: '/auth/logout',
   },
 
   callbacks: {
+    /* This callback is invoked when a new JWT is created (on login)
+     * it passes the accesstoken to the session, to be used client-side
+     */
     async jwt({ token, user, account }) {
       if (account && user) {
         token.accessToken = user.token
@@ -55,6 +63,10 @@ export default NextAuth({
       return token
     },
 
+    /* This callback is invoked everytime the useSession() or getSession() hooks are called.
+     * it determines what values exactly are forwarded to the client.
+     * in our case it passes the JWT token, email and isEmployee status.
+     */
     async session({ session, token }) {
       const payload = jwt.decode(token.accessToken as string) as TokenInterface      
       session.accessToken = token.accessToken as string
@@ -64,6 +76,6 @@ export default NextAuth({
     },
   },
 
-  //Debugging on ENV code; FIXME: remove when done
+  //enable debug mode if env variable says so
   debug: process.env.NODE_ENV === 'development',
 })

@@ -20,7 +20,7 @@ import { useSession } from "next-auth/react";
 // }
 
 interface Inputs {
-  name: string,
+  playerName: string,
   // position: Position,
   // league: League,
 }
@@ -42,7 +42,7 @@ function LoggedIn() {
     await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
-        playerName: values.name,
+        playerName: values.playerName,
         // position: values.position,
         // league: values.league
       }),
@@ -103,8 +103,8 @@ function LoggedIn() {
         </div>
 
         <form className="form text-center">
-          <input type="text" placeholder="Name" className="input" {...register('name', {required: true})}/> 
-          { errors.name && <p className="error">Please enter the name of the player you want a report on.</p>}
+          <input type="text" placeholder="Name" className="input" {...register('playerName', {required: true})}/> 
+          { errors.playerName && <p className="error">Please enter the name of the player you want a report on.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
           { success && <p>Success! you'll be redirected to the payment page soon.</p> } {/*  TODO: styling */}
         </form>
