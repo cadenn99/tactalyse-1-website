@@ -8,7 +8,7 @@ import {
     TokenInterface,
     FormResponseInterface
 } from "@root/typings";
-import { paymentCompleteReqSchema, createPaymentSchema } from "@src/models/api-models";
+import { paymentCompleteReqSchema, createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
 
 export class PaymentController {
@@ -39,7 +39,7 @@ export class PaymentController {
                 })
         })
 
-        if (req.path === '/noPayment' && (!form.files.hasOwnProperty('player') || !form.files.hasOwnProperty('league')))
+        if (['/noPayment', '/fulfillOrder'].includes(req.path) && (!form.files.hasOwnProperty('player') || !form.files.hasOwnProperty('league')))
             throw new CError('Missing file', 404)
 
         return { paymentClient, databaseClient, payload, mailerClient, form }
@@ -120,17 +120,18 @@ export class PaymentController {
     }
 
     /**
-     * Method for getting a report as an employee
+     * Method for fulfilling an order
      * 
      * @param req Request object
      * @param res Response object
      */
-    public noPayment = async (req: Request, res: Response) => {
+    public fulfillOrder = async (req: Request, res: Response) => {
         try {
             const { payload, databaseClient, mailerClient, form } = await this.getAppData(req)
 
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization" + payload.email, 401)
+
 
             const order = await databaseClient.findOrder(form.fields.id)
             const orderOwner = await databaseClient.findUserByOrder(order._id)
@@ -146,7 +147,42 @@ export class PaymentController {
             res.status(200)
                 .json({ message: 'Emailed report!' })
         } catch (err: any) {
-            console.log(err)
+            if (err instanceof CError)
+                return res.status(err.code)
+                    .json({ message: err.message })
+
+            res.status(500)
+                .json({ message: 'Something went wrong' })
+        }
+    }
+
+    /**
+     * Method for getting a report as an employee
+     * 
+     * @param req Request object
+     * @param res Response object
+     */
+    public noPayment = async (req: Request, res: Response) => {
+        try {
+            const { payload, mailerClient, form } = await this.getAppData(req)
+
+            if (!employeePurchaseSchema.safeParse(form.fields).success)
+                throw new CError("Missing required field(s)", 404)
+
+            if (!payload.isEmployee)
+                throw new CError("Missing required authorization" + payload.email, 401)
+
+            // TODO: Call script
+
+            await mailerClient.sendEmail(
+                form.fields.email,
+                "Employee purchase",
+                form.files.player.filepath // FIXME: Change to file name of report
+            )
+
+            res.status(200)
+                .json({ message: "Report sent" })
+        } catch (err: any) {
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })

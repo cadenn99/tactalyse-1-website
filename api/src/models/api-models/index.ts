@@ -1,2 +1,2 @@
 export { authReqSchema } from './AuthSchema'
-export { createPaymentSchema, paymentCompleteReqSchema } from './PaymentSchema'
+export { createPaymentSchema, paymentCompleteReqSchema, employeePurchaseSchema } from './PaymentSchema'

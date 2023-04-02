@@ -10,8 +10,11 @@ export class DatabaseService implements DatabaseInterface {
      * 
      */
     public async connect() {
-        await mongoose.connect(process.env.DB_URI as string)
-            .then(() => console.log('>> Connected with MongoDB'))
+        await mongoose.connect(process.env.DB_URI as string, {
+            family: 4
+        }).then(() => {
+            console.log('>> Connected with MongoDB')
+        })
     };
 
     /**

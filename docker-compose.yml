@@ -5,20 +5,22 @@ services:
     image: mongo
     container_name: tactalyse-db
     restart: always
-    ports:
-      - 27018:27017
-
+    ports: 
+    - 27018:27017
+    
   api:
-    depends_on:
+    depends_on: 
       - mongodb
     build: ./api
     container_name: tactalyse-api
     ports:
       - 5000:5000
     restart: always
+    links:
+      - mongodb
     environment:
       - JWT_SECRET=JWTSECRETTOKEN
-      - DB_URI=mongodb://mongodb:27018/users
+      - DB_URI=mongodb://mongodb:27017/users
       - PORT=5000
       - SALT_ROUNDS=10
       - MOLLIE_API_KEY=test_mKdenUnyR3FHCWMSndC4nSCEWVVyJD

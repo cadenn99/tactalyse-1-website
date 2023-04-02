@@ -4,6 +4,7 @@ import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
 import { DatabaseService, PaymentService, MailerService } from '@src/services';
+import { model } from 'mongoose';
 
 require('dotenv').config({ path: __dirname + '/.env' });
 
@@ -21,7 +22,7 @@ const app: Application = createExpressApp(
 
 app.get('db').connect()
     .then(() => {
-        app.listen(process.env.PORT, () => {
+        app.listen(process.env.PORT, async () => {
             console.log('>> Listening to port 5000');
         })
     })

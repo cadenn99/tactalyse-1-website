@@ -12,5 +12,8 @@ paymentRoute.route('/pay')
 paymentRoute.route('/completeOrder')
     .post(PaymentControllerInstance.completePayment)
 
+paymentRoute.route('/fulfillOrder')
+    .post(authMiddleware, PaymentControllerInstance.fulfillOrder)
+
 paymentRoute.route('/noPayment')
     .post(authMiddleware, PaymentControllerInstance.noPayment)
