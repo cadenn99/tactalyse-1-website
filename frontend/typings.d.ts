@@ -8,3 +8,10 @@ export interface TokenInterface {
   isEmployee: boolean
   _id: string
 }
+
+// This interface represents one image to be used in the Carousel component
+export interface CarouselImage {
+  id: number,
+  image: string,
+  alt: string,
+}
