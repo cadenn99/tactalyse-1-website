@@ -4,6 +4,10 @@ import styles from '@/styles/Home.module.css'
 import Header from '../components/Header'
 import Background from '@/components/Background'
 
+/**
+ * This function loads the home page.
+ * @returns HTMl for the / page.
+ */
 export default function Home() {
   return (
     <div className="relative h-screen lg:h-[100vh]">
@@ -17,10 +21,9 @@ export default function Home() {
       <Background/>
 
       <main className={styles.main}>
-          Text goes here describing the product (and workflow?)
-          Styling also goes here do this later TODO
+        Text goes here describing the product (and workflow?)
+        Styling also goes here do this later TODO
       </main>
-      {/*Model*/}
     </div>
   );
 }

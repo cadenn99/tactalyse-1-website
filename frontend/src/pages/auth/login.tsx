@@ -6,28 +6,48 @@ import router from "next/router"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 
+/**
+ * Interface for inputs on this page.
+ */
 interface Inputs {
   email: string
   password: string
 }
 
-
-function AlreadyLoggedIn() {
+/**
+ * This function loads when the user is already logged in.
+ * @returns HTML for people who shouldn't be here.
+ */
+function Loggedin() {
   return (
     <h1>you're already logged in, stupid</h1> //TODO: style this page
   )
 }
 
+/**
+ * This function loads when there is no session state yet.
+ * @returns HTML for people who want to log in.
+ */
 function NotLoggedIn() {
+  /**
+   * Constants for dealing with the inputs on this page.
+   */
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>()
 
+  /**
+   * Constants for managing state on this page.
+   */
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
+  /**
+   * constant that deals with backend and its' response.
+   * @param values input of the form Inputs
+   */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     const res = await signIn('credentials', {
@@ -78,6 +98,10 @@ function NotLoggedIn() {
   )
 }
 
+/**
+ * This function loads the appropriate function depending on session state.
+ * @returns HTML for this page.
+ */
 export default function componentSwitcher() {
   const { data: session} = useSession()
   
@@ -91,14 +115,7 @@ export default function componentSwitcher() {
       </Head>
       <Header/>
       <Background/>
-      { session && <AlreadyLoggedIn/> || <NotLoggedIn/>}
+      { session && <Loggedin/> || <NotLoggedIn/>}
     </div>
   )
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  return {
-    props: { session },
-  }
 }

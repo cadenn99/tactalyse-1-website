@@ -1,13 +1,16 @@
 import Background from "@/components/Background";
 import Header from "@/components/Header";
-import { getToken } from "next-auth/jwt";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+/**
+ * This function loads when the user is not an employee.
+ * @returns HTML for users who shouldn't be on this page.
+ */
 function NoAccess() {
   return (
     <>
@@ -18,6 +21,9 @@ function NoAccess() {
   )
 }
 
+/**
+ * Interface used to deal with inputs on this page.
+ */
 interface Inputs {
   orderId: string,
   playerFile: FileList,
@@ -25,18 +31,32 @@ interface Inputs {
   
 }
 
+/**
+ * This function loads when the user is an employee.
+ * @returns HTML for users who have access to this page (employees).
+ */
 function Access() {
+  /**
+   * Constants for dealing with the inputs on this page.
+   */
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>()
-  const {data: session} = useSession()
 
+  /**
+   * Constants for managing state on this page.
+   */
+  const {data: session} = useSession()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   
+  /**
+   * Constant that submits to backend and deals with response.
+   * @param values 
+   */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     const formData = new FormData();
@@ -104,6 +124,10 @@ function Access() {
   )
 }
 
+/**
+ * This function loads the appropriate function depending on session state.
+ * @returns HTML for this page.
+ */
 export default function componentSwitcher() {
   const { data: session} = useSession()
   

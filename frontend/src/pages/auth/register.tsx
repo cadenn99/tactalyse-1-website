@@ -8,20 +8,33 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { Alert } from "@material-tailwind/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
 
+/**
+ * Interface to deal with inputs on this page.
+ */
 interface Inputs {
   email: string
   password: string
   confirmPassword: string
 }
 
-
+/**
+ * This function loads when the user is already logged in.
+ * @returns HTML for logged in users who shouldn't be here.
+ */
 function LoggedIn() {
   return (
     <h1>you're already logged in, stupid</h1> //TODO: style this page
   )
 }
 
+/**
+ * This function loads the actual /register page.
+ * @returns HTML for people who are not logged in yet.
+ */
 function NotLoggedIn() {
+  /**
+   * Constants for dealing with the inputs on this page.
+   */
   const {
     register,
     handleSubmit,
@@ -30,10 +43,17 @@ function NotLoggedIn() {
     formState: { errors },
   } = useForm<Inputs>()
 
+  /**
+   * Constants for managing state on this page.
+   */
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   
+  /**
+   * This constant deals with the backend and its' response.
+   * @param values inputs of the form Inputs.
+   */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     await fetch("/backend/auth/register", {
@@ -100,6 +120,10 @@ function NotLoggedIn() {
   )
 }
 
+/**
+ * This funciton loads the appropriate function depending on session state.
+ * @returns HTML for this page.
+ */
 export default function componentSwitcher() {
   const { data: session} = useSession()
 
@@ -116,11 +140,4 @@ export default function componentSwitcher() {
       { session && <LoggedIn/> || <NotLoggedIn/>}
     </div>
   )
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  return {
-    props: { session },
-  }
 }

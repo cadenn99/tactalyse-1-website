@@ -1,31 +1,28 @@
 import Header from "@/components/Header";
 import Head from 'next/head';
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Background from "@/components/Background";
 import { SubmitHandler, useForm } from "react-hook-form";
 import router from "next/router";
-import Carousel, { CarouselImage } from "@/components/Carousel";
 import { useSession } from "next-auth/react";
+import { CarouselImage } from "../../typings";
+import Carousel from "@/components/Carousel";
 
-// Currently unused Enums, might be useful for block-2 depending on tact-2's api
-// enum Position {
-//   Midfielder = "midfielder",
-//   Goalkeeper = "goalkeeper",
-// }
-
-// enum League {
-//    World_Championship = "wc",
-//    European_Championship = "eu",
-//    North_American_League = "na",
-// }
-
+/**
+ * This interface is used with react-hook-form to create and manage the input on this page.
+ */
 interface Inputs {
-  playerName: string,
-  // position: Position,
-  // league: League,
+  playerName: string
 }
 
+/**
+ * Tgus function loads and returns the appropriate code for a logged in user.
+ * @returns 
+ */
 function LoggedIn() {
+  /**
+   * These variables are used to interact with the input forms.
+   */
   const {
     register,
     handleSubmit,
@@ -33,22 +30,26 @@ function LoggedIn() {
   } = useForm<Inputs>()
   const {data: session} = useSession()
 
+  /**
+   * These variables are used to handle state on this page.
+   */
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   
+  /**
+   * This constant submits input values to our backend and appropriately deals with the response.
+   * @param values input values following the form of the Inputs interface.
+   */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     await fetch("/backend/checkout/pay", {
       method: "POST",
       body: JSON.stringify({
-        playerName: values.playerName,
-        // position: values.position,
-        // league: values.league
       }),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${session?.accessToken || ""}` //TODO: this is definitely safe practice and not at all a catastrophic oversight in security/routing
+        "Authorization": `Bearer ${session?.accessToken || ""}`
       },
     })
     .then(((res) => {
@@ -113,6 +114,10 @@ function LoggedIn() {
   )
 }
 
+/**
+ * This function loads and returns the appropriate code for when there is no session state.
+ * @returns 
+ */
 function NotLoggedIn() {
   return (
     <div className="toplevel">
@@ -143,6 +148,10 @@ function NotLoggedIn() {
 }
 
 //Todo: this functionality is used a lot throughout the project; define a custom function to take replace it
+/**
+ * This function loads the appropriate function depending on session state.
+ * @returns HTML for the /order page.
+ */
 export default function COmponentSwitcher() {
   const {data: session} = useSession()
 
@@ -155,7 +164,7 @@ export default function COmponentSwitcher() {
 
 /**
  * This function generates the array of sample reports.
- * @returns array of type CarouselImage
+ * @returns array of type CarouselImage.
  */
 function generateImages() {
   const foo: CarouselImage = {id:0, image:"/sampleReports/tCleverly_Midfielder.png", alt:"Sample report showing the statistics of T. Cleverly"}
@@ -163,21 +172,3 @@ function generateImages() {
 
   return [foo, bar]
 }
-
-
-// This code is completely nonfunctional at moment; TODO: clean up (and incorporate whats useful) after i get confirmation on API inputs
-    // <select className="input" {...register('position', {required: true})} >
-    //   <option value="midfielder">Midfielder</option>
-    //   <option value="goalkeeper">Goalkeeper</option>
-    //   <option value="???">???</option>
-    // </select>
-    // { errors.position && <p className="error">Please enter the position of the player.</p> }
-    // <select className="input" {...register('league', {required: true})} >
-    //   <option value="wc">World Championships</option>
-    //   <option value="eu">European Championships</option>
-    //   <option value="na">North American League</option>
-    //   {/* I dont know jack about football, TODO get somebody else to fill the appropriate leagues and positions in */}
-    // </select>          
-    // { errors.league && <p className="error">Please enter the league the player plays in.</p>}
-
-//TODO: add logic to only show form for a pdf request when logged in

@@ -7,6 +7,10 @@ import router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+/**
+ * This function loads when the user is not logged in.
+ * @returns HTML for if there is no session state or the user is not an employee.
+ */
 function NoAccess() {
   return (
     <>
@@ -17,6 +21,9 @@ function NoAccess() {
   )
 }
 
+/**
+ * This interface represents the Inputs visible on this page.
+ */
 interface Inputs {
   orderId: string,
   playerFile: FileList,
@@ -24,7 +31,14 @@ interface Inputs {
   
 }
 
+/**
+ * This function loads the appropriate things when the user is a (logged in) employee.
+ * @returns HTMl for if there is session state and the user is an employee.
+ */
 function Access() {
+  /**
+   * Constants for handling inputs.
+   */
   const {
     register,
     handleSubmit,
@@ -32,10 +46,17 @@ function Access() {
   } = useForm<Inputs>()
   const {data: session} = useSession()
 
+  /**
+   * Constants for managing state.
+   */
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   
+  /**
+   * Constant for submitting to backend and dealing with the response.
+   * @param values inputs of the form Inputs.
+   */
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     setLoading(true)
     const formData = new FormData();
@@ -98,13 +119,17 @@ function Access() {
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>
           { errors.leagueFile && <p className="error">Please select the excel file containing league data.</p>}
           <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-          { success && <p>Success! expect to receive the generated report in your inbox soon.</p> } {/*  TODO: styling */}
+          { success && <p>Success! expect to receive the generated report in your inbox soon.</p> }
           { error && <p className="error">{error}</p> } {/*  TODO: styling */}
         </form>
       </main>
   )
 }
 
+/**
+ * This function loads the appropriate page depending on whether the user is an employee or not.
+ * @returns HTMl for this page.
+ */
 export default function componentSwitcher() {
   const { data: session} = useSession()
   

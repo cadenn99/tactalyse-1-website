@@ -3,21 +3,33 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import jwt from 'jsonwebtoken'
 import {TokenInterface} from '../../../../typings'
 
+/**
+ * This function does setup for Nextauth, the authentication library we're using in this project.
+ */
 export default NextAuth({
-  // we are only using the credentialsprovider (email + password)
+  /**
+   * Configures the providers available (currently email only).
+   */
   providers: [
     CredentialsProvider({
       id: 'credentials',
       name: 'email',
       credentials: {},
 
-      // This function does the actual authentication
-      async authorize(credentials, req) {
+      /**
+       * Actually authorizes the user with the backend.
+       * @param credentials the credentials to authorize.
+       * @returns the new session state.
+       */
+      async authorize(credentials) {
         const payload = credentials as {
           email: string,
           password: string,
         };
 
+        /**
+         * Calls the backend and stores the result.
+         */
         const res = await fetch('http://localhost:5000/auth/login', { //TODO: Switch to ENV variable
           method: 'POST',
           body: JSON.stringify(payload),
@@ -26,27 +38,37 @@ export default NextAuth({
           },
         })
 
-        //No user object could be created for whatever reason
+        /**
+         * If the backend doesn't respond with an OK, throw an error.
+         */
         const user = await res.json()
         if (!res.ok) {
           throw new Error(user.message)
         }
 
-        //Successfully signed in
+        /**
+         * If the user signed in successfully, return the new session state as user object.
+         */
         if (res.ok && user) {
           return user
         }
 
-        //Signin failed somewhere
+        /**
+         * Shouldn't be reachable, only here for completion's sake.
+         */
         return null
       },
     }),
   ],
 
-  // options necessary for successfull JWT decoding
+  /**
+   * Options necessary for decoding JWT tokens.
+   */
   jwt: {secret: "JWTSECRETTOKEN"}, //Todo: replace with ENV var
 
-  // These are our custom pages, overriding the nextauth defaults
+  /**
+   * Custom pages which override the Next-auth defaults.
+   */
   pages: {
     signIn: '/auth/login',
     signOut: '/auth/logout',
@@ -54,7 +76,7 @@ export default NextAuth({
 
   callbacks: {
     /* This callback is invoked when a new JWT is created (on login)
-     * it passes the accesstoken to the session, to be used client-side
+     * it passes the accessToken to the session, to be used client-side
      */
     async jwt({ token, user, account }) {
       if (account && user) {
@@ -76,6 +98,8 @@ export default NextAuth({
     },
   },
 
-  //enable debug mode if env variable says so
+  /**
+   * Enables debug if the environment variables tell us to do so.
+   */
   debug: process.env.NODE_ENV === 'development',
 })

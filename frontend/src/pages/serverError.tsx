@@ -1,9 +1,12 @@
 import Header from "@/components/Header";
 import Head from "next/head";
 import React from 'react';
-import Image from 'next/image'
 import Background from "@/components/Background";
 
+/**
+ * This page is loaded whenever our backend reports some internal error.
+ * @returns HTML informing the user about the error in the backend.
+ */
 export default function error() {
   return (
     <div className="toplevel">

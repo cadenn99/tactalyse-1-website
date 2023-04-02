@@ -2,10 +2,20 @@ import Link from "next/link"
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react"
 
-function Header() {
+/**
+ * This function builds the header seen on the site.
+ * @returns Header component.
+ */
+export default function Header() {
+  /**
+   * Constants for managing state in the header.
+   */
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession()
 
+  /**
+   * This hook deals with sepcial effects if the page is scrolled.
+   */
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -14,7 +24,6 @@ function Header() {
         setIsScrolled(false)
       }
     }
-
     window.addEventListener('scroll', handleScroll)
 
     return () => {
@@ -55,5 +64,3 @@ function Header() {
     </header>
   )
 }
-
-export default Header

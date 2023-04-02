@@ -4,6 +4,10 @@ import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
+/**
+ * This function returns the appropriate HTML when there is no session state available.
+ * @returns HTML for people who aren't logged in.
+ */
 function NotLoggedIn() {
   return (
     <>
@@ -13,6 +17,9 @@ function NotLoggedIn() {
   )
 }
 
+/** This function returns the appropriate HTMl when there is session state.
+ * @returns HTML for people who are logged in.
+ */
 function LoggedIn( { user }) {
   return (
     <>
@@ -20,9 +27,13 @@ function LoggedIn( { user }) {
       { user?.isEmployee && <p>This is an employee account.</p>  }
     </>
   )
-  /* TODO: Figure out session stuff from nextauth */
 }
 
+
+/**
+ * This function configures metadata for the page. It also loads the appropriate function depending on session state.
+ * @returns HTML for this page.
+ */
 export default function componentSwitcher() {
   const { data: session} = useSession()
 

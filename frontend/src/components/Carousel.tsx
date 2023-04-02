@@ -3,22 +3,28 @@ import { useState } from "react";
 import Swipe from "react-easy-swipe";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-
-export interface CarouselImage {
-  id: number,
-  image: string,
-  alt: string,
-
-}
-
+/**
+ * This function build the Carousel seen on the /order page.
+ * @param param0 array of CarouselImages
+ * @returns a Carousel component.
+ */
 export default function Carousel({ images }) {
+  /**
+   * Constant for managing the current slide.
+   */
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  /**
+   * Constant that implements the > arrow on the Carousel.
+   */
   const handleNextSlide = () => {
     let newSlide = currentSlide === images.length - 1 ? 0 : currentSlide + 1;
     setCurrentSlide(newSlide);
   };
 
+  /**
+   * Constant that implements the < arrow on the Carousel.
+   */
   const handlePrevSlide = () => {
     let newSlide = currentSlide === 0 ? images.length - 1 : currentSlide - 1;
     setCurrentSlide(newSlide);

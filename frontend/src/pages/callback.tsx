@@ -2,8 +2,10 @@ import Background from "@/components/Background";
 import Header from "@/components/Header";
 import Head from "next/head";
 
-
-
+/**
+ * This function contains HTMl that is loaded after a user completes a payment.
+ * @returns HTML for the /callback page.
+ */
 export default function Page() {
   return (
     <div className="toplevel">

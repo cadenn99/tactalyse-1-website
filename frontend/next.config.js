@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+/**
+ * This configures a few proxy routes we use to make calls to the backend.
+ * We use this over NextJS's inbuilt api functionality because doing so would amount to basically writing a separate backend for no reason.
+ */
 const nextConfig = {
   reactStrictMode: true,
   async rewrites() {
