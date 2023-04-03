@@ -42,6 +42,7 @@ export default NextAuth({
          * If the backend doesn't respond with an OK, throw an error.
          */
         const user = await res.json()
+        console.log(res.status)
         if (!res.ok) {
           throw new Error(user.message)
         }

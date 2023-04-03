@@ -14,19 +14,19 @@ const nextConfig = {
       },
       {
         source: "/backend/auth/register",
-        destination: `${process.env.BACKEND_URL}auth/register`
+        destination: `${process.env.BACKEND_URL}/auth/register`
       },
       {
         source: "/backend/checkout/noPayment",
-        destination: `${process.env.BACKEND_URL}checkout/noPayment`
+        destination: `${process.env.BACKEND_URL}/checkout/noPayment`
       },
       {
         source: "/backend/checkout/fullfillOrder",
-        destination: `${process.env.BACKEND_URL}checkout/fulfillOrder`
+        destination: `${process.env.BACKEND_URL}/checkout/fulfillOrder`
       },
       {
         source: "/backend/checkout/pay",
-        destination: `${process.env.BACKEND_URL}checkout/pay`
+        destination: `${process.env.BACKEND_URL}/checkout/pay`
       }
     ];
   },

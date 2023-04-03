@@ -23,6 +23,7 @@ services:
       - DB_URI=mongodb://mongodb:27017/users
       - PORT=5000
       - SALT_ROUNDS=10
+      - MOLLIE_API_KEY=test_mKdenUnyR3FHCWMSndC4nSCEWVVyJD      
 
   frontend:
     depends_on:
@@ -34,4 +35,4 @@ services:
        - NEXTAUTH_SECRET=JWTSECRETTOKEN #very secret
        - NEXTAUTH_URL=http://localhost:3000
        - NODE_ENV=development
-       - BACKEND_URL=http://localhost:5000
+       - BACKEND_URL=http://108.61.198.193:5000
