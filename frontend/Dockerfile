@@ -1,24 +1,23 @@
-# Build stage
-FROM node:16 AS builder
+# Specify the base image and tag
+FROM node:14
 
+# Set the working directory
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
-RUN yarn build
 
-# Production stage
-FROM node:16-alpine
+# Build the application (if needed)
+RUN npm run build
 
-WORKDIR /app
-
-COPY --from=builder /app/.next /app/.next
-COPY --from=builder /app/package.json /app/yarn.lock ./
-RUN yarn install --production --frozen-lockfile
-
-ENV NODE_ENV=production
+# Expose the application port
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+# Start the application
+CMD ["npm", "start"]
