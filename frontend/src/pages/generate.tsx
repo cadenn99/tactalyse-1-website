@@ -15,7 +15,7 @@ import { ReportInput } from "../../types/types";
 function NoAccess() {
   return (
     <>
-      <h1>You don't have access to this page.</h1>
+      <h1>You don&apos;t have access to this page.</h1>
       <div>Either log in with a privileged account or</div>
       <Link className="hover:underline" href="/">Go back home?</Link>
     </>
@@ -110,7 +110,7 @@ function Access() {
  * This function loads the appropriate page depending on whether the user is an employee or not.
  * @returns HTMl for this page.
  */
-export default function componentSwitcher() {
+export default function ComponentSwitcher() {
   const { data: session} = useSession()
   
   return (

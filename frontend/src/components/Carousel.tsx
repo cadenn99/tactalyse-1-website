@@ -2,13 +2,15 @@ import Image from "next/image";
 import { useState } from "react";
 import Swipe from "react-easy-swipe";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { CarouselImage } from "../../types/types";
+
 
 /**
  * This function build the Carousel seen on the /order page.
  * @param param0 array of CarouselImages
  * @returns a Carousel component.
  */
-export default function Carousel({ images }) {
+export default function Carousel({ images }: { images: CarouselImage[] }) {
   /**
    * Constant for managing the current slide.
    */

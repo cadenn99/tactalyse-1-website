@@ -13,7 +13,7 @@ import { LoginInput } from "../../../types/types"
  */
 function LoggedIn() {
   return (
-    <h1>you're already logged in, stupid</h1> //TODO: style this page
+    <h1>you&apos;re already logged in, stupid</h1> //TODO: style this page
   )
 }
 
@@ -83,7 +83,7 @@ function NotLoggedIn() {
         <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Sign In</button>
 
         <div className="text-[gray]">
-          Don't have an account yet?{' '}
+          Don&apos;t have an account yet?{' '}
           <button className="text-[#303030] hover:underline" onClick={() => router.push('/auth/register')}> Sign up here</button>
         </div>
     </form>
@@ -94,7 +94,7 @@ function NotLoggedIn() {
  * This function loads the appropriate function depending on session state.
  * @returns HTML for this page.
  */
-export default function componentSwitcher() {
+export default function ComponentSwitcher() {
   const { data: session} = useSession()
   
   return (

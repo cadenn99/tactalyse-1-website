@@ -7,6 +7,7 @@ import router from "next/router";
 import { useSession } from "next-auth/react";
 import { CarouselImage, ReportInput } from "../../types/types";
 import Carousel from "@/components/Carousel";
+import Link from "next/link";
 
 /**
  * Tgus function loads and returns the appropriate code for a logged in user.
@@ -92,7 +93,7 @@ function LoggedIn() {
         <input type="text" placeholder="Name" className="input" {...register('id', {required: true})}/> 
         { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
         <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-        { success && <p>Success! you'll be redirected to the payment page soon.</p> }
+        { success && <p>Success! you&apos;ll be redirected to the payment page soon.</p> }
         { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
       </form>
     </main>
@@ -111,11 +112,11 @@ function NotLoggedIn() {
       </div>
 
       <div className="form right-column text-[gray] text-center">
-        <p>Looks like you're not logged in!
+        <p>Looks like you&apos;re not logged in!
         Interested in diagrams like these?</p>
         <p>
-          <a className="hover:underline text-gray-700" href="/auth/login">Log in</a>{' '}or {' '}
-          <a className="hover:underline text-gray-700" href="/auth/register">Sign up</a>!
+          <Link className="hover:underline text-gray-700" href="/auth/login">Log in</Link>{' '}or {' '}
+          <Link className="hover:underline text-gray-700" href="/auth/register">Sign up</Link>!
         </p>
       </div>
     </main>

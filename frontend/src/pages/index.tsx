@@ -39,4 +39,5 @@ export default function Home() {
  * Replace all HTTP request calls with axios equivalents for better edgecase handling.
  * See about extracting the ComponentSwitcher function into a High Order Component.
  * That thing about routing/rewriting to the backend.
+ * A few of the LoggedIn/NoAccess pages are basically identical; extract to one thing
  */

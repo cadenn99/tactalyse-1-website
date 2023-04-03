@@ -1,6 +1,7 @@
 import Background from "@/components/Background";
 import Header from "@/components/Header";
-import { getSession, useSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -11,7 +12,7 @@ import Link from "next/link";
 function NotLoggedIn() {
   return (
     <>
-      <h1>You're not logged in.</h1>
+      <h1>You&apos;re not logged in.</h1>
       <Link className="hover:underline" href="/">Go back home?</Link>
     </>
   )
@@ -20,11 +21,12 @@ function NotLoggedIn() {
 /** This function returns the appropriate HTMl when there is session state.
  * @returns HTML for people who are logged in.
  */
-function LoggedIn( { user }) {
+function LoggedIn() {
+  const {data: session} = useSession()
   return (
     <>
-      <h1>Welcome {user?.email}</h1>
-      { user?.isEmployee && <p>This is an employee account.</p>  }
+      <h1>Welcome {session?.user.email}</h1>
+      { session?.user.isEmployee && <p>This is an employee account.</p>  }
     </>
   )
 }
@@ -34,7 +36,7 @@ function LoggedIn( { user }) {
  * This function configures metadata for the page. It also loads the appropriate function depending on session state.
  * @returns HTML for this page.
  */
-export default function componentSwitcher() {
+export default function ComponentSwitcher() {
   const { data: session} = useSession()
 
   return (
@@ -48,7 +50,7 @@ export default function componentSwitcher() {
       <Header/>
       <Background/>
       <main>
-        { session && <LoggedIn user={session.user}/> || <NotLoggedIn/>}
+        { session && <LoggedIn/> || <NotLoggedIn/>}
       </main>
     </div>
   )

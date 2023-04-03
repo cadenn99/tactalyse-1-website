@@ -15,7 +15,7 @@ import { LoginInput } from "../../../types/types"
  */
 function LoggedIn() {
   return (
-    <h1>you're already logged in, stupid</h1> //TODO: style this page
+    <h1>you&apos;re already logged in, stupid</h1> //TODO: style this page
   )
 }
 
@@ -100,7 +100,7 @@ function NotLoggedIn() {
           <label className="inline-block w-full">
             <input type="password" placeholder="Confirmation Password" className="input" {...register('confirmPassword', {required: true, minLength: 8})} />
           </label>
-           { watch("password") !== watch("confirmPassword") && getValues("confirmPassword") && <p className="error">Passwords don't match!</p>}
+           { watch("password") !== watch("confirmPassword") && getValues("confirmPassword") && <p className="error">Passwords don&apos;t match!</p>}
         </div>
         { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
         { error != null && <p className="error">{error}</p>}

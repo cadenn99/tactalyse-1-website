@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react"
 
@@ -36,7 +37,7 @@ export default function Header() {
     <header className={`${isScrolled && 'bg-white/90 ' || 'bg-white'} shadow-md`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <Link href="/">
-          <img 
+          <Image 
             src="/Logo.png" 
             alt="The tactalyse logo"
             width={100}

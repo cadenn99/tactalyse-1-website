@@ -15,7 +15,7 @@ import { ReportInput } from "../../types/types";
 function NoAccess() {
   return (
     <>
-      <h1>You don't have access to this page.</h1>
+      <h1>You don&apos;t have access to this page.</h1>
       <div>Either log in with a privileged account or</div>
       <Link className="hover:underline" href="/">Go back home?</Link>
     </>
@@ -91,7 +91,7 @@ function Access() {
       <main className="flex flex-row gap-10 align-middle">
         <form className="form text-center">
           <input type="text" placeholder="order ID" className="input" {...register('id', {required: true})}/> 
-          { errors.id && <p className="error">Please enter the order id you're resolving.</p>}
+          { errors.id && <p className="error">Please enter the order id you&apos;re resolving.</p>}
           <input type="file" className="input" {...register('playerFile', {required: true})}/>
           { errors.playerFile && <p className="error">Please select the excel file containing player data.</p>}
           <input type="file" className="input" {...register('leagueFile', {required: true})}/>
@@ -109,7 +109,7 @@ function Access() {
  * This function loads the appropriate function depending on session state.
  * @returns HTML for this page.
  */
-export default function componentSwitcher() {
+export default function ComponentSwitcher() {
   const { data: session} = useSession()
   
   return (
