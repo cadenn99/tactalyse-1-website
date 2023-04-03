@@ -11,7 +11,7 @@ import { LoginInput } from "../../../types/types"
  * This function loads when the user is already logged in.
  * @returns HTML for people who shouldn't be here.
  */
-function Loggedin() {
+function LoggedIn() {
   return (
     <h1>you're already logged in, stupid</h1> //TODO: style this page
   )
@@ -107,7 +107,9 @@ export default function componentSwitcher() {
       </Head>
       <Header/>
       <Background/>
-      { session && <Loggedin/> || <NotLoggedIn/>}
+      <main>
+        { session && <LoggedIn/> || <NotLoggedIn/>}
+      </main>
     </div>
   )
 }

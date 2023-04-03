@@ -47,7 +47,9 @@ export default function componentSwitcher() {
       </Head>
       <Header/>
       <Background/>
-      { session && <LoggedIn user={session.user}/> || <NotLoggedIn/>}
+      <main>
+        { session && <LoggedIn user={session.user}/> || <NotLoggedIn/>}
+      </main>
     </div>
   )
 }

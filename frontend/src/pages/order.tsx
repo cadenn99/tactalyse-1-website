@@ -83,30 +83,19 @@ function LoggedIn() {
   }
 
   return (
-    <div className="toplevel">
-      <Head>
-        <title>Order</title>
-        <meta name="description" content="Orderpage for football report generation by Tactalyse" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Header/>
-      <Background/>
+    <main className="container">
+      <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
+        <Carousel images={generateImages()}/>
+      </div>
 
-      <main className="container">
-        <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
-          <Carousel images={generateImages()}/>
-        </div>
-
-        <form className="right-column form text-center">
-          <input type="text" placeholder="Name" className="input" {...register('id', {required: true})}/> 
-          { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
-          <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-          { success && <p>Success! you'll be redirected to the payment page soon.</p> }
-          { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-        </form>
-      </main>
-    </div>
+      <form className="right-column form text-center">
+        <input type="text" placeholder="Name" className="input" {...register('id', {required: true})}/> 
+        { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
+        <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
+        { success && <p>Success! you'll be redirected to the payment page soon.</p> }
+        { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
+      </form>
+    </main>
   )
 }
 
@@ -116,34 +105,23 @@ function LoggedIn() {
  */
 function NotLoggedIn() {
   return (
-    <div className="toplevel">
-      <Head>
-      <title>Order</title>
-        <meta name="description" content="Orderpage for football report generation by Tactalyse" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Header/>
-      <Background/>
-      <main className="container">
-        <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
-          <Carousel images={generateImages()}/>
-        </div>
+    <main className="container">
+      <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
+        <Carousel images={generateImages()}/>
+      </div>
 
-        <div className="form right-column text-[gray] text-center">
-          <p>Looks like you're not logged in!
-          Interested in diagrams like these?</p>
-          <p>
-            <a className="hover:underline text-gray-700" href="/auth/login">Log in</a>{' '}or {' '}
-            <a className="hover:underline text-gray-700" href="/auth/register">Sign up</a>!
-          </p>
-        </div>
-      </main>
-    </div>
+      <div className="form right-column text-[gray] text-center">
+        <p>Looks like you're not logged in!
+        Interested in diagrams like these?</p>
+        <p>
+          <a className="hover:underline text-gray-700" href="/auth/login">Log in</a>{' '}or {' '}
+          <a className="hover:underline text-gray-700" href="/auth/register">Sign up</a>!
+        </p>
+      </div>
+    </main>
   )
 }
 
-//Todo: this functionality is used a lot throughout the project; define a custom function to take replace it
 /**
  * This function loads the appropriate function depending on session state.
  * @returns HTML for the /order page.
@@ -151,15 +129,27 @@ function NotLoggedIn() {
 export default function ComponentSwitcher() {
   const {data: session} = useSession()
 
-  if (session) {
-    return LoggedIn()
-  } else {
-    return NotLoggedIn()
-  }
+  return (
+    <div className="toplevel">
+      <Head>
+        <title>Tactalyse</title>
+        <meta name="description" content="Orderpage for football report generation by Tactalyse" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Header/>
+      <Background/>
+      <main>
+        { session && <LoggedIn/> || <NotLoggedIn/>}
+      </main>
+    </div>
+  )
 }
 
 /**
  * This function generates the array of sample reports.
+ * NOTE: The sample reports currently available are placeholders, taken from the previous (bad) iteration of this project.
+ * Once the tact-2 team provides some sample reports in their style, these will be replaced.
  * @returns array of type CarouselImage.
  */
 function generateImages() {

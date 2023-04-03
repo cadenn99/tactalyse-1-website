@@ -11,7 +11,7 @@ export default function error() {
   return (
     <div className="toplevel">
       <Head>
-       <title>Tactalyse PDFs</title>
+       <title>Tactalyse</title>
         <meta name="description" content="Errorpage" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

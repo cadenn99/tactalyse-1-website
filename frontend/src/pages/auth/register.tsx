@@ -3,7 +3,7 @@ import Header from "@/components/Header"
 import { useSession, signIn, getSession } from "next-auth/react"
 import Head from 'next/head'
 import router from "next/router"
-import { useState } from "react"
+import { Component, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Alert } from "@material-tailwind/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
@@ -46,7 +46,7 @@ function NotLoggedIn() {
    * This constant deals with the backend and its' response.
    * @param values inputs of the form Inputs.
    */
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+  const onSubmit: SubmitHandler<LoginInput> = async (values) => {
     setLoading(true)
     await fetch("/backend/auth/register", {
       method: "POST",
@@ -107,7 +107,7 @@ function NotLoggedIn() {
 
         <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Sign Up</button>
 
-        {success && <Alert className="max-w-screen-md" icon={<CheckCircleIcon className="mt-px h-6 w-6" />}>Signup successful! You can now login on the Sign in page</Alert>}
+        {success && <Alert className="max-w-screen-md justify-center" icon={<CheckCircleIcon className="mt-px h-6 w-6" />}>Signup successful! You can now login on the Sign in page</Alert>}
     </form>
   )
 }
@@ -116,7 +116,7 @@ function NotLoggedIn() {
  * This funciton loads the appropriate function depending on session state.
  * @returns HTML for this page.
  */
-export default function componentSwitcher() {
+export default function ComponentSwitcher() {
   const { data: session} = useSession()
 
   return (
@@ -129,7 +129,9 @@ export default function componentSwitcher() {
       </Head>
       <Header/>
       <Background/>
-      { session && <LoggedIn/> || <NotLoggedIn/>}
+      <main>
+        { session && <LoggedIn/> || <NotLoggedIn/>}
+      </main>
     </div>
   )
 }

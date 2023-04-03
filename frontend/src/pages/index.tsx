@@ -21,10 +21,22 @@ export default function Home() {
       <Background/>
 
       <main className={styles.main}>
-        Text goes here describing the product (and workflow?)
-        Styling also goes here do this later TODO
+        This is the landing page for the Tactalyse PDF report service.
+        <p>This page itself is still a work in progress, but the site is fully functional!</p>
       </main>
     </div>
   );
 }
 
+/* TODO: style this page, with like an accordion component or something
+ * - What is the product
+ * - How does it work
+ * - Faq maybe?
+ */
+
+
+/* General TODO:
+ * Replace all HTTP request calls with axios equivalents for better edgecase handling.
+ * See about extracting the ComponentSwitcher function into a High Order Component.
+ * That thing about routing/rewriting to the backend.
+ */
