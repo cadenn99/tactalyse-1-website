@@ -21,7 +21,7 @@ export class PaymentController {
      */
     private async getAppData(req: Request) {
 
-        if (req.path !== '/completeOrder' && req.headers.authorization === undefined) throw new CError('Unauthorized - Missing or invalid token', 401)
+        if (req.headers.authorization === undefined) throw new CError('Unauthorized - Missing or invalid token', 401)
 
         const paymentClient: PaymentProcessorInterface = req.app.get('pc')
         const databaseClient: DatabaseInterface = req.app.get('db')
