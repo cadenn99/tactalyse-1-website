@@ -16,6 +16,8 @@ services:
     ports:
       - 5000:5000
     restart: always
+    links:
+      - mongodb
     environment:
       - JWT_SECRET=JWTSECRETTOKEN
       - DB_URI=mongodb://mongodb:27017/users
@@ -27,7 +29,7 @@ services:
       - api
     build: ./frontend
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
        - NEXTAUTH_SECRET=JWTSECRETTOKEN #very secret
        - NEXTAUTH_URL=http://localhost:3000
