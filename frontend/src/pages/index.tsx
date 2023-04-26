@@ -1,8 +1,8 @@
-import React from 'react'
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
-import Header from '../components/Header'
-import Background from '@/components/Background'
+import React from "react";
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import Header from "../components/Header";
+import Background from "../components/Background";
 
 /**
  * This function loads the home page.

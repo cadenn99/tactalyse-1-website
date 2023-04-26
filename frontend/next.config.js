@@ -9,10 +9,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/backend/auth/login",
-        destination: `${process.env.BACKEND_URL}/auth/login`
-      },
-      {
         source: "/backend/auth/register",
         destination: `${process.env.BACKEND_URL}/auth/register`
       },

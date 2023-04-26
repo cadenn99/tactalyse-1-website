@@ -48,7 +48,7 @@ export default function Header() {
 
         <ul className="hidden space-x-4 md:flex">
           <li className="headerLink"><Link href="/">Home</Link></li>
-          <li className="headerLink"><Link href="/order">Order</Link></li>
+          <li className="headerLink"><Link href="/order">Reports</Link></li>
           { session?.user.isEmployee &&  <li className="headerLink"><Link href="/generate">Generate</Link></li> }
           { session?.user.isEmployee &&  <li className="headerLink"><Link href="/handleOrder">Resolve Outstanding</Link></li> }
         </ul>
@@ -56,7 +56,7 @@ export default function Header() {
 
       <div className="flex items-center space-x-4 text-sm font-light">
         <ul className="hidden space-x-4 md:flex">
-          {!session && <li className="headerLink"><Link href="/auth/login">Sign in</Link></li>}
+          { !session && <li className="headerLink"><Link href="/auth/login">Sign in</Link></li>}
           { !session && <li className="headerLink"><Link href="/auth/register">Register</Link></li>}
           { session && <li className="headerLink"><button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button></li>}
           { session && <li className="headerLink"><Link href="/auth/account">Account</Link></li>}
