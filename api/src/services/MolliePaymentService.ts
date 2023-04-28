@@ -1,7 +1,11 @@
 import { PaymentProcessorInterface } from "@root/typings";
-const { createMollieClient } = require('@mollie/api-client');
+import { createMollieClient } from '@mollie/api-client';
+import { CError } from "@src/utils";
 
-export class PaymentService implements PaymentProcessorInterface {
+/**
+ * Implementation of mollie payment service, client didn't wanted to switch over to stripe
+ */
+export class MolliePaymentService implements PaymentProcessorInterface {
 
     private client
 
@@ -40,7 +44,14 @@ export class PaymentService implements PaymentProcessorInterface {
      * @param id The order id
      * @returns 
      */
-    public async getPayment(id: string) {
-        return await this.client.payments.get(id)
+    public async webhookHandler(id: string) {
+        const payment = await this.client.payments.get(id)
+
+        if (payment.status === 'expired')
+            throw new CError("Payment expired, try again", 404)
+
+        if (payment.status === 'open')
+            throw new CError("Payment not yet completed", 402)
+
     }
 }

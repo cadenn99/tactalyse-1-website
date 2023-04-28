@@ -11,8 +11,8 @@ export interface DatabaseInterface {
 }
 
 export interface PaymentProcessorInterface {
-    createPayment: (price: string, currency: string, description: string) => any
-    getPayment: (id: string) => any
+    createPayment: (price: string, currency: string, description: string, email?: string) => any
+    webhookHandler: (id: string) => any
 }
 
 export interface MailerInterface {
@@ -21,8 +21,8 @@ export interface MailerInterface {
 
 
 export interface TestContext {
-    app: Application
-    supertestInstance: supertest.Test
+    app?: Application
+    supertestInstance?: supertest.Test
     db?: DatabaseInterface
     mockReq?: Partial<Request>
     mockRes?: Partial<Response>
