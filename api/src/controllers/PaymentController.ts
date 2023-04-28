@@ -96,7 +96,7 @@ export class PaymentController {
 
             const { paymentClient, databaseClient } = await this.getAppData(req)
 
-            await paymentClient.webhookHandler(req.body.id)
+            await paymentClient.webhookHandler(req.body.data.object.id)
 
             databaseClient.completePayment(req.body.id)
 
