@@ -6,7 +6,7 @@ import { createExpressApp } from './app'
 import { DatabaseService, StripePaymentService, MailerService } from '@src/services';
 import { model } from 'mongoose';
 
-require('dotenv').config({ path: __dirname + '/.env' });
+require('dotenv').config();
 
 const app: Application = createExpressApp(
     new DatabaseService(),
