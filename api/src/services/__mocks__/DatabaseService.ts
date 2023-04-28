@@ -1,4 +1,4 @@
-import { vi } from 'vitest'
+import { vi, test, expect } from 'vitest'
 
 export const DatabaseService = vi.fn(() => ({
     createUser: vi.fn(() => ({

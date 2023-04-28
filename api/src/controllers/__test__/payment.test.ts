@@ -1,13 +1,13 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { DatabaseService, PaymentService, MailerService } from '@src/services/index';
+import { DatabaseService, StripePaymentService, MailerService } from '@src/services/index';
 import { CError } from '@src/utils';
 import { TestContext } from '@root/typings';
 import config from '@root/config';
 
 vi.mock('@src/services/DatabaseService')
-vi.mock('@src/services/PaymentService')
+vi.mock('@src/services/StripePaymentService')
 vi.mock('@src/services/MailerService')
 vi.mock('jsonwebtoken')
 vi.mock('@src/middleware/AuthMiddleware')
@@ -15,7 +15,7 @@ vi.mock('@src/middleware/AuthMiddleware')
 beforeEach<TestContext>((context) => {
     context.app = createExpressApp(
         new DatabaseService(),
-        new PaymentService(""),
+        new StripePaymentService(""),
         new MailerService(config.test.MAILER)
     )
     context.supertestInstance = supertest(context.app)
@@ -32,8 +32,8 @@ describe("Tests for order creation", () => {
             .set({ 'Authorization': "Bearer x" })
             .send({ playerName: "Joe Biden" })
 
-        expect(app.get('pc').createPayment).toBeCalled()
-        expect(app.get('db').createOrder).toBeCalledWith(
+        expect(app!.get('pc').createPayment).toBeCalled()
+        expect(app!.get('db').createOrder).toBeCalledWith(
             "Joe Biden",
             "Payment Id",
             "Document Id"
@@ -48,8 +48,8 @@ describe("Tests for order creation", () => {
             .post('/checkout/pay')
             .send({ playerName: "Joe Biden" })
 
-        expect(app.get('pc').createPayment).not.toBeCalled()
-        expect(app.get('db').createOrder).not.toBeCalled()
+        expect(app!.get('pc').createPayment).not.toBeCalled()
+        expect(app!.get('db').createOrder).not.toBeCalled()
         expect(response.status).toBe(401)
         expect(response.body).toEqual({ message: 'Unauthorized - Missing or invalid token' })
     })
@@ -60,8 +60,8 @@ describe("Tests for order creation", () => {
             .post('/checkout/pay')
             .set({ 'Authorization': "Bearer x" })
 
-        expect(app.get('pc').createPayment).not.toBeCalled()
-        expect(app.get('db').createOrder).not.toBeCalled()
+        expect(app!.get('pc').createPayment).not.toBeCalled()
+        expect(app!.get('db').createOrder).not.toBeCalled()
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: 'Missing required fields' })
     })

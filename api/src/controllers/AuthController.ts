@@ -4,6 +4,9 @@ import { CError } from "@src/utils/CError";
 import jwt from 'jsonwebtoken'
 import { DatabaseInterface } from "@root/typings";
 
+/**
+ * AuthController class responsible for handling user registeration and logging in
+ */
 export class AuthController {
 
     /**

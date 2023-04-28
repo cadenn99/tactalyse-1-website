@@ -3,14 +3,14 @@ import { Application } from 'express'
 import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
-import { DatabaseService, PaymentService, MailerService } from '@src/services';
+import { DatabaseService, StripePaymentService, MailerService } from '@src/services';
 import { model } from 'mongoose';
 
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const app: Application = createExpressApp(
     new DatabaseService(),
-    new PaymentService(process.env.MOLLIE_API_KEY as string),
+    new StripePaymentService(process.env.STRIPE_API_KEY as string),
     new MailerService({
         host: 'smtp-relay.sendinblue.com',
         port: 587,
