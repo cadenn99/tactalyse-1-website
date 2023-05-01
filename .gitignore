@@ -1,7 +1,0 @@
-/frontend/.next
-/frontend/node_modules
-/frontend/.vscode
-.github/
-.DS_store
-.VSCodeCounter
-package-lock.json
