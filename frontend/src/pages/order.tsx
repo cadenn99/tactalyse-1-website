@@ -153,7 +153,7 @@ export default function ComponentSwitcher() {
  * Once the tact-2 team provides some sample reports in their style, these will be replaced.
  * @returns array of type CarouselImage.
  */
-function generateImages() {
+export function generateImages() {
   const foo: CarouselImage = {id:0, image:"/sampleReports/tCleverly_Midfielder.png", alt:"Sample report showing the statistics of T. Cleverly"}
   const bar: CarouselImage = {id:1, image:"/sampleReports/comparison_R.Bennett_B.Wilmot.png", alt:"Sample report comparing R.Bennett and B.Wilmot"}
   const bar2: CarouselImage = {id:2, image:"/sampleReports/Millwal_ J._Cooper.png", alt:"Sample report showing the statistics of Millwal J. Cooper"}

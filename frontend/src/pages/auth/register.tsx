@@ -3,7 +3,7 @@ import Header from "@/components/Header"
 import { useSession, signIn, getSession } from "next-auth/react"
 import Head from 'next/head'
 import router from "next/router"
-import { Component, useState } from "react"
+import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Alert } from "@material-tailwind/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid"

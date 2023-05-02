@@ -14,3 +14,5 @@ describe ('Home', () => {
     expect(screen.getByRole('main')).toBeDefined();
   })
 })
+
+//todo: write tests for this when we've implemented the new figma design
