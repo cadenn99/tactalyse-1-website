@@ -11,6 +11,9 @@ import {
 import { paymentCompleteReqSchema, createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
 import jwt from 'jsonwebtoken'
 
+/**
+ * PaymentController class is responsible for handling order flow
+ */
 export class PaymentController {
 
     /**
@@ -59,7 +62,7 @@ export class PaymentController {
             const { paymentClient, databaseClient, payload } = await this.getAppData(req)
 
             const payment = await paymentClient
-                .createPayment("50.00", "EUR", "xxx")
+                .createPayment("50.00", "EUR", "xxx", payload.email)
 
             await databaseClient
                 .createOrder(
@@ -93,13 +96,7 @@ export class PaymentController {
 
             const { paymentClient, databaseClient } = await this.getAppData(req)
 
-            const payment = await paymentClient.getPayment(req.body.id)
-
-            if (payment.status === 'expired')
-                throw new CError("Payment expired, try again", 404)
-
-            if (payment.status !== 'paid')
-                throw new CError("Payment not yet completed", 402)
+            await paymentClient.webhookHandler(req.body.data.object.id)
 
             databaseClient.completePayment(req.body.id)
 

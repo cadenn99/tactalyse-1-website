@@ -1,7 +1,7 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 import supertest from 'supertest';
 import { createExpressApp } from '@root/app';
-import { DatabaseService, MailerService, PaymentService } from '@src/services';
+import { DatabaseService, MailerService, StripePaymentService } from '@src/services';
 import { TestContext } from '@root/typings';
 import { CError } from '@src/utils';
 import config from '@root/config';
@@ -9,12 +9,11 @@ import config from '@root/config';
 vi.mock('@src/services/DatabaseService')
 vi.mock('@src/services/PaymentService')
 vi.mock('@src/services/MailerService')
-vi.mock('jsonwebtoken')
 
 beforeEach<TestContext>((context) => {
     context.app = createExpressApp(
         new DatabaseService(),
-        new PaymentService(""),
+        new StripePaymentService(""),
         new MailerService(config.test.MAILER)
     )
     context.supertestInstance = supertest(context.app)
@@ -31,7 +30,7 @@ describe("Tests for user registration", () => {
         const response = await supertestInstance.post('/auth/register')
             .send(config.test.WORKING_EMAIL_PASSWORD)
 
-        expect(app.get('db').createUser).toBeCalledWith(
+        expect(app!.get('db').createUser).toBeCalledWith(
             config.test.WORKING_EMAIL_PASSWORD.email,
             config.test.WORKING_EMAIL_PASSWORD.password
         )
@@ -40,12 +39,12 @@ describe("Tests for user registration", () => {
     })
 
     test<TestContext>('Rejects registration with existing email', async ({ supertestInstance, app }) => {
-        app.get('db').createUser.mockRejectedValueOnce(new CError('Email is already taken', 409))
+        app!.get('db').createUser.mockRejectedValueOnce(new CError('Email is already taken', 409))
 
         const response = await supertestInstance.post('/auth/register')
             .send(config.test.WORKING_EMAIL_PASSWORD)
 
-        expect(app.get('db').createUser).toBeCalledWith(
+        expect(app!.get('db').createUser).toBeCalledWith(
             config.test.WORKING_EMAIL_PASSWORD.email,
             config.test.WORKING_EMAIL_PASSWORD.password
         )
@@ -72,12 +71,12 @@ describe("Tests for user registration", () => {
 
 describe("Tests for user login", () => {
     test<TestContext>("Can login with valid credentials", async ({ supertestInstance, app }) => {
-        app.get('db').loginUser.mockResolvedValueOnce({ user: 'Some fake user' })
+        app!.get('db').loginUser.mockResolvedValueOnce({ user: 'Some fake user' })
 
         const response = await supertestInstance.post('/auth/login')
             .send(config.test.WORKING_EMAIL_PASSWORD)
 
-        expect(app.get('db').loginUser).toBeCalledWith(
+        expect(app!.get('db').loginUser).toBeCalledWith(
             config.test.WORKING_EMAIL_PASSWORD.email,
             config.test.WORKING_EMAIL_PASSWORD.password
         )
@@ -86,12 +85,12 @@ describe("Tests for user login", () => {
     })
 
     test<TestContext>("Rejects login with invalid credentials", async ({ supertestInstance, app }) => {
-        app.get('db').loginUser.mockRejectedValueOnce(new CError('User doesn\'t exist or password incorrect', 401))
+        app!.get('db').loginUser.mockRejectedValueOnce(new CError('User doesn\'t exist or password incorrect', 401))
 
         const response = await supertestInstance.post('/auth/login')
             .send(config.test.WORKING_EMAIL_PASSWORD)
 
-        expect(app.get('db').loginUser).toBeCalledWith(
+        expect(app!.get('db').loginUser).toBeCalledWith(
             config.test.WORKING_EMAIL_PASSWORD.email,
             config.test.WORKING_EMAIL_PASSWORD.password
         )
