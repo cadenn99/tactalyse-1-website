@@ -13,9 +13,17 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const theme: CustomFlowbiteTheme = {
-    navbar: {
-      link: {
-        active: {},
+    timeline: {
+      item: {
+        point: {
+          marker: {
+            icon: {
+              base: "text-[#FF2301]",
+              wrapper:
+                "absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-red-200 ring-8 ring-white dark:bg-red-900 dark:ring-gray-900",
+            },
+          },
+        },
       },
     },
   };

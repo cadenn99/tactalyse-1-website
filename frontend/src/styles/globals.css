@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,6 +43,9 @@
 
 /* miscellaneous styling options */
 @layer utilities {
+  *{
+    font-family: 'Ropa Sans', sans-serif;
+  }
   .container {
       display: grid;
     grid-template-columns: repeat(3, 1fr);

@@ -23,7 +23,7 @@ function Banner() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua
         </p>
-        <Button className="mt-8 rounded-md bg-[#FF2301] hover:bg-[#FF2301]/70 max-w-[200px]">
+        <Button className="mt-8 rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/70 max-w-[200px]">
           Order now
         </Button>
       </div>

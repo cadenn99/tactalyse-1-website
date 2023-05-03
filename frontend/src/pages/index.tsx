@@ -4,14 +4,18 @@ import styles from "../styles/Home.module.css";
 import Header from "../components/Header";
 import Background from "../components/Background";
 import Banner from "@/components/Banner";
-
+import Benefits from "@/components/Benefits";
+import FrequentlyAskedQuestions from "@/components/FrequentlyAskedQuestions";
+import Footer from "@/components/Footer";
+import TimeLineProcess from "@/components/TimeLineProcess";
+import Pricing from "@/components/Pricing";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
  */
 export default function Home() {
   return (
-    <div className="h-screen lg:h-[100vh] px-2">
+    <div className="px-2 bg-gray-100">
       <Head>
         <title>Tactalyse PDFs</title>
         <meta
@@ -24,9 +28,19 @@ export default function Home() {
       <Header />
       {/* <Background /> */}
 
-      <main className="max-w-7xl mx-auto mt-10">
+      <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10">
         {/*className={styles.main} */}
         <Banner />
+
+        <Benefits />
+
+        <TimeLineProcess />
+
+        <Pricing />
+
+        <FrequentlyAskedQuestions />
+
+        <Footer />
       </main>
     </div>
   );
