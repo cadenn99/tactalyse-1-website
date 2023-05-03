@@ -59,7 +59,14 @@
       grid-row: 1 / 2;
   }
 
+  /* Restyle flowbit */
   #menu > ul {
-    gap: 0.5rem
+    gap: 0.5rem;
+  }
+
+  nav > div{
+    /* display: inline-grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100% */
   }
 }

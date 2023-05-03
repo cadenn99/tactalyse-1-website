@@ -15,7 +15,7 @@ export default function Header() {
       rounded={true}
       className="max-w-7xl mx-auto shadow-md sticky top-[2%]"
     >
-      <Navbar.Brand href="#">
+      <Navbar.Brand href="#" className="grid-column">
         <img
           src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
           className="mr-3 h-6 sm:h-9"
@@ -47,7 +47,11 @@ export default function Header() {
                 status="online"
                 size={"sm"}
                 className="cursor-pointer"
-              />
+              >
+                <span className="hidden md:inline-block capitalize">
+                  {session?.user.email.split("@")[0]}
+                </span>
+              </Avatar>
             }
             arrowIcon={false}
             inline={true}
@@ -77,6 +81,12 @@ export default function Header() {
           className="rounded-md hover:!text-[#FF2301]"
         >
           Home
+        </Navbar.Link>
+        <Navbar.Link
+          href="/navbars"
+          className="rounded-md hover:!text-[#FF2301]"
+        >
+          About
         </Navbar.Link>
         <Navbar.Link
           href="/navbars"
