@@ -1,8 +1,4 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Bars3Icon } from "@heroicons/react/24/solid";
+import { useSession } from "next-auth/react";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { MdDashboard, MdLogout } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
@@ -11,31 +7,7 @@ import { AiOutlineShopping } from "react-icons/ai";
  * @returns Header component.
  */
 export default function Header() {
-  /**
-   * Constants for managing state in the header.
-   */
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isBackdropOpen, setIsBackdropOpen] = useState(false);
   const { data: session } = useSession();
-
-  /**
-   * This hook deals with sepcial effects if the page is scrolled.
-   */
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
     <Navbar
@@ -79,7 +51,6 @@ export default function Header() {
             }
             arrowIcon={false}
             inline={true}
-            // placement=""
           >
             <Dropdown.Header>
               <div className="flex flex-col">
