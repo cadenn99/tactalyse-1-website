@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Ropa+Sans:ital@0;1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,10 +38,14 @@
   .error {
     @apply p-1 text-[13px] font-light  text-orange-500;
   }
+  
 }
 
 /* miscellaneous styling options */
 @layer utilities {
+  *{
+    font-family: 'Ropa Sans', sans-serif;
+  }
   .container {
       display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -56,5 +62,16 @@
   .right-column {
     grid-column: 3 / 4;
       grid-row: 1 / 2;
+  }
+
+  /* Restyle flowbit */
+  #menu > ul {
+    gap: 0.5rem;
+  }
+
+  nav > div{
+    /* display: inline-grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100% */
   }
 }

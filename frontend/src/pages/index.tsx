@@ -3,26 +3,44 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header";
 import Background from "../components/Background";
-
+import Banner from "@/components/Banner";
+import Benefits from "@/components/Benefits";
+import FrequentlyAskedQuestions from "@/components/FrequentlyAskedQuestions";
+import Footer from "@/components/Footer";
+import TimeLineProcess from "@/components/TimeLineProcess";
+import Pricing from "@/components/Pricing";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
  */
 export default function Home() {
   return (
-    <div className="relative h-screen lg:h-[100vh]">
+    <div className="px-2 bg-gray-100">
       <Head>
         <title>Tactalyse PDFs</title>
-        <meta name="description" content="Homepage for football report generation by Tactalyse" />
+        <meta
+          name="description"
+          content="Homepage for football report generation by Tactalyse"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header/>
-      <Background/>
+      <Header />
+      {/* <Background /> */}
 
-      <main className={styles.main}>
-        This is the landing page for the Tactalyse PDF report service.
-        <p>This page itself is still a work in progress, but the site is fully functional!</p>
+      <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10">
+        {/*className={styles.main} */}
+        <Banner />
+
+        <Benefits />
+
+        <TimeLineProcess />
+
+        <Pricing />
+
+        <FrequentlyAskedQuestions />
+
+        <Footer />
       </main>
     </div>
   );
@@ -33,7 +51,6 @@ export default function Home() {
  * - How does it work
  * - Faq maybe?
  */
-
 
 /* General TODO:
  * Replace all HTTP request calls with axios equivalents for better edgecase handling.
