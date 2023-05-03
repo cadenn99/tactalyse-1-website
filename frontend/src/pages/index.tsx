@@ -3,6 +3,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header";
 import Background from "../components/Background";
+import Banner from "@/components/Banner";
 
 /**
  * This function loads the home page.
@@ -23,12 +24,9 @@ export default function Home() {
       <Header />
       {/* <Background /> */}
 
-      <main className={styles.main}>
-        This is the landing page for the Tactalyse PDF report service.
-        <p>
-          This page itself is still a work in progress, but the site is fully
-          functional!
-        </p>
+      <main className="max-w-7xl mx-auto mt-10">
+        {/*className={styles.main} */}
+        <Banner />
       </main>
     </div>
   );

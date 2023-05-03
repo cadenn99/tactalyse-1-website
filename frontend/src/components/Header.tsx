@@ -78,7 +78,7 @@ export default function Header() {
       <Navbar.Collapse id="menu">
         <Navbar.Link
           href="/navbars"
-          className="rounded-md hover:!text-[#FF2301]"
+          className="rounded-md hover:!text-[#FF2301] hover:underline transition-all ease-in-out duration-500"
         >
           Home
         </Navbar.Link>
