@@ -10,19 +10,25 @@ import Background from "../components/Background";
  */
 export default function Home() {
   return (
-    <div className="relative h-screen lg:h-[100vh]">
+    <div className="h-screen lg:h-[100vh] px-2">
       <Head>
         <title>Tactalyse PDFs</title>
-        <meta name="description" content="Homepage for football report generation by Tactalyse" />
+        <meta
+          name="description"
+          content="Homepage for football report generation by Tactalyse"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header/>
-      <Background/>
+      <Header />
+      {/* <Background /> */}
 
       <main className={styles.main}>
         This is the landing page for the Tactalyse PDF report service.
-        <p>This page itself is still a work in progress, but the site is fully functional!</p>
+        <p>
+          This page itself is still a work in progress, but the site is fully
+          functional!
+        </p>
       </main>
     </div>
   );
@@ -33,7 +39,6 @@ export default function Home() {
  * - How does it work
  * - Faq maybe?
  */
-
 
 /* General TODO:
  * Replace all HTTP request calls with axios equivalents for better edgecase handling.

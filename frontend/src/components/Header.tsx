@@ -1,8 +1,11 @@
-import Link from "next/link"
-import Image from "next/image"
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react"
-
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Bars3Icon } from "@heroicons/react/24/solid";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { MdDashboard, MdLogout } from "react-icons/md";
+import { AiOutlineShopping } from "react-icons/ai";
 /**
  * This function builds the header seen on the site.
  * @returns Header component.
@@ -12,7 +15,9 @@ export default function Header() {
    * Constants for managing state in the header.
    */
   const [isScrolled, setIsScrolled] = useState(false);
-  const { data: session } = useSession()
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isBackdropOpen, setIsBackdropOpen] = useState(false);
+  const { data: session } = useSession();
 
   /**
    * This hook deals with sepcial effects if the page is scrolled.
@@ -20,48 +25,95 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
-    window.addEventListener('scroll', handleScroll)
+    };
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
-  
   return (
-    <header className={`${isScrolled && 'bg-white/90 ' || 'bg-white'} shadow-md`}>
-      <div className="flex items-center space-x-2 md:space-x-10">
-        <Link href="/">
-          <Image 
-            src="/Logo.png" 
-            alt="The tactalyse logo"
-            width={100}
-            height={100}
-            className="cursor-pointer object-contain"
-          />
-        </Link>
+    <Navbar
+      fluid={true}
+      rounded={true}
+      className="max-w-7xl mx-auto shadow-md sticky top-[2%]"
+    >
+      <Navbar.Brand href="#">
+        <img
+          src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
+          className="mr-3 h-6 sm:h-9"
+        />
+      </Navbar.Brand>
 
-        <ul className="hidden space-x-4 md:flex">
-          <li className="headerLink"><Link href="/">Home</Link></li>
-          <li className="headerLink"><Link href="/order">Reports</Link></li>
-          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/generate">Generate</Link></li> }
-          { session?.user.isEmployee &&  <li className="headerLink"><Link href="/handleOrder">Resolve Outstanding</Link></li> }
-        </ul>
-      </div>
+      {session === null ? (
+        <div className="flex md:order-2 gap-1">
+          <Button
+            className="hidden md:block rounded-md bg-transparent hover:!text-[#FF2301] !text-black focus:!ring-0 hover:!bg-transparent"
+            size="sm"
+          >
+            Sign In
+          </Button>
+          <Button
+            className="hidden md:block rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/80 text-white focus:!ring-0"
+            size="sm"
+          >
+            Register
+          </Button>
+          <Navbar.Toggle className="focus:!ring-0" />
+        </div>
+      ) : (
+        <div className="flex md:order-2 gap-1 items-center">
+          <Dropdown
+            label={
+              <Avatar
+                rounded={true}
+                status="online"
+                size={"sm"}
+                className="cursor-pointer"
+              />
+            }
+            arrowIcon={false}
+            inline={true}
+            // placement=""
+          >
+            <Dropdown.Header>
+              <div className="flex flex-col">
+                <span className="text-sm text-black capitalize">
+                  {session?.user.email.split("@")[0]}
+                </span>
+                <span className="text-sm text-slate-500">
+                  {session?.user.email}
+                </span>
+              </div>
+            </Dropdown.Header>
+            <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
+            <Dropdown.Item icon={AiOutlineShopping}>Buy report</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item icon={MdLogout}>Logout</Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle className="focus:!ring-0" />
+        </div>
+      )}
 
-      <div className="flex items-center space-x-4 text-sm font-light">
-        <ul className="hidden space-x-4 md:flex">
-          { !session && <li className="headerLink"><Link href="/auth/login">Sign in</Link></li>}
-          { !session && <li className="headerLink"><Link href="/auth/register">Register</Link></li>}
-          { session && <li className="headerLink"><button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button></li>}
-          { session && <li className="headerLink"><Link href="/auth/account">Account</Link></li>}
-        </ul>
-      </div>
-    </header>
-  )
+      <Navbar.Collapse id="menu">
+        <Navbar.Link
+          href="/navbars"
+          className="rounded-md hover:!text-[#FF2301]"
+        >
+          Home
+        </Navbar.Link>
+        <Navbar.Link
+          href="/navbars"
+          className="rounded-md hover:!text-[#FF2301]"
+        >
+          About
+        </Navbar.Link>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 }

@@ -36,6 +36,7 @@
   .error {
     @apply p-1 text-[13px] font-light  text-orange-500;
   }
+  
 }
 
 /* miscellaneous styling options */
@@ -56,5 +57,9 @@
   .right-column {
     grid-column: 3 / 4;
       grid-row: 1 / 2;
+  }
+
+  #menu > ul {
+    gap: 0.5rem
   }
 }
