@@ -25,7 +25,7 @@ export default function Header() {
 
   return (
     <div className="max-w-7xl mx-auto sticky top-0 py-4 z-50 nav-gradient dark:adaptive">
-      <Navbar fluid={true} rounded={true} className="shadow-md ">
+      <Navbar fluid={true} rounded={true} className="shadow-md rounded-md">
         <Navbar.Brand href="/" className="grid-column">
           <img
             src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
@@ -79,7 +79,12 @@ export default function Header() {
                   </span>
                 </div>
               </Dropdown.Header>
-              <Dropdown.Item icon={MdDashboard}>Dashboard</Dropdown.Item>
+              <Dropdown.Item
+                icon={MdDashboard}
+                onClick={() => push("/auth/dashboard")}
+              >
+                Dashboard
+              </Dropdown.Item>
               <Dropdown.Item
                 icon={AiOutlineShopping}
                 onClick={() => push("/order")}

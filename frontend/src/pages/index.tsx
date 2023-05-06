@@ -36,12 +36,6 @@ export default function Home() {
   );
 }
 
-/* TODO: style this page, with like an accordion component or something
- * - What is the product
- * - How does it work
- * - Faq maybe?
- */
-
 /* General TODO:
  * Replace all HTTP request calls with axios equivalents for better edgecase handling.
  * See about extracting the ComponentSwitcher function into a High Order Component.

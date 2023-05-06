@@ -7,6 +7,11 @@ export interface TokenInterface {
   _id: string
 }
 
+export interface OrderInterface {
+  _id: string
+  playerName: string,
+  creationTimestamp: number
+}
 /**
  * This interface represents one image to be used in the Carousel component.
  */

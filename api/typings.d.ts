@@ -8,6 +8,7 @@ export interface DatabaseInterface {
     findOrder: Function
     findUserByOrder: Function
     completePayment: Function
+    findUserOrderHistory: Function
 }
 
 export interface PaymentProcessorInterface {

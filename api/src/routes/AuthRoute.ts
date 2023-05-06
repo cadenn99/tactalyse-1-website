@@ -3,6 +3,7 @@ import { AuthController } from '@src/controllers';
 
 const AuthControllerInstance = new AuthController()
 
+
 export const authRoute = Router();
 
 authRoute.route('/register')
@@ -10,3 +11,4 @@ authRoute.route('/register')
 
 authRoute.route('/login')
     .post(AuthControllerInstance.loginUser)
+

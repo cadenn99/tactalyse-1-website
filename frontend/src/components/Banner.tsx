@@ -1,4 +1,3 @@
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { Button } from "flowbite-react";
 import React from "react";
 

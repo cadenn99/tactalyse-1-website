@@ -14,30 +14,10 @@
   header {
     @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-5;
   }
-
-  .toplevel {
-    @apply relative flex w-screen h-screen flex-col md:items-center md:justify-center lg:h-[100vh];
-  }
 }
 
 /* custom classNames */
 @layer components {
-  .headerLink {
-    @apply cursor-pointer text-sm font-light transition duration-100
-    hover:text-red-600;
-  }
-
-  .form {
-    @apply relative mt-24 space-y-8 rounded bg-red-100/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14;
-  }
-
-  .input {
-    @apply w-full rounded bg-[#b6b6b6] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#e9e9e9];
-  }
-
-  .error {
-    @apply p-1 text-[13px] font-light  text-orange-500;
-  }
   
 }
 
@@ -57,32 +37,9 @@
       background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(17, 24, 39, 0.9));
     }
   }
-  .container {
-      display: grid;
-    grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 100%;
-    width: 100vw;
-      height: 40vh;
-  }
-  
-  .left-column {
-    grid-column: 1 / 3;
-      grid-row: 1 / 2;
-  }
-  
-  .right-column {
-    grid-column: 3 / 4;
-      grid-row: 1 / 2;
-  }
 
   /* Restyle flowbit */
   #menu > ul {
     gap: 0.5rem;
-  }
-
-  nav > div{
-    /* display: inline-grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100% */
   }
 }
