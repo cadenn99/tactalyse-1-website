@@ -6,7 +6,9 @@ import { AiOutlineMail } from "react-icons/ai";
 function TimeLineProcess() {
   return (
     <div>
-      <h1 className="text-3xl text-center font-bold">How does it work?</h1>
+      <h1 className="text-3xl text-center font-bold dark:text-white">
+        How does it work?
+      </h1>
       <Card className="mt-5">
         <Timeline horizontal={true} className="">
           <Timeline.Item>

@@ -4,16 +4,19 @@ import React from "react";
 function FrequentlyAskedQuestions() {
   return (
     <div>
-      <h1 className="text-3xl text-center font-bold mt-5">
+      <h1 className="text-3xl text-center font-bold mt-5 dark:text-white">
         Frequently Asked Questions
       </h1>
-      <Accordion collapseAll={true} className="bg-white shadow-md mt-5">
+      <Accordion
+        collapseAll={true}
+        className="bg-white shadow-md mt-5 dark:bg-[#1F2937]"
+      >
         <Accordion.Panel>
           <Accordion.Title>
             What kind of analysis do your tactical football reports provide?
           </Accordion.Title>
           <Accordion.Content>
-            <p>
+            <p className="dark:text-[#848C99]">
               Our tactical football reports provide in-depth analysis of player
               movements, tactical strategies, and other important factors that
               impact the outcome of a game. We identify areas for improvement
@@ -28,7 +31,7 @@ function FrequentlyAskedQuestions() {
             team?
           </Accordion.Title>
           <Accordion.Content>
-            <p>
+            <p className="dark:text-[#848C99]">
               Yes, we can provide customized reports tailored to the specific
               needs and requirements of your team. This can include reports on
               specific players, games, or strategies, and can help your team
@@ -42,7 +45,7 @@ function FrequentlyAskedQuestions() {
             How do your tactical football reports help with player development?
           </Accordion.Title>
           <Accordion.Content>
-            <p>
+            <p className="dark:text-[#848C99]">
               By analyzing player performance and identifying areas for
               improvement, our tactical football reports can help teams and
               coaches develop their players more effectively. This can include
@@ -57,7 +60,7 @@ function FrequentlyAskedQuestions() {
             Can your reports help us gain a competitive edge over our opponents?
           </Accordion.Title>
           <Accordion.Content>
-            <p>
+            <p className="dark:text-[#848C99]">
               Yes, by utilizing our tactical football reports, teams can gain a
               competitive edge over their opponents. Having access to detailed
               analysis and insights can help teams identify weaknesses in their
@@ -72,7 +75,7 @@ function FrequentlyAskedQuestions() {
             How can your reports help us improve our fan engagement?
           </Accordion.Title>
           <Accordion.Content>
-            <p>
+            <p className="dark:text-[#848C99]">
               Our tactical football reports can help teams and players engage
               with fans in a new and exciting way. By providing detailed
               tactical analysis, fans can better understand the game and

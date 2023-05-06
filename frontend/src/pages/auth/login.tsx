@@ -1,115 +1,138 @@
-import Background from "@/components/Background"
-import Header from "@/components/Header"
-import { useSession, signIn, getSession } from "next-auth/react"
-import Head from 'next/head'
-import router from "next/router"
-import { useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { LoginInput } from "../../../types/types"
+import { useSession, signIn } from "next-auth/react";
+import Head from "next/head";
+import { useEffect, useMemo, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LoginInput, ToastInterface } from "../../../types/types";
+import { useRouter } from "next/router";
+import { Button, Card, Label, Spinner, TextInput, Toast } from "flowbite-react";
+import { MdAlternateEmail } from "react-icons/md";
+import { BsKeyFill } from "react-icons/bs";
+import { HiX } from "react-icons/hi";
+import Link from "next/link";
 
-/**
- * This function loads when the user is already logged in.
- * @returns HTML for people who shouldn't be here.
- */
-function LoggedIn() {
-  return (
-    <h1>you&apos;re already logged in, stupid</h1> //TODO: style this page
-  )
-}
+function Login() {
+  const { data: session } = useSession();
+  const [toast, setToast] = useState<ToastInterface>({
+    message: null,
+    error: false,
+  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-/**
- * This function loads when there is no session state yet.
- * @returns HTML for people who want to log in.
- */
-function NotLoggedIn() {
-  /**
-   * Constants for dealing with the inputs on this page.
-   */
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginInput>()
+  const { push } = useRouter();
 
-  /**
-   * Constants for managing state on this page.
-   */
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  
-  /**
-   * constant that deals with backend and its' response.
-   * @param values input of the form Inputs
-   */
-  const onSubmit: SubmitHandler<LoginInput> = async (values) => {
-    setLoading(true)
-    const res = await signIn('credentials', {
+  useEffect(() => {
+    if (localStorage.getItem("darkMode") === null) {
+      localStorage.setItem("darkMode", "false");
+    }
+
+    if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, []);
+
+  const handleLogin: SubmitHandler<LoginInput> = async (values) => {
+    setLoading(true);
+
+    const res = await signIn("credentials", {
       redirect: false,
       email: values.email,
       password: values.password,
       callbackUrl: `${window.location.origin}`,
-    })
-    if (res?.error) {
-      switch (res?.error) {
-        case "fetch failed":
-          router.replace('/serverError')
-          break
-        default:
-          setError(res.error)
-      }
-    } else {
-      setError(null)
-    }
-    if (res?.url) router.push(res.url)
-    setLoading(false)
-  }
+    });
+
+    if (res?.error)
+      setToast({
+        message: res.error,
+        error: true,
+      });
+
+    setLoading(false);
+
+    if (res?.url) push(res.url);
+  };
+
+  useMemo(() => {
+    if (session) push("/");
+  }, [session, push]);
 
   return (
-    <form className="relative mt-24 space-y-8 rounded bg-red-100/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14">
-        <h1 className="text-4xl font-semibold">Sign In</h1>
-        <div className="space-y-2">
-          <label className="inline-block w-full">
-            <input type="email" placeholder="Email" className="input" {...register('email', {required: true})} />
-            { errors.email && <p className="error">Please enter a valid email.</p>}
-          </label>
-          <label className="inline-block w-full">
-            <input type="password" placeholder="Password" className="input" {...register('password', {required: true, minLength: 8})} />
-            { errors.password && <p className="error">Your password should be at least 8 characters long.</p>}
-          </label>
-        </div>
-        { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-        { error != null && <p className="error">{error}</p>}
-
-        <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Sign In</button>
-
-        <div className="text-[gray]">
-          Don&apos;t have an account yet?{' '}
-          <button className="text-[#303030] hover:underline" onClick={() => router.push('/auth/register')}> Sign up here</button>
-        </div>
-    </form>
-  )
-}
-
-/**
- * This function loads the appropriate function depending on session state.
- * @returns HTML for this page.
- */
-export default function ComponentSwitcher() {
-  const { data: session} = useSession()
-  
-  return (
-    <div className="toplevel">
+    <div>
       <Head>
-        <title>Tactalyse</title>
-        <meta name="description" content="Login page for the Tactalyse PDF generation service" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Login | Tactalyse</title>
       </Head>
-      <Header/>
-      <Background/>
-      <main>
-        { session && <LoggedIn/> || <NotLoggedIn/>}
+      {toast.error && (
+        <Toast className="absolute top-[5%] right-[5%] md:top-10 md:right-10">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+            <HiX className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal capitalize">
+            {toast.message}
+          </div>
+          <Toast.Toggle
+            onClick={() => setToast({ message: null, error: false })}
+          />
+        </Toast>
+      )}
+      <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
+        <div className="absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%]">
+          <div className="w-[400px] p-4 max-w-[100vw]">
+            <Card className="w-full">
+              <img
+                src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
+                className="w-[50%] mx-auto cursor-pointer"
+                onClick={() => push("/")}
+              />
+              <form className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="email" value="Email" />
+                  <TextInput
+                    id="email"
+                    type="text"
+                    sizing={"md"}
+                    icon={MdAlternateEmail}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="password" value="Password" />
+                  <TextInput
+                    id="password"
+                    type="password"
+                    sizing={"md"}
+                    icon={BsKeyFill}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button
+                  className="mt-3"
+                  onClick={() => handleLogin({ email, password })}
+                  isProcessing={loading}
+                  processingSpinner={
+                    <Spinner color={"gray"} size={"sm"}></Spinner>
+                  }
+                >
+                  {!loading && <span>Sign up</span>}
+                </Button>
+                <span className="text-right dark:text-[#D1D5DB]">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/auth/register"
+                    className="font-bold dark:text-white"
+                  >
+                    Sign up!
+                  </Link>
+                </span>
+              </form>
+            </Card>
+          </div>
+        </div>
       </main>
     </div>
-  )
+  );
 }
+
+export default Login;

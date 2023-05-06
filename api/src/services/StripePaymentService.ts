@@ -37,7 +37,7 @@ export class StripePaymentService implements PaymentProcessorInterface {
                 quantity: 1
             }],
             expires_at: Math.round(Date.now() / 1000 + 30 * 60),
-            success_url: "https://google.com",
+            success_url: "http://localhost:3000/callback",
             cancel_url: "https://yahoo.com",
         })
 
