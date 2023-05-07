@@ -98,7 +98,7 @@ export class PaymentController {
 
             await paymentClient.webhookHandler(req.body.data.object.id)
 
-            databaseClient.completePayment(req.body.id)
+            databaseClient.completePayment(req.body.data.object.id)
 
             // TODO: Send customer payment complete payment + will receive report within 24 hours email
 

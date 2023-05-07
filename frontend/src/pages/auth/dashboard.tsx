@@ -20,7 +20,7 @@ export default function Dashboard() {
     setLoading(true);
     if (!session) return;
     axios({
-      url: "http://localhost:5000/content/order-history",
+      url: "http://164.92.199.46:5000/content/order-history",
       method: "GET",
       headers: {
         Authorization: `Bearer ${session?.accessToken}`,
