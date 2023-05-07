@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import jwt from 'jsonwebtoken'
-import {TokenInterface} from '../../../../types/types'
+import { TokenInterface } from '../../../../types/types'
 
 /**
  * This function does setup for Nextauth, the authentication library we're using in this project.
@@ -92,10 +92,11 @@ export default NextAuth({
      * in our case it passes the JWT token, email and isEmployee status.
      */
     async session({ session, token }) {
-      const payload = jwt.decode(token.accessToken as string) as TokenInterface      
+      const payload = jwt.decode(token.accessToken as string) as TokenInterface
       session.accessToken = token.accessToken as string
       session.user.email = payload.email
       session.user.isEmployee = payload.isEmployee
+      session.user.id = payload._id
       return session
     },
   },

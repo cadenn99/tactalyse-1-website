@@ -3,7 +3,7 @@ import React from "react";
 
 function FrequentlyAskedQuestions() {
   return (
-    <div>
+    <div id="faq">
       <h1 className="text-3xl text-center font-bold mt-5 dark:text-white">
         Frequently Asked Questions
       </h1>

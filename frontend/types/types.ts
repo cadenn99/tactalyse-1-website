@@ -11,6 +11,8 @@ export interface OrderInterface {
   _id: string
   playerName: string,
   creationTimestamp: number
+  status: string
+  completedPayment: boolean
 }
 /**
  * This interface represents one image to be used in the Carousel component.

@@ -65,7 +65,7 @@ function Purchase() {
   };
 
   return (
-    <Card className="w-full lg:w-[50%] self-start">
+    <Card className="w-full self-start">
       <h2 className="dark:text-white text-2xl">Purchase report</h2>
       <TextInput
         id="email"
@@ -75,6 +75,10 @@ function Purchase() {
         placeholder="Playername"
         onChange={(e) => setPlayerName(e.target.value)}
       />
+      <div className="flex gap-3 items-end justify-end">
+        <span className="text-[#9CA3AF]">Total:</span>
+        <span className="text-[#9CA3AF] text-3xl">€49,-</span>
+      </div>
       <Button
         onClick={() => handlePurchase({ id: playerName })}
         isProcessing={loading}

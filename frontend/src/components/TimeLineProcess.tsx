@@ -5,7 +5,7 @@ import { AiOutlineMail } from "react-icons/ai";
 
 function TimeLineProcess() {
   return (
-    <div>
+    <div id="process">
       <h1 className="text-3xl text-center font-bold dark:text-white">
         How does it work?
       </h1>

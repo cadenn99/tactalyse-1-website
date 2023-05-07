@@ -19,6 +19,11 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
+    status: {
+        type: String,
+        required: true,
+        default: "processing"
+    },
     pdf: {
         type: Buffer,
         required: false,

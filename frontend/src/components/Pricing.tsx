@@ -12,6 +12,7 @@ function Pricing() {
         backgroundImage:
           "radial-gradient(circle, rgba(255,35,1,0.3) 0%, rgba(255,35,1,0.0) 40%)",
       }}
+      id="pricing"
     >
       <h1 className="text-3xl text-center font-bold dark:text-white">
         Pricing

@@ -83,8 +83,13 @@ function Login() {
           <div className="w-[400px] p-4 max-w-[100vw]">
             <Card className="w-full">
               <img
+                src="../logo_dark.png"
+                className="hidden dark:block w-[50%] mx-auto cursor-pointer"
+                onClick={() => push("/")}
+              />
+              <img
                 src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
-                className="w-[50%] mx-auto cursor-pointer"
+                className="dark:hidden w-[50%] mx-auto cursor-pointer"
                 onClick={() => push("/")}
               />
               <form className="flex flex-col gap-2">

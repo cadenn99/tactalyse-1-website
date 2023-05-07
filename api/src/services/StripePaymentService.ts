@@ -32,7 +32,7 @@ export class StripePaymentService implements PaymentProcessorInterface {
                     product_data: {
                         name: description
                     },
-                    unit_amount: 5000 // in cents
+                    unit_amount: parseFloat(price) * 100 // in cents
                 },
                 quantity: 1
             }],

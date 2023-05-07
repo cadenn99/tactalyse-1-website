@@ -2,6 +2,7 @@ import { useSession, signOut } from "next-auth/react";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { MdDashboard, MdLogout } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
+import { BiPackage } from "react-icons/bi";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ export default function Header() {
     if (localStorage.getItem("darkMode") === null) {
       localStorage.setItem("darkMode", "false");
     }
-
     setDarkMode(localStorage.getItem("darkMode") === "true");
   }, []);
 
@@ -28,8 +28,12 @@ export default function Header() {
       <Navbar fluid={true} rounded={true} className="shadow-md rounded-md">
         <Navbar.Brand href="/" className="grid-column">
           <img
+            src="../logo_dark.png"
+            className="mr-3 h-6 sm:h-9 hidden dark:block"
+          />
+          <img
             src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
-            className="mr-3 h-6 sm:h-9"
+            className="mr-3 h-6 sm:h-9 dark:hidden"
           />
         </Navbar.Brand>
 
@@ -61,7 +65,7 @@ export default function Header() {
                   size={"sm"}
                   className="cursor-pointer"
                 >
-                  <span className="hidden md:inline-block capitalize dark:text-white">
+                  <span className="hidden md:inline-block capitalize dark:text-white transition-all ease-in-out duration-500">
                     {session?.user.email.split("@")[0]}
                   </span>
                 </Avatar>
@@ -71,11 +75,11 @@ export default function Header() {
             >
               <Dropdown.Header>
                 <div className="flex flex-col">
-                  <span className="text-sm text-black capitalize dark:text-white">
-                    {session?.user.email.split("@")[0]}
+                  <span className="text-sm text-black dark:text-white">
+                    {session?.user.email}
                   </span>
                   <span className="text-sm text-slate-500">
-                    {session?.user.email}
+                    {session?.user.id}
                   </span>
                 </div>
               </Dropdown.Header>
@@ -91,6 +95,14 @@ export default function Header() {
               >
                 Buy report
               </Dropdown.Item>
+              {session?.user.isEmployee && (
+                <Dropdown.Item
+                  icon={BiPackage}
+                  onClick={() => push("/handleOrders")}
+                >
+                  Handle orders
+                </Dropdown.Item>
+              )}
               <Dropdown.Divider />
               <Dropdown.Item icon={MdLogout} onClick={() => signOut()}>
                 Logout
@@ -102,22 +114,28 @@ export default function Header() {
 
         <Navbar.Collapse id="menu">
           <Navbar.Link
-            href="/navbars"
-            className="rounded-md hover:!text-[#FF2301] hover:underline transition-all ease-in-out duration-500"
+            href="/"
+            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             Home
           </Navbar.Link>
           <Navbar.Link
-            href="/navbars"
-            className="rounded-md hover:!text-[#FF2301]"
+            href="/#faq"
+            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
-            About
+            FAQ
           </Navbar.Link>
           <Navbar.Link
-            href="/navbars"
-            className="rounded-md hover:!text-[#FF2301]"
+            href="/#pricing"
+            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
-            About
+            Pricing
+          </Navbar.Link>
+          <Navbar.Link
+            href="/#pricing"
+            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
+          >
+            Contact
           </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
