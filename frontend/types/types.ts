@@ -7,6 +7,13 @@ export interface TokenInterface {
   _id: string
 }
 
+export interface OrderInterface {
+  _id: string
+  playerName: string,
+  creationTimestamp: number
+  status: string
+  completedPayment: boolean
+}
 /**
  * This interface represents one image to be used in the Carousel component.
  */
@@ -22,7 +29,6 @@ export interface CarouselImage {
 export interface LoginInput {
   email: string,
   password: string,
-  confirmPassword: string
 }
 
 /**
@@ -32,4 +38,9 @@ export interface ReportInput {
   id: string,
   playerFile: FileList,
   leagueFile: FileList
+}
+
+export interface ToastInterface {
+  message: null | string,
+  error: boolean
 }

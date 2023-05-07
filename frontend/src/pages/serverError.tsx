@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Head from "next/head";
 import React from 'react';
-import Background from "@/components/Background";
 
 /**
  * This page is loaded whenever our backend reports some internal error.
@@ -17,7 +16,6 @@ export default function error() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header/>
-      <Background/>
       <div className="">
         <h1>
           Something went wrong with our backend T_T

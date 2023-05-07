@@ -1,7 +1,7 @@
 import './src/models/db-models/User'
 import './src/models/db-models/Order'
 import express, { Application } from 'express'
-import { authRoute, paymentRoute } from './src/routes'
+import { authRoute, paymentRoute, userRoute } from './src/routes'
 import { DatabaseInterface, MailerInterface, PaymentProcessorInterface } from './typings'
 
 export function createExpressApp(
@@ -14,6 +14,7 @@ export function createExpressApp(
     app.use(express.json())
     app.use(express.urlencoded())
     app.use('/auth', authRoute)
+    app.use('/content', userRoute)
     app.use('/checkout', paymentRoute)
 
     app.set('db', database)

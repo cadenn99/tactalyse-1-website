@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { model, Types } from "mongoose";
 import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
 import bcrypt from 'bcryptjs';
@@ -46,17 +46,13 @@ export class DatabaseService implements DatabaseInterface {
      * @returns 
      */
     public async loginUser(email: string, password: string) {
-        try {
+        const user = await model('User').findOne({ email })
 
-            const user = await model('User').findOne({ email })
+        if (user === null || !(await bcrypt.compare(password, user.toJSON().hash)))
+            throw new CError('User doesn\'t exist or password incorrect', 401)
 
-            if (user === null || !(await bcrypt.compare(password, user.toJSON().hash)))
-                throw new CError('User doesn\'t exist or password incorrect', 401)
-
-            return user.toJSON()
-        } catch (err: any) {
-            throw err
-        }
+        console.log(user.toJSON())
+        return user.toJSON()
     };
 
     /**
@@ -66,19 +62,15 @@ export class DatabaseService implements DatabaseInterface {
      * @returns 
      */
     public async findUserByOrder(orderId: string) {
-        try {
-            const user = await model('User')
-                .findOne(
-                    { orderHistory: orderId }
-                )
+        const user = await model('User')
+            .findOne(
+                { orderHistory: orderId }
+            )
 
-            if (user === null)
-                throw new CError('No user with this order id', 404)
+        if (user === null)
+            throw new CError('No user with this order id', 404)
 
-            return user.toJSON()
-        } catch (err: any) {
-            throw err
-        }
+        return user.toJSON()
     }
 
     /**
@@ -140,15 +132,28 @@ export class DatabaseService implements DatabaseInterface {
      * @param orderId Order id
      */
     public async completePayment(orderId: string) {
-        try {
-            await model('Order')
-                .updateOne(
-                    { orderId },
-                    { $set: { completedPayment: true } }
-                )
+        await model('Order')
+            .updateOne(
+                { orderId },
+                { $set: { completedPayment: true } }
+            )
 
-        } catch (err: any) {
-            throw err
-        }
+    }
+
+    /**
+     * Method for getting user Order history
+     * 
+     */
+    public async findUserOrderHistory(id: string) {
+        const orderHistoryIds = await model('User').findOne({ _id: new Types.ObjectId(id) })
+
+        if (orderHistoryIds === null)
+            throw new CError('No user with this order id', 404)
+
+        const orderHistory = await model('Order').find({
+            _id: { $in: orderHistoryIds?.orderHistory }
+        })
+
+        return orderHistory
     }
 }

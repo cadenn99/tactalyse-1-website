@@ -1,15 +1,14 @@
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { Button } from "flowbite-react";
 import React from "react";
 
 function Banner() {
   return (
     <div
-      className="h-[50vh] bg-red-500 flex items-center bg-cover bg-no-repeat rounded-md p-5"
+      className="h-[50vh] min-h-[400px] bg-red-500 flex items-center bg-cover bg-no-repeat rounded-md p-10"
       style={{
         backgroundImage:
-          "linear-gradient(90deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)), url('./soccer.png')",
-        // boxShadow: "0 0 20px 20px white inset;",
+          "linear-gradient(90deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2)), url('./soccer_1.png')",
+        backgroundPosition: "bottom",
       }}
     >
       <div className="flex flex-col items-center sm:items-start">

@@ -62,7 +62,7 @@ export class PaymentController {
             const { paymentClient, databaseClient, payload } = await this.getAppData(req)
 
             const payment = await paymentClient
-                .createPayment("50.00", "EUR", "xxx", payload.email)
+                .createPayment('49.00', "EUR", "xxx", payload.email)
 
             await databaseClient
                 .createOrder(

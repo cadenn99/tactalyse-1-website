@@ -1,162 +1,53 @@
 import Header from "@/components/Header";
-import Head from 'next/head';
-import { useState } from "react"
-import Background from "@/components/Background";
-import { SubmitHandler, useForm } from "react-hook-form";
-import router from "next/router";
-import { useSession } from "next-auth/react";
-import { CarouselImage, ReportInput } from "../../types/types";
-import Carousel from "@/components/Carousel";
-import Link from "next/link";
-
-/**
- * Tgus function loads and returns the appropriate code for a logged in user.
- * @returns 
- */
-function LoggedIn() {
-  /**
-   * These variables are used to interact with the input forms.
-   */
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ReportInput>()
-  const {data: session} = useSession()
-
-  /**
-   * These variables are used to handle state on this page.
-   */
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-  
-  /**
-   * This constant submits input values to our backend and appropriately deals with the response.
-   * @param values input values following the form of the Inputs interface.
-   */
-  const onSubmit: SubmitHandler<ReportInput> = async (values) => {
-    setLoading(true)
-    setSuccess(false)
-    setError(null)
-    await fetch("/backend/checkout/pay", {
-      method: "POST",
-      body: JSON.stringify({
-        playerName: values.id
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${session?.accessToken || ""}`
-      },
-    })
-    .then(((res) => {
-      setLoading(false)
-      switch (res.status) {
-        case 500:
-          router.push("/serverError")
-          break;
-        case 200:
-          setSuccess(true)
-          res.json()
-          .then((data) => {
-            router.replace(data.checkOutUrl)
-          })
-          .catch((e) => {
-            router.replace('/serverError')
-          })
-          .finally(() => {
-            setLoading(false)
-            setError("our backend ran into a problem")
-          })
-          break;
-        default:
-          setError(res.statusText)  //TODO: expand on this
-          setLoading(false)
-      }
-    }))
-    .catch((e) => {
-      console.log(e)
-      router.push("/serverError")
-    })
-    .finally(() => {
-      setLoading(false)
-    });
-  }
-
-  return (
-    <main className="container">
-      <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
-        <Carousel images={generateImages()}/>
-      </div>
-
-      <form className="right-column form text-center">
-        <input type="text" placeholder="Name" className="input" {...register('id', {required: true})}/> 
-        { errors.id && <p className="error">Please enter the name of the player you want a report on.</p>}
-        <button onClick={handleSubmit(onSubmit)} type="submit" className="w-full rounded bg-[#ff2301] py-3 font-semibold">Submit</button>
-        { success && <p>Success! you&apos;ll be redirected to the payment page soon.</p> }
-        { loading && <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p> } {/*TODO: add loading icon/gif thing */}
-      </form>
-    </main>
-  )
-}
-
-/**
- * This function loads and returns the appropriate code for when there is no session state.
- * @returns 
- */
-function NotLoggedIn() {
-  return (
-    <main className="container">
-      <div className="left-column w-fill min-w-[30vw] min-h-[40vh]">
-        <Carousel images={generateImages()}/>
-      </div>
-
-      <div className="form right-column text-[gray] text-center">
-        <p>Looks like you&apos;re not logged in!
-        Interested in diagrams like these?</p>
-        <p>
-          <Link className="hover:underline text-gray-700" href="/auth/login">Log in</Link>{' '}or {' '}
-          <Link className="hover:underline text-gray-700" href="/auth/register">Sign up</Link>!
-        </p>
-      </div>
-    </main>
-  )
-}
+import Head from "next/head";
+import Footer from "@/components/Footer";
+import ExampleReports from "@/components/ExampleReports";
+import Purchase from "@/components/Purchase";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Disclaimer from "@/components/Disclaimer";
+import { AiOutlineShopping } from "react-icons/ai";
 
 /**
  * This function loads the appropriate function depending on session state.
  * @returns HTML for the /order page.
  */
 export default function ComponentSwitcher() {
-  const {data: session} = useSession()
-
   return (
-    <div className="toplevel">
+    <div className="px-2">
       <Head>
-        <title>Tactalyse</title>
-        <meta name="description" content="Orderpage for football report generation by Tactalyse" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Order | Tactalyse</title>
       </Head>
-      <Header/>
-      <Background/>
-      <main>
-        { session && <LoggedIn/> || <NotLoggedIn/>}
-      </main>
+
+      <ProtectedRoute>
+        <Header />
+        <main
+          className="max-w-7xl mx-auto mt-0 flex flex-col gap-5"
+          style={{ minHeight: "calc(100vh - 88px)" }}
+        >
+          <div
+            className="min-h-[100px] bg-red-500 flex items-center bg-cover bg-no-repeat rounded-md p-10 justify-center"
+            style={{
+              backgroundImage:
+                "linear-gradient(90deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)), url('./soccer_1.png')",
+              backgroundPosition: "center",
+            }}
+          >
+            <h1 className="text-white text-3xl flex gap-2">
+              <AiOutlineShopping /> Buy report
+            </h1>
+          </div>
+          <div className="flex gap-5 flex-col-reverse lg:flex-row">
+            <ExampleReports />
+
+            <div className="flex gap-5 flex-col w-full lg:w-[50%]">
+              <Disclaimer />
+              <Purchase />
+            </div>
+          </div>
+
+          <Footer />
+        </main>
+      </ProtectedRoute>
     </div>
-  )
-}
-
-/**
- * This function generates the array of sample reports.
- * NOTE: The sample reports currently available are placeholders, taken from the previous (bad) iteration of this project.
- * Once the tact-2 team provides some sample reports in their style, these will be replaced.
- * @returns array of type CarouselImage.
- */
-export function generateImages() {
-  const foo: CarouselImage = {id:0, image:"/sampleReports/tCleverly_Midfielder.png", alt:"Sample report showing the statistics of T. Cleverly"}
-  const bar: CarouselImage = {id:1, image:"/sampleReports/comparison_R.Bennett_B.Wilmot.png", alt:"Sample report comparing R.Bennett and B.Wilmot"}
-  const bar2: CarouselImage = {id:2, image:"/sampleReports/Millwal_ J._Cooper.png", alt:"Sample report showing the statistics of Millwal J. Cooper"}
-
-  return [foo, bar, bar2]
+  );
 }

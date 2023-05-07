@@ -26,6 +26,29 @@ export default function App({
         },
       },
     },
+    button: {
+      base: "text-white group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/80 focus:!ring-0 focus:ring-transparent",
+    },
+    tab: {
+      tablist: {
+        tabitem: {
+          styles: {
+            default: {
+              active: {
+                on: "text-[#FF2301]",
+              },
+            },
+          },
+        },
+      },
+    },
+    toggleSwitch: {
+      toggle: {
+        checked: {
+          on: "toggle-bg h-6 w-11 rounded-full border group-focus:ring-4 group-focus:ring-[#FF2301]/25 after:translate-x-full after:border-white  bg-[#FF2301] border-[#FF2301]",
+        },
+      },
+    },
   };
   return (
     <SessionProvider session={session}>

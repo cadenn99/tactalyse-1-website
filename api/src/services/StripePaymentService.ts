@@ -32,12 +32,12 @@ export class StripePaymentService implements PaymentProcessorInterface {
                     product_data: {
                         name: description
                     },
-                    unit_amount: 5000 // in cents
+                    unit_amount: parseFloat(price) * 100 // in cents
                 },
                 quantity: 1
             }],
             expires_at: Math.round(Date.now() / 1000 + 30 * 60),
-            success_url: "https://google.com",
+            success_url: "http://localhost:3000/callback",
             cancel_url: "https://yahoo.com",
         })
 
