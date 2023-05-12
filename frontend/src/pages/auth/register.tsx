@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/general/Header";
 import { useSession, signIn, getSession } from "next-auth/react";
 import Head from "next/head";
 import router from "next/router";

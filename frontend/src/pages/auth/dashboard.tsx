@@ -1,37 +1,40 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import axios from "axios";
-import { Badge, Card, Pagination, Table } from "flowbite-react";
+import Footer from "@/components/general/Footer";
+import Header from "@/components/general/Header";
+import ProtectedRoute from "@/components/general/ProtectedRoute";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { HiCheck, HiClock } from "react-icons/hi";
-import { OrderInterface } from "../../../types/types";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
+import Orders from "@/components/dashboard/customer/Orders";
+import Stats from "@/components/dashboard/employee/Stats";
+import StatsCard from "@/components/dashboard/employee/StatsCard";
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [error, setError] = useState(1);
 
-  useEffect(() => {
-    setLoading(true);
-    if (!session) return;
-    axios({
-      url: "http://164.92.199.46:5000/content/order-history",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    })
-      .then((res) => {
-        setOrders(res.data.orders);
-        setLoading(false);
-      })
-      .catch((e) => console.log(e));
-  }, [session]);
+  /**
+   * Hook for fetching user order-history
+   */
+  const { data: dataUser, error: errorUser } = useSWR(
+    session && !session.user.isEmployee
+      ? {
+          url: "http://localhost:5000/content/order-history",
+          authorization: `Bearer ${session?.accessToken}`,
+        }
+      : null,
+    fetcher
+  );
+
+  /**
+   * Hook for fetching employee stats
+   */
+  const { data: dataEmployee, error: errorEmployee } = useSWR(
+    session && session.user.isEmployee ? null : null,
+    fetcher
+  );
+
+  if (errorUser || errorEmployee)
+    return console.log(errorUser || errorEmployee);
 
   return (
     <div className="px-2">
@@ -51,88 +54,17 @@ export default function Dashboard() {
             </span>
           </h1>
 
-          <Card className="w-full lg:w-[50%] relative flex flex-col justify-center">
-            <h2 className="text-center text-2xl dark:text-white">Orders</h2>
-            <Table hoverable={true}>
-              <Table.Head>
-                <Table.HeadCell>Report ID</Table.HeadCell>
-                <Table.HeadCell className="hidden xs:table-cell">
-                  Player Name
-                </Table.HeadCell>
-                <Table.HeadCell className="hidden sm:table-cell">
-                  Order Date
-                </Table.HeadCell>
-                <Table.HeadCell>Order Status</Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="divide-y">
-                {!loading &&
-                  orders
-                    .sort(
-                      (a: OrderInterface, b: OrderInterface) =>
-                        b.creationTimestamp - a.creationTimestamp
-                    )
-                    .filter((item: OrderInterface) => item.completedPayment)
-                    .slice((pageNumber - 1) * 5, (pageNumber - 1) * 5 + 5)
-                    .map((i: OrderInterface) => (
-                      <Table.Row
-                        className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:cursor-pointer"
-                        key={i._id}
-                      >
-                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate">
-                          {i._id.slice(0, 8)}...
-                        </Table.Cell>
-                        <Table.Cell className="hidden xs:table-cell">
-                          {i.playerName}
-                        </Table.Cell>
-                        <Table.Cell className="hidden sm:table-cell">
-                          {new Date(i.creationTimestamp).getDate() +
-                            "/" +
-                            (new Date(i.creationTimestamp).getMonth() + 1) +
-                            "/" +
-                            new Date(i.creationTimestamp).getFullYear()}
-                        </Table.Cell>
-                        <Table.Cell>
-                          <div className="flex">
-                            <Badge
-                              color={
-                                i.status === "processing" ? "red" : "green"
-                              }
-                              icon={
-                                i.status === "processing" ? HiClock : HiCheck
-                              }
-                              className="self-start pr-3"
-                            >
-                              <span className="capitalize tracking-wider">
-                                {i.status}
-                              </span>
-                            </Badge>
-                          </div>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-              </Table.Body>
-            </Table>
-            <Pagination
-              currentPage={pageNumber}
-              layout="navigation"
-              onPageChange={(e) => {
-                if (
-                  e * 5 -
-                    orders.filter(
-                      (item: OrderInterface) => item.completedPayment
-                    ).length >=
-                  5
-                )
-                  return;
-                setPageNumber(e);
-              }}
-              totalPages={
-                orders.filter((item: OrderInterface) => item.completedPayment)
-                  .length
-              }
-              className="mx-auto"
-            />
-          </Card>
+          {!session?.user.isEmployee && (
+            <Orders orders={dataUser?.orders ?? []} />
+          )}
+          {session?.user.isEmployee && (
+            <Stats>
+              <StatsCard />
+              <StatsCard />
+              <StatsCard />
+              <StatsCard />
+            </Stats>
+          )}
           <Footer />
         </main>
       </ProtectedRoute>

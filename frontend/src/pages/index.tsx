@@ -1,17 +1,25 @@
 import React from "react";
 import Head from "next/head";
-import Header from "../components/Header";
-import Banner from "@/components/Banner";
-import Benefits from "@/components/Benefits";
-import FrequentlyAskedQuestions from "@/components/FrequentlyAskedQuestions";
-import Footer from "@/components/Footer";
-import TimeLineProcess from "@/components/TimeLineProcess";
-import Pricing from "@/components/Pricing";
+import Header from "../components/general/Header";
+import Banner from "@/components/index/Banner";
+import Benefits from "@/components/index/benefits/Benefits";
+import FrequentlyAskedQuestions from "@/components/index/FrequentlyAskedQuestions";
+import Footer from "@/components/general/Footer";
+import TimeLineProcess from "@/components/index/TimeLineProcess";
+import Pricing from "@/components/index/pricing/Pricing";
+import PricingCard from "@/components/index/pricing/PricingCard";
+import { useRouter } from "next/router";
+import BenefitCard from "@/components/index/benefits/BenefitCard";
+import { CgGym } from "react-icons/cg";
+import { FaHandshake } from "react-icons/fa";
+import { TbPigMoney } from "react-icons/tb";
+import { BsPeopleFill } from "react-icons/bs";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
  */
 export default function Home() {
+  const { push } = useRouter();
   return (
     <div className="px-2">
       <Head>
@@ -22,11 +30,43 @@ export default function Home() {
       <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 min-h-screen">
         <Banner />
 
-        <Benefits />
+        <Benefits>
+          <BenefitCard
+            icon={<CgGym className="w-10 h-10 dark:text-white" />}
+            text="Improved player development"
+          />
+          <BenefitCard
+            icon={<FaHandshake className="w-10 h-10 dark:text-white" />}
+            text="Better team cohesion"
+          />
+          <BenefitCard
+            icon={<TbPigMoney className="w-10 h-10 dark:text-white" />}
+            text="Increased revenue"
+          />
+          <BenefitCard
+            icon={<BsPeopleFill className="w-10 h-10 dark:text-white" />}
+            text="Objective analysis"
+          />
+        </Benefits>
 
         <TimeLineProcess />
 
-        <Pricing />
+        <Pricing>
+          <PricingCard
+            title="Tactical Report"
+            price="49,-"
+            reasons={["Detailed Tactical Report", "24/7 support", "1 report"]}
+            cta={() => push("/order")}
+            ctaText="Get Report"
+          />
+          <PricingCard
+            title="Tactical Report"
+            enterprise={true}
+            reasons={["Custom amount", "24/7 support", "Many reports"]}
+            cta={() => push("/contact")}
+            ctaText="Get in contact"
+          />
+        </Pricing>
 
         <FrequentlyAskedQuestions />
 
@@ -35,10 +75,3 @@ export default function Home() {
     </div>
   );
 }
-
-/* General TODO:
- * Replace all HTTP request calls with axios equivalents for better edgecase handling.
- * See about extracting the ComponentSwitcher function into a High Order Component.
- * That thing about routing/rewriting to the backend.
- * A few of the LoggedIn/NoAccess pages are basically identical; extract to one thing
- */

@@ -9,6 +9,8 @@ import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
 import { HiX } from "react-icons/hi";
 import Link from "next/link";
+import ToastComponent from "@/components/general/Toast";
+import { useDark } from "@/hooks/useDark";
 
 function Login() {
   const { data: session } = useSession();
@@ -16,24 +18,12 @@ function Login() {
     message: null,
     error: false,
   });
-
+  useDark();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { push } = useRouter();
-
-  useEffect(() => {
-    if (localStorage.getItem("darkMode") === null) {
-      localStorage.setItem("darkMode", "false");
-    }
-
-    if (localStorage.getItem("darkMode") === "true") {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, []);
 
   const handleLogin: SubmitHandler<LoginInput> = async (values) => {
     setLoading(true);
@@ -66,17 +56,11 @@ function Login() {
         <title>Login | Tactalyse</title>
       </Head>
       {toast.error && (
-        <Toast className="absolute top-[5%] right-[5%] md:top-10 md:right-10">
-          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
-            <HiX className="h-5 w-5" />
-          </div>
-          <div className="ml-3 text-sm font-normal capitalize">
-            {toast.message}
-          </div>
-          <Toast.Toggle
-            onClick={() => setToast({ message: null, error: false })}
-          />
-        </Toast>
+        <ToastComponent
+          toast={toast}
+          setToast={setToast}
+          icon={<HiX className="h-5 w-5" />}
+        />
       )}
       <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
         <div className="absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%]">

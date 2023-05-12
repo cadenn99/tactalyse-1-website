@@ -156,4 +156,27 @@ export class DatabaseService implements DatabaseInterface {
 
         return orderHistory
     }
+
+    /**
+     * Method for retrieving all unfilfilled orders
+     * 
+     */
+    public async findAllUnfulfilledOrders() {
+        return await model('Order').find({ status: "processing" })
+    }
+
+    /**
+     * Method for changing the status to completed
+     * 
+     */
+    public async completeOrder(id: string) {
+        try {
+            await model('Order').updateOne({ _id: id }, { $set: { status: "Completed" } })
+        } catch (err: any) {
+            if (err?.code === 11000) {
+                throw new CError('An order with this ID doesn\'t exists', 409)
+            }
+            throw err
+        }
+    }
 }

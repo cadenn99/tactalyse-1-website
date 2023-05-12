@@ -42,6 +42,7 @@ export class PaymentController {
                 })
         })
 
+        console.log(form)
         if (['/noPayment', '/fulfillOrder'].includes(req.path) && (!form.files.hasOwnProperty('player') || !form.files.hasOwnProperty('league')))
             throw new CError('Missing file', 404)
 
@@ -135,6 +136,8 @@ export class PaymentController {
 
             // TODO: Call script API
 
+            await databaseClient.completeOrder(order._id)
+
             await mailerClient.sendEmail(
                 orderOwner.email,
                 form.fields.id,
@@ -147,7 +150,6 @@ export class PaymentController {
             if (err instanceof CError)
                 return res.status(err.code)
                     .json({ message: err.message })
-
             res.status(500)
                 .json({ message: 'Something went wrong' })
         }
@@ -178,7 +180,8 @@ export class PaymentController {
             )
 
             res.status(200)
-                .json({ message: "Report sent" })
+                .sendFile(form.files.player.filepath)
+            // .json({ message: "Report sent", report: form.files.player.filePath })
         } catch (err: any) {
             if (err instanceof CError)
                 return res.status(err.code)

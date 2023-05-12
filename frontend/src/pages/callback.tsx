@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/general/Header";
 import Head from "next/head";
 
 /**

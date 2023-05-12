@@ -45,7 +45,7 @@ export default function App({
     toggleSwitch: {
       toggle: {
         checked: {
-          on: "toggle-bg h-6 w-11 rounded-full border group-focus:ring-4 group-focus:ring-[#FF2301]/25 after:translate-x-full after:border-white  bg-[#FF2301] border-[#FF2301]",
+          on: "toggle-bg h-6 w-11 rounded-full border group-focus:ring-4 group-focus:!ring-[#FF2301]/25 after:translate-x-full after:border-white  !bg-[#FF2301] !border-[#FF2301]",
         },
       },
     },

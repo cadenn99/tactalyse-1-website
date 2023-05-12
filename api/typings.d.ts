@@ -9,6 +9,8 @@ export interface DatabaseInterface {
     findUserByOrder: Function
     completePayment: Function
     findUserOrderHistory: Function
+    findAllUnfulfilledOrders: Function
+    completeOrder: Function
 }
 
 export interface PaymentProcessorInterface {

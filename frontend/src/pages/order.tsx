@@ -1,10 +1,10 @@
-import Header from "@/components/Header";
+import Header from "@/components/general/Header";
 import Head from "next/head";
-import Footer from "@/components/Footer";
-import ExampleReports from "@/components/ExampleReports";
-import Purchase from "@/components/Purchase";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Disclaimer from "@/components/Disclaimer";
+import Footer from "@/components/general/Footer";
+import ExampleReports from "@/components/order/ExampleReports";
+import Purchase from "@/components/order/Purchase";
+import ProtectedRoute from "@/components/general/ProtectedRoute";
+import Disclaimer from "@/components/order/Disclaimer";
 import { AiOutlineShopping } from "react-icons/ai";
 
 /**

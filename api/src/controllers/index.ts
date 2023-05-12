@@ -1,3 +1,4 @@
 export { AuthController } from './AuthController'
 export { PaymentController } from './PaymentController'
-export { UserController } from './UserController'
+export { CustomerController } from './CustomerController'
+export { EmployeeController } from './EmployeeController'

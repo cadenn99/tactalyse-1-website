@@ -8,7 +8,7 @@ function FrequentlyAskedQuestions() {
         Frequently Asked Questions
       </h1>
       <Accordion
-        collapseAll={true}
+        collapseAll={false}
         className="bg-white shadow-md mt-5 dark:bg-[#1F2937]"
       >
         <Accordion.Panel>

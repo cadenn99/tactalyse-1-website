@@ -1,15 +1,33 @@
-import Footer from "@/components/Footer";
-import Generator from "@/components/Generator";
-import FulFillOrder from "@/components/Generator";
-import Header from "@/components/Header";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import Footer from "@/components/general/Footer";
+import Generator from "@/components/handleOrders/Generator";
+import FulFillOrder from "@/components/handleOrders/Generator";
+import Header from "@/components/general/Header";
+import ProtectedRoute from "@/components/general/ProtectedRoute";
 import Head from "next/head";
 import React from "react";
 import { BiPackage } from "react-icons/bi";
+import OutstandingOrders from "@/components/handleOrders/OutstandingOrders";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
+import { Spinner } from "flowbite-react";
 
-function handleOrders() {
+function HandleOrders() {
+  const { data: session } = useSession();
+  const { data, error } = useSWR(
+    session
+      ? {
+          url: "http://localhost:5000/employee/unfilfilled-orders",
+          authorization: `Bearer ${session?.accessToken}`,
+        }
+      : null,
+    fetcher
+  );
+
+  if (error) return console.log(error);
+
   return (
-    <div>
+    <div className="px-2">
       <Head>
         <title>Fulfillment | Tactalyse</title>
       </Head>
@@ -32,7 +50,12 @@ function handleOrders() {
               Handle orders
             </h1>
           </div>
-          <div className="flex gap-1">
+          <div className="flex flex-col-reverse gap-5 md:flex-row">
+            {data ? (
+              <OutstandingOrders orders={data?.unfilfilledOrders || []} />
+            ) : (
+              <Spinner />
+            )}
             <Generator />
           </div>
 
@@ -43,4 +66,4 @@ function handleOrders() {
   );
 }
 
-export default handleOrders;
+export default HandleOrders;

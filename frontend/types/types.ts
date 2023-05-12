@@ -12,6 +12,7 @@ export interface OrderInterface {
   playerName: string,
   creationTimestamp: number
   status: string
+  orderId: string
   completedPayment: boolean
 }
 /**
