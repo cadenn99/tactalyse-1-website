@@ -48,16 +48,19 @@ function NotLoggedIn() {
   const onSubmit: SubmitHandler<LoginInput> = async (values) => {
     setLoading(true);
 
-    await fetch("/backend/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        email: values.email,
-        password: values.password,
-      }),
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/backend/auth/register`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((res) => {
         setLoading(false);
         switch (res.status) {
