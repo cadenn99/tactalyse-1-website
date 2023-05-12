@@ -36,7 +36,6 @@ interface FormValues {
  * @returns Response object
  */
 export const purchaseReport = async (form: FormValues, session: Session) => {
-    console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/pay`
 
     return await axios({

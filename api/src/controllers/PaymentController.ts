@@ -42,7 +42,6 @@ export class PaymentController {
                 })
         })
 
-        console.log(form)
         if (['/noPayment', '/fulfillOrder'].includes(req.path) && (!form.files.hasOwnProperty('player') || !form.files.hasOwnProperty('league')))
             throw new CError('Missing file', 404)
 
