@@ -118,10 +118,10 @@ function NotLoggedIn() {
             {...register("confirmPassword", { required: true, minLength: 8 })}
           />
         </label>
-        {watch("password") !== watch("confirmPassword") &&
+        {/* {watch("password") !== watch("confirmPassword") &&
           getValues("confirmPassword") && (
             <p className="error">Passwords don&apos;t match!</p>
-          )}
+          )} */}
       </div>
       {loading && (
         <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p>
