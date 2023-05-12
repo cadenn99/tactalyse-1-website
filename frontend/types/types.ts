@@ -12,6 +12,7 @@ export interface OrderInterface {
   playerName: string,
   creationTimestamp: number
   status: string
+  orderId: string
   completedPayment: boolean
 }
 /**
@@ -29,6 +30,7 @@ export interface CarouselImage {
 export interface LoginInput {
   email: string,
   password: string,
+  confirmPassword?: string
 }
 
 /**

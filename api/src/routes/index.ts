@@ -1,3 +1,4 @@
 export { authRoute } from './AuthRoute'
 export { paymentRoute } from './PaymentRoute'
-export { userRoute } from './UserRoute'
+export { customerRoute } from './CustomerRoute'
+export { employeeRoute } from './EmployeeRoute'

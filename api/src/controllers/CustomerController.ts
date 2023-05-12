@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 /**
  * CLEAN UP!!!!
  */
-export class UserController {
+export class CustomerController {
     public async getOrders(req: Request, res: Response) {
         try {
             const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
