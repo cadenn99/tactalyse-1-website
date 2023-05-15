@@ -8,6 +8,7 @@ import { fetcher } from "@/utils/fetcher";
 import Orders from "@/components/dashboard/customer/Orders";
 import Stats from "@/components/dashboard/employee/Stats";
 import StatsCard from "@/components/dashboard/employee/StatsCard";
+import { BiPackage } from "react-icons/bi";
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -18,7 +19,7 @@ export default function Dashboard() {
   const { data: dataUser, error: errorUser } = useSWR(
     session && !session.user.isEmployee
       ? {
-          url: "http://localhost:5000/content/order-history",
+          url: process.env.NEXT_PUBLIC_BACKEND_URL + "/content/order-history",
           authorization: `Bearer ${session?.accessToken}`,
         }
       : null,
@@ -59,10 +60,26 @@ export default function Dashboard() {
           )}
           {session?.user.isEmployee && (
             <Stats>
-              <StatsCard />
-              <StatsCard />
-              <StatsCard />
-              <StatsCard />
+              <StatsCard
+                icon={<BiPackage className="dark:text-white text-4xl" />}
+              >
+                20 orders
+              </StatsCard>
+              <StatsCard
+                icon={<BiPackage className="dark:text-white text-4xl" />}
+              >
+                Some cool stat
+              </StatsCard>
+              <StatsCard
+                icon={<BiPackage className="dark:text-white text-4xl" />}
+              >
+                Another one
+              </StatsCard>
+              <StatsCard
+                icon={<BiPackage className="dark:text-white text-4xl" />}
+              >
+                And another one
+              </StatsCard>
             </Stats>
           )}
           <Footer />
