@@ -1,4 +1,4 @@
-import { Card, Pagination, Table } from "flowbite-react";
+import { Card, Pagination, Table, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
 import { OrderInterface } from "../../../types/types";
 import { TfiReload } from "react-icons/tfi";
@@ -36,12 +36,16 @@ function OutstandingOrders({ orders }: Props) {
                   className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:cursor-pointer"
                   key={order._id}
                 >
-                  <Table.Cell
-                    className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate"
-                    onClick={() => navigator.clipboard.writeText(order.orderId)}
-                  >
-                    {order?.orderId.slice(0, 8)}...
-                  </Table.Cell>
+                  <Tooltip content="Copy to clipboard" placement="left">
+                    <Table.Cell
+                      className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate"
+                      onClick={() =>
+                        navigator.clipboard.writeText(order.orderId)
+                      }
+                    >
+                      {order?.orderId.slice(0, 8)}...
+                    </Table.Cell>
+                  </Tooltip>
                   <Table.Cell
                     className="table-cell"
                     onClick={() =>
