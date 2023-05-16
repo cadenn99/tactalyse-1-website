@@ -24,7 +24,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto sticky top-0 py-4 z-50 nav-gradient">
+    <div className="max-w-7xl mx-auto sticky top-0 py-4 z-50 nav-gradient dark:nav-gradient-dark">
       <Navbar fluid={true} rounded={true} className="shadow-md rounded-md">
         <Navbar.Brand href="/" className="grid-column">
           <img
