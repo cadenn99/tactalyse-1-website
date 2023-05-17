@@ -5,15 +5,18 @@ interface Props {
     changeError: React.Dispatch<any>
 }
 export const errorHandler = ({ response, changeError }: Props) => {
-    changeError({
-        error: response.status === 200 ? false : true,
-        message: response.data?.message ?? "Success",
-    });
-
-    setTimeout(() => {
+    return new Promise((resolve) => {
         changeError({
-            error: false,
-            message: "",
+            error: response.status === 200 ? false : true,
+            message: response.data?.message ?? "Success, you will be redirected in a moment",
         });
-    }, 5000);
+
+        setTimeout(() => {
+            changeError({
+                error: false,
+                message: "",
+            });
+            resolve({})
+        }, 3000);
+    })
 }

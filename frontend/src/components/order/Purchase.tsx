@@ -20,6 +20,8 @@ function Purchase() {
     error: false,
     message: "",
   });
+  const { push } = useRouter();
+
   const { data: session } = useSession();
 
   const submitForm = async (data: FormValues) => {
@@ -30,7 +32,9 @@ function Purchase() {
 
     setLoading(false);
 
-    errorHandler({ response: report, changeError: setRequestState });
+    await errorHandler({ response: report, changeError: setRequestState });
+
+    push(report.data.checkOutUrl);
   };
 
   return (
