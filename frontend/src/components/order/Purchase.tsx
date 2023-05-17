@@ -61,8 +61,8 @@ function Purchase() {
           {...register("playerName")}
         />
         <div className="flex gap-3 items-end justify-end">
-          <span className="text-[#9CA3AF]">Total:</span>
-          <span className="text-[#9CA3AF] text-3xl">€49,-</span>
+          <span className="text-black dark:text-[#9CA3AF]">Total:</span>
+          <span className="text-black dark:text-[#9CA3AF] text-3xl">€49,-</span>
         </div>
         <Button
           type="submit"

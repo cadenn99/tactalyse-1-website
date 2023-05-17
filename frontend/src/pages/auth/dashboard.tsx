@@ -5,17 +5,11 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
-import Orders from "@/components/dashboard/customer/Orders";
-import Stats from "@/components/dashboard/employee/Stats";
-import StatsCard from "@/components/dashboard/employee/StatsCard";
-import { BiPackage } from "react-icons/bi";
+import Orders from "@/components/dashboard/Orders";
 
 export default function Dashboard() {
   const { data: session } = useSession();
 
-  /**
-   * Hook for fetching user order-history
-   */
   const { data: dataUser, error: errorUser } = useSWR(
     session && !session.user.isEmployee
       ? {
@@ -26,16 +20,7 @@ export default function Dashboard() {
     fetcher
   );
 
-  /**
-   * Hook for fetching employee stats
-   */
-  const { data: dataEmployee, error: errorEmployee } = useSWR(
-    session && session.user.isEmployee ? null : null,
-    fetcher
-  );
-
-  if (errorUser || errorEmployee)
-    return console.log(errorUser || errorEmployee);
+  if (errorUser) return console.log(errorUser);
 
   return (
     <div className="px-2">
@@ -55,33 +40,8 @@ export default function Dashboard() {
             </span>
           </h1>
 
-          {!session?.user.isEmployee && (
-            <Orders orders={dataUser?.orders ?? []} />
-          )}
-          {session?.user.isEmployee && (
-            <Stats>
-              <StatsCard
-                icon={<BiPackage className="dark:text-white text-4xl" />}
-              >
-                20 orders
-              </StatsCard>
-              <StatsCard
-                icon={<BiPackage className="dark:text-white text-4xl" />}
-              >
-                Some cool stat
-              </StatsCard>
-              <StatsCard
-                icon={<BiPackage className="dark:text-white text-4xl" />}
-              >
-                Another one
-              </StatsCard>
-              <StatsCard
-                icon={<BiPackage className="dark:text-white text-4xl" />}
-              >
-                And another one
-              </StatsCard>
-            </Stats>
-          )}
+          <Orders orders={dataUser?.orders ?? []} />
+
           <Footer />
         </main>
       </ProtectedRoute>

@@ -28,5 +28,3 @@ export default function Page() {
     </div>
   );
 }
-
-//TODO: Style this page i guess

@@ -1,4 +1,4 @@
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { MdDashboard, MdLogout } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
@@ -6,6 +6,7 @@ import { BiPackage } from "react-icons/bi";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BsDiscord } from "react-icons/bs";
 /**
  * This function builds the header seen on the site.
  * @returns Header component.

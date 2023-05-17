@@ -28,6 +28,7 @@ export class DatabaseService implements DatabaseInterface {
             const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS as string));
             const hash = await bcrypt.hash(password, salt);
 
+            console.log(email)
             return (await mongoose.model('User')
                 .create({ email, hash })).toJSON();
         } catch (err: any) {

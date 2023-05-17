@@ -6,6 +6,9 @@
  */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+
+  },
   async rewrites() {
     return [
       //     {
@@ -23,6 +26,10 @@ const nextConfig = {
       {
         source: "/backend/checkout/pay",
         destination: `http://164.92.199.46:5000/checkout/pay`
+      },
+      {
+        source: "/backend/auth/register",
+        destination: `http://164.92.199.46:5000/auth/register`
       }
     ];
   },

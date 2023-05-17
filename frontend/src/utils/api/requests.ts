@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Session } from "next-auth";
+import { LoginInput } from "../../../types/types";
 
 /**
  * Function for posting the form to the server to generate the report
@@ -43,5 +44,19 @@ export const purchaseReport = async (form: FormValues, session: Session) => {
             Authorization: `Bearer ${session?.accessToken}`
         },
         data: form
+    })
+}
+
+/**
+ * Method for registering a new account
+ * 
+ * @param values 
+ * @returns 
+ */
+export const register = async (values: LoginInput) => {
+    return await axios({
+        url: `/backend/auth/register`,
+        method: "POST",
+        data: values
     })
 }

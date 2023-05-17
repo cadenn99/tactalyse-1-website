@@ -17,15 +17,15 @@ const ProtectedRoute: any = ({
   const { status, data: session } = useSession();
   const { push } = useRouter();
 
-  if (employeeOnly) {
-    if (isBrowser() && session && !session.user.isEmployee) push("/");
-  }
+  if (isBrowser() && session) {
+    if (
+      (employeeOnly && !session.user.isEmployee) ||
+      (customerOnly && session.user.isEmployee)
+    )
+      push("/");
 
-  if (customerOnly) {
-    if (isBrowser() && session && session.user.isEmployee) push("/");
+    return children;
   }
-
-  if (isBrowser() && session) return children;
 
   if (isBrowser() && status !== "loading") push("/auth/login");
 };
