@@ -6,26 +6,26 @@
  */
 const nextConfig = {
   reactStrictMode: true,
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/backend/auth/register",
-  //       destination: `${process.env.BACKEND_URL}/auth/register`
-  //     },
-  //     {
-  //       source: "/backend/checkout/noPayment",
-  //       destination: `${process.env.BACKEND_URL}/checkout/noPayment`
-  //     },
-  //     {
-  //       source: "/backend/checkout/fullfillOrder",
-  //       destination: `${process.env.BACKEND_URL}/checkout/fulfillOrder`
-  //     },
-  //     {
-  //       source: "/backend/checkout/pay",
-  //       destination: `${process.env.BACKEND_URL}/checkout/pay`
-  //     }
-  //   ];
-  // },
+  async rewrites() {
+    return [
+      //     {
+      //       source: "/backend/auth/register",
+      //       destination: `${process.env.BACKEND_URL}/auth/register`
+      //     },
+      //     {
+      //       source: "/backend/checkout/noPayment",
+      //       destination: `${process.env.BACKEND_URL}/checkout/noPayment`
+      //     },
+      //     {
+      //       source: "/backend/checkout/fullfillOrder",
+      //       destination: `${process.env.BACKEND_URL}/checkout/fulfillOrder`
+      //     },
+      {
+        source: "/backend/checkout/pay",
+        destination: `${process.env.BACKEND_URL}/checkout/pay`
+      }
+    ];
+  },
   images: {
     domains: ["www.tactalyse.com"]
   }

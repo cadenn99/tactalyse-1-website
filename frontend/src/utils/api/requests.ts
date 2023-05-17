@@ -36,11 +36,9 @@ interface FormValues {
  * @returns Response object
  */
 export const purchaseReport = async (form: FormValues, session: Session) => {
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/pay`
-
     return await axios({
         method: "POST",
-        url,
+        url: "/backend/checkout/pay",
         headers: {
             Authorization: `Bearer ${session?.accessToken}`
         },
