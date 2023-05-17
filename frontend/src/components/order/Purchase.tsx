@@ -23,6 +23,7 @@ function Purchase() {
   const { data: session } = useSession();
 
   const submitForm = async (data: FormValues) => {
+    console.log(data);
     setLoading(true);
 
     const report = await purchaseReport(data, session!);

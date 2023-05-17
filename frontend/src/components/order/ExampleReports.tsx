@@ -8,21 +8,21 @@ function ExampleReports() {
       <Tabs.Group style="default" className="flex">
         <Tabs.Item title="Player 1">
           <embed
-            className="w-full h-[400px]"
+            className="w-full h-[400px] rounded-md"
             type="application/pdf"
             src="/report_1.pdf"
           />
         </Tabs.Item>
         <Tabs.Item title="Player 2">
           <embed
-            className="w-full h-[400px]"
+            className="w-full h-[400px] rounded-md"
             type="application/pdf"
             src="/report_1.pdf"
           />
         </Tabs.Item>
         <Tabs.Item title="Player 3">
           <embed
-            className="w-full h-[400px]"
+            className="w-full h-[400px] rounded-md"
             type="application/pdf"
             src="/report_1.pdf"
           />
