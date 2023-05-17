@@ -39,25 +39,7 @@ export default function Header() {
           />
         </Navbar.Brand>
 
-        {session === null ? (
-          <div className="flex md:order-2 gap-1">
-            <Button
-              className="hidden md:block rounded-md !bg-transparent hover:!bg-transparent hover:!text-[#FF2301] !text-black dark:!text-[#9CA3AF] dark:hover:!text-[#FF2301]"
-              size="sm"
-              onClick={() => push("/auth/login")}
-            >
-              Sign In
-            </Button>
-            <Button
-              className="hidden md:block"
-              size="sm"
-              onClick={() => push("/auth/register")}
-            >
-              Sign up
-            </Button>
-            <Navbar.Toggle className="focus:!ring-0" />
-          </div>
-        ) : (
+        {session ? (
           <div className="flex md:order-2 gap-1 items-center">
             <Dropdown
               label={
@@ -110,6 +92,24 @@ export default function Header() {
                 Logout
               </Dropdown.Item>
             </Dropdown>
+            <Navbar.Toggle className="focus:!ring-0" />
+          </div>
+        ) : (
+          <div className="flex md:order-2 gap-1">
+            <Button
+              className="hidden md:block rounded-md !bg-transparent hover:!bg-transparent hover:!text-[#FF2301] !text-black dark:!text-[#9CA3AF] dark:hover:!text-[#FF2301]"
+              size="sm"
+              onClick={() => push("/auth/login")}
+            >
+              Sign In
+            </Button>
+            <Button
+              className="hidden md:block"
+              size="sm"
+              onClick={() => push("/auth/register")}
+            >
+              Sign up
+            </Button>
             <Navbar.Toggle className="focus:!ring-0" />
           </div>
         )}
