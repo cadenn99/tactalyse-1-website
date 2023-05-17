@@ -22,7 +22,7 @@ const nextConfig = {
       //     },
       {
         source: "/backend/checkout/pay",
-        destination: `${process.env.BACKEND_URL}/checkout/pay`
+        destination: `http://164.92.199.46:5000/checkout/pay`
       }
     ];
   },
