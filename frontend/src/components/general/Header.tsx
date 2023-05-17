@@ -21,7 +21,7 @@ export default function Header() {
       localStorage.setItem("darkMode", "false");
     }
     setDarkMode(localStorage.getItem("darkMode") === "true");
-  }, [localStorage]);
+  }, []);
 
   return (
     <div
