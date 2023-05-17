@@ -21,10 +21,12 @@ export default function Header() {
       localStorage.setItem("darkMode", "false");
     }
     setDarkMode(localStorage.getItem("darkMode") === "true");
-  }, []);
+  }, [localStorage]);
 
   return (
-    <div className="max-w-7xl mx-auto sticky top-0 py-4 z-50 nav-gradient !dark:nav-gradient-dark">
+    <div
+      className={`max-w-7xl mx-auto sticky top-0 py-4 z-50 bg-gradient-to-b from-[#f3f4f6e6] dark:from-[#111827e6]`}
+    >
       <Navbar fluid={true} rounded={true} className="shadow-md rounded-md">
         <Navbar.Brand href="/" className="grid-column">
           <img
