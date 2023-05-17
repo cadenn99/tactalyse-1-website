@@ -17,7 +17,12 @@ function ExampleReports() {
           ></object>
         </Tabs.Item>
         <Tabs.Item title="Player 3">
-          <object data="/report_1.pdf" className="w-full h-[400px]"></object>
+          {/* <object data="/report_1.pdf" className="w-full h-[400px]"></object> */}
+          <embed
+            className="w-full h-[400px]"
+            type="application/pdf"
+            src="/report_1.pdf"
+          />
         </Tabs.Item>
       </Tabs.Group>
     </Card>

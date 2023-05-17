@@ -67,18 +67,22 @@ export default function Header() {
                   </span>
                 </div>
               </Dropdown.Header>
-              <Dropdown.Item
-                icon={MdDashboard}
-                onClick={() => push("/auth/dashboard")}
-              >
-                Dashboard
-              </Dropdown.Item>
-              <Dropdown.Item
-                icon={AiOutlineShopping}
-                onClick={() => push("/order")}
-              >
-                Buy report
-              </Dropdown.Item>
+              {!session?.user.isEmployee && (
+                <>
+                  <Dropdown.Item
+                    icon={MdDashboard}
+                    onClick={() => push("/auth/dashboard")}
+                  >
+                    Dashboard
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    icon={AiOutlineShopping}
+                    onClick={() => push("/order")}
+                  >
+                    Buy report
+                  </Dropdown.Item>
+                </>
+              )}
               {session?.user.isEmployee && (
                 <Dropdown.Item
                   icon={BiPackage}

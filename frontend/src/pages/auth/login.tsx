@@ -105,7 +105,7 @@ function Login() {
                     <Spinner color={"gray"} size={"sm"}></Spinner>
                   }
                 >
-                  {!loading && <span>Sign up</span>}
+                  {!loading && <span>Sign in</span>}
                 </Button>
                 <span className="text-right dark:text-[#D1D5DB]">
                   Don&apos;t have an account?{" "}

@@ -42,7 +42,7 @@ export default function Dashboard() {
       <Head>
         <title>Dashboard | Tactalyse</title>
       </Head>
-      <ProtectedRoute employeeOnly={false}>
+      <ProtectedRoute customerOnly={true}>
         <Header />
         <main
           className="max-w-7xl mx-auto mt-0 flex flex-col gap-5"

@@ -18,7 +18,7 @@ export default function ComponentSwitcher() {
         <title>Order | Tactalyse</title>
       </Head>
 
-      <ProtectedRoute>
+      <ProtectedRoute customerOnly={true}>
         <Header />
         <main
           className="max-w-7xl mx-auto mt-0 flex flex-col gap-5"
