@@ -17,7 +17,9 @@ function HandleOrders() {
   const { data, error } = useSWR(
     session
       ? {
-          url: process.env.NEXT_PUBLIC_BACKEND_URL +"/employee/unfilfilled-orders",
+          url:
+            process.env.NEXT_PUBLIC_BACKEND_URL +
+            "/employee/unfilfilled-orders",
           authorization: `Bearer ${session?.accessToken}`,
         }
       : null,
@@ -54,7 +56,9 @@ function HandleOrders() {
             {data ? (
               <OutstandingOrders orders={data?.unfilfilledOrders || []} />
             ) : (
-              <Spinner />
+              <div className="w-full md:w-[50%] flex items-center justify-center">
+                <Spinner color={"gray"} size={"md"} />
+              </div>
             )}
             <Generator />
           </div>
