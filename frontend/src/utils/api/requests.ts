@@ -39,7 +39,7 @@ interface FormValues {
 export const purchaseReport = async (form: FormValues, session: Session) => {
     return await axios({
         method: "POST",
-        url: "/backend/checkout/pay",
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/pay`,
         headers: {
             Authorization: `Bearer ${session?.accessToken}`
         },
@@ -55,7 +55,7 @@ export const purchaseReport = async (form: FormValues, session: Session) => {
  */
 export const register = async (values: LoginInput) => {
     return await axios({
-        url: `/backend/auth/register`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
         method: "POST",
         data: values
     })

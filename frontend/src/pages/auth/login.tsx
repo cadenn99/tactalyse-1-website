@@ -45,7 +45,8 @@ function Login() {
 
       setLoading(false);
 
-      if (res?.url) push(res.url);
+      console.log(res);
+      // if (res?.url) push(res.url);
     } catch (err: any) {
       setToast({
         message: err.response.data.message,
