@@ -19,6 +19,7 @@ export default NextAuth({
           data: credentials,
         })
 
+        console.log(res)
         if (res.status !== 200) {
           throw new Error(res.data.message)
         }
