@@ -14,6 +14,7 @@ import { CgGym } from "react-icons/cg";
 import { FaHandshake } from "react-icons/fa";
 import { TbPigMoney } from "react-icons/tb";
 import { BsPeopleFill } from "react-icons/bs";
+import Discord from "@/components/index/Discord";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
@@ -69,6 +70,8 @@ export default function Home() {
         </Pricing>
 
         <FrequentlyAskedQuestions />
+
+        <Discord />
 
         <Footer />
       </main>

@@ -20,16 +20,21 @@ function Purchase() {
     error: false,
     message: "",
   });
+  const { push } = useRouter();
+
   const { data: session } = useSession();
 
   const submitForm = async (data: FormValues) => {
+    console.log(data);
     setLoading(true);
 
     const report = await purchaseReport(data, session!);
 
     setLoading(false);
 
-    errorHandler({ response: report, changeError: setRequestState });
+    await errorHandler({ response: report, changeError: setRequestState });
+
+    push(report.data.checkOutUrl);
   };
 
   return (
@@ -56,8 +61,8 @@ function Purchase() {
           {...register("playerName")}
         />
         <div className="flex gap-3 items-end justify-end">
-          <span className="text-[#9CA3AF]">Total:</span>
-          <span className="text-[#9CA3AF] text-3xl">€49,-</span>
+          <span className="text-black dark:text-[#9CA3AF]">Total:</span>
+          <span className="text-black dark:text-[#9CA3AF] text-3xl">€49,-</span>
         </div>
         <Button
           type="submit"

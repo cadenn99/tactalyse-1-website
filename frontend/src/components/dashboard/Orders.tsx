@@ -1,7 +1,7 @@
 import { Badge, Card, Pagination, Table } from "flowbite-react";
 import React, { useState } from "react";
 import { HiClock, HiCheck } from "react-icons/hi";
-import { OrderInterface } from "../../../../types/types";
+import { OrderInterface } from "../../../types/types";
 
 interface Props {
   orders: OrderInterface[];

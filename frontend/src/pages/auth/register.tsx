@@ -1,175 +1,135 @@
-import Header from "@/components/general/Header";
-import { useSession, signIn, getSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import router from "next/router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert } from "@material-tailwind/react";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { LoginInput } from "../../../types/types";
+import { LoginInput, ToastInterface } from "../../../types/types";
+import { useRouter } from "next/router";
+import { Button, Card, Label, Spinner, TextInput, Toast } from "flowbite-react";
+import { MdAlternateEmail } from "react-icons/md";
+import { BsKeyFill } from "react-icons/bs";
+import { HiX } from "react-icons/hi";
+import Link from "next/link";
+import ToastComponent from "@/components/general/Toast";
+import { useDark } from "@/hooks/useDark";
+import { register } from "@/utils/api/requests";
 
-/**
- * This function loads when the user is already logged in.
- * @returns HTML for logged in users who shouldn't be here.
- */
-function LoggedIn() {
-  return (
-    <h1>you&apos;re already logged in, stupid</h1> //TODO: style this page
-  );
-}
-
-/**
- * This function loads the actual /register page.
- * @returns HTML for people who are not logged in yet.
- */
-function NotLoggedIn() {
-  /**
-   * Constants for dealing with the inputs on this page.
-   */
-  const {
-    register,
-    handleSubmit,
-    watch,
-    getValues,
-    formState: { errors },
-  } = useForm<LoginInput>();
-
-  /**
-   * Constants for managing state on this page.
-   */
+function Register() {
+  const { data: session } = useSession();
+  const [toast, setToast] = useState<ToastInterface>({
+    message: null,
+    error: false,
+  });
+  useDark();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  /**
-   * This constant deals with the backend and its' response.
-   * @param values inputs of the form Inputs.
-   */
-  const onSubmit: SubmitHandler<LoginInput> = async (values) => {
-    setLoading(true);
+  const { push } = useRouter();
 
-    await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/backend/auth/register`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        setLoading(false);
-        switch (res.status) {
-          case 500:
-            router.push("/serverError");
-            break;
-          case 200:
-            setSuccess(true);
-            setError(null);
-            break;
-          default:
-            res.json().then((data) => {
-              setError(data.message);
-              setLoading(false);
-            });
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        router.push("/serverError");
-      })
-      .finally(() => {
-        setLoading(false);
+  const handleRegister: SubmitHandler<LoginInput> = async (values) => {
+    try {
+      setLoading(true);
+
+      const res = await register(values);
+
+      if (res?.status !== 200)
+        setToast({
+          message: res.data.message,
+          error: true,
+        });
+      else
+        setToast({
+          message: "Registered succesfully",
+          error: false,
+        });
+
+      setLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      setToast({
+        message: err.response.data.message,
+        error: true,
       });
+    }
   };
 
-  return (
-    <form className="form">
-      <h1 className="text-4xl font-semibold">Sign Up</h1>
-      <div className="space-y-2">
-        <label className="inline-block w-full">
-          <input
-            type="email"
-            placeholder="Email"
-            className="input"
-            {...register("email", { required: true })}
-          />
-          {errors.email && <p className="error">Please enter a valid email.</p>}
-        </label>
-        <label className="inline-block w-full">
-          <input
-            type="password"
-            placeholder="Password"
-            className="input"
-            {...register("password", { required: true, minLength: 8 })}
-          />
-          {errors.password && (
-            <p className="error">
-              Please enter a password of at least 8 characters.
-            </p>
-          )}
-        </label>
-        <label className="inline-block w-full">
-          <input
-            type="password"
-            placeholder="Confirmation Password"
-            className="input"
-            {...register("confirmPassword", { required: true, minLength: 8 })}
-          />
-        </label>
-        {/* {watch("password") !== watch("confirmPassword") &&
-          getValues("confirmPassword") && (
-            <p className="error">Passwords don&apos;t match!</p>
-          )} */}
-      </div>
-      {loading && (
-        <p className="p-1 text-[14px] font-light text-orange-400">Loading...</p>
-      )}{" "}
-      {/*TODO: add loading icon/gif thing */}
-      {error != null && <p className="error">{error}</p>}
-      <button
-        onClick={handleSubmit(onSubmit)}
-        type="submit"
-        className="w-full rounded bg-[#ff2301] py-3 font-semibold"
-      >
-        Sign Up
-      </button>
-      {success && (
-        <Alert
-          className="max-w-screen-md justify-center"
-          icon={<CheckCircleIcon className="mt-px h-6 w-6" />}
-        >
-          Signup successful! You can now login on the Sign in page
-        </Alert>
-      )}
-    </form>
-  );
-}
-
-/**
- * This funciton loads the appropriate function depending on session state.
- * @returns HTML for this page.
- */
-export default function ComponentSwitcher() {
-  const { data: session } = useSession();
+  useMemo(() => {
+    if (session) push("/");
+  }, [session, push]);
 
   return (
-    <div className="toplevel">
+    <div>
       <Head>
-        <title>Tactalyse</title>
-        <meta
-          name="description"
-          content="Register page for the Tactalyse PDF generation service"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Login | Tactalyse</title>
       </Head>
-      <Header />
-      <main>{(session && <LoggedIn />) || <NotLoggedIn />}</main>
+      {toast.error && (
+        <ToastComponent
+          toast={toast}
+          setToast={setToast}
+          icon={<HiX className="h-5 w-5" />}
+        />
+      )}
+      <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
+        <div className="absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%]">
+          <div className="w-[400px] p-4 max-w-[100vw]">
+            <Card className="w-full">
+              <img
+                src="../logo_dark.png"
+                className="hidden dark:block w-[50%] mx-auto cursor-pointer"
+                onClick={() => push("/")}
+              />
+              <img
+                src="https://www.tactalyse.com/wp-content/uploads/2019/07/tactalyse-sport-analyse.png"
+                className="dark:hidden w-[50%] mx-auto cursor-pointer"
+                onClick={() => push("/")}
+              />
+              <form className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="email" value="Email" />
+                  <TextInput
+                    id="email"
+                    type="text"
+                    sizing={"md"}
+                    icon={MdAlternateEmail}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="password" value="Password" />
+                  <TextInput
+                    id="password"
+                    type="password"
+                    sizing={"md"}
+                    icon={BsKeyFill}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button
+                  className="mt-3"
+                  onClick={() => handleRegister({ email, password })}
+                  isProcessing={loading}
+                  processingSpinner={
+                    <Spinner color={"gray"} size={"sm"}></Spinner>
+                  }
+                >
+                  {!loading && <span>Sign up</span>}
+                </Button>
+                <span className="text-right dark:text-[#D1D5DB]">
+                  Already have an account?
+                  <Link
+                    href="/auth/login"
+                    className="font-bold dark:text-white"
+                  >
+                    Sign in!
+                  </Link>
+                </span>
+              </form>
+            </Card>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
+
+export default Register;

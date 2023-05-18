@@ -13,12 +13,13 @@ import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
 
 function Login() {
+  useDark();
   const { data: session } = useSession();
   const [toast, setToast] = useState<ToastInterface>({
     message: null,
     error: false,
   });
-  useDark();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,24 +27,31 @@ function Login() {
   const { push } = useRouter();
 
   const handleLogin: SubmitHandler<LoginInput> = async (values) => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: values.email,
-      password: values.password,
-      callbackUrl: `${window.location.origin}`,
-    });
-
-    if (res?.error)
-      setToast({
-        message: res.error,
-        error: true,
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+        callbackUrl: `${window.location.origin}`,
       });
 
-    setLoading(false);
+      if (res?.error)
+        setToast({
+          message: res.error,
+          error: true,
+        });
 
-    if (res?.url) push(res.url);
+      setLoading(false);
+
+      if (res?.url) push(res.url);
+    } catch (err: any) {
+      setToast({
+        message: err.response.data.message,
+        error: true,
+      });
+    }
   };
 
   useMemo(() => {
@@ -105,7 +113,7 @@ function Login() {
                     <Spinner color={"gray"} size={"sm"}></Spinner>
                   }
                 >
-                  {!loading && <span>Sign up</span>}
+                  {!loading && <span>Sign in</span>}
                 </Button>
                 <span className="text-right dark:text-[#D1D5DB]">
                   Don&apos;t have an account?{" "}

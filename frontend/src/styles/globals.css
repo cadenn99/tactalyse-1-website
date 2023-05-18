@@ -28,16 +28,6 @@
     font-family: 'Ropa Sans', sans-serif;
   }
 
-  .nav-gradient{
-    background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(243,244,246, 0.9))
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .nav-gradient-dark {
-      background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(17, 24, 39, 0.9)) !important;
-    }
-  }
-
   /* Restyle flowbit */
   #menu > ul {
     gap: 0.5rem;

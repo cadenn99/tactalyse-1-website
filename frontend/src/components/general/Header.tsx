@@ -1,4 +1,4 @@
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { MdDashboard, MdLogout } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
@@ -6,6 +6,7 @@ import { BiPackage } from "react-icons/bi";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BsDiscord } from "react-icons/bs";
 /**
  * This function builds the header seen on the site.
  * @returns Header component.
@@ -24,7 +25,9 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto sticky top-0 py-4 z-50 nav-gradient dark:nav-gradient-dark">
+    <div
+      className={`max-w-7xl mx-auto sticky top-0 py-4 z-50 bg-gradient-to-b from-[#f3f4f6e6] dark:from-[#111827e6]`}
+    >
       <Navbar fluid={true} rounded={true} className="shadow-md rounded-md">
         <Navbar.Brand href="/" className="grid-column">
           <img
@@ -37,25 +40,7 @@ export default function Header() {
           />
         </Navbar.Brand>
 
-        {session === null ? (
-          <div className="flex md:order-2 gap-1">
-            <Button
-              className="hidden md:block rounded-md !bg-transparent hover:!bg-transparent hover:!text-[#FF2301] !text-black dark:!text-[#9CA3AF] dark:hover:!text-[#FF2301]"
-              size="sm"
-              onClick={() => push("/auth/login")}
-            >
-              Sign In
-            </Button>
-            <Button
-              className="hidden md:block"
-              size="sm"
-              onClick={() => push("/auth/register")}
-            >
-              Sign up
-            </Button>
-            <Navbar.Toggle className="focus:!ring-0" />
-          </div>
-        ) : (
+        {session ? (
           <div className="flex md:order-2 gap-1 items-center">
             <Dropdown
               label={
@@ -83,18 +68,22 @@ export default function Header() {
                   </span>
                 </div>
               </Dropdown.Header>
-              <Dropdown.Item
-                icon={MdDashboard}
-                onClick={() => push("/auth/dashboard")}
-              >
-                Dashboard
-              </Dropdown.Item>
-              <Dropdown.Item
-                icon={AiOutlineShopping}
-                onClick={() => push("/order")}
-              >
-                Buy report
-              </Dropdown.Item>
+              {!session?.user.isEmployee && (
+                <>
+                  <Dropdown.Item
+                    icon={MdDashboard}
+                    onClick={() => push("/auth/dashboard")}
+                  >
+                    Dashboard
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    icon={AiOutlineShopping}
+                    onClick={() => push("/order")}
+                  >
+                    Buy report
+                  </Dropdown.Item>
+                </>
+              )}
               {session?.user.isEmployee && (
                 <Dropdown.Item
                   icon={BiPackage}
@@ -108,6 +97,24 @@ export default function Header() {
                 Logout
               </Dropdown.Item>
             </Dropdown>
+            <Navbar.Toggle className="focus:!ring-0" />
+          </div>
+        ) : (
+          <div className="flex md:order-2 gap-1">
+            <Button
+              className="hidden md:block rounded-md !bg-transparent hover:!bg-transparent hover:!text-[#FF2301] !text-black dark:!text-[#9CA3AF] dark:hover:!text-[#FF2301]"
+              size="sm"
+              onClick={() => push("/auth/login")}
+            >
+              Sign In
+            </Button>
+            <Button
+              className="hidden md:block"
+              size="sm"
+              onClick={() => push("/auth/register")}
+            >
+              Sign up
+            </Button>
             <Navbar.Toggle className="focus:!ring-0" />
           </div>
         )}
