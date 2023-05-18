@@ -32,7 +32,7 @@ export default function ComponentSwitcher() {
               backgroundPosition: "center",
             }}
           >
-            <h1 className="text-white text-3xl flex gap-2">
+            <h1 className="text-white text-3xl flex gap-2 items-center">
               <AiOutlineShopping /> Buy report
             </h1>
           </div>
