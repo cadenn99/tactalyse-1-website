@@ -23,10 +23,10 @@ const nextConfig = {
       //       source: "/backend/checkout/fullfillOrder",
       //       destination: `${process.env.BACKEND_URL}/checkout/fulfillOrder`
       //     },
-      {
-        source: "/backend/checkout/pay",
-        destination: `https://api.testalyse.nl/checkout/pay`
-      },
+      // {
+      //   source: "/backend/checkout/pay",
+      //   destination: `https://api.testalyse.nl/checkout/pay`
+      // },
       {
         source: "/backend/content/order-history",
         destination: `https://api.testalyse.nl/content/order-history"`
