@@ -11,7 +11,11 @@ function FooterComponent() {
     }
 
     setDarkMode(localStorage.getItem("darkMode") === "true");
-    if (localStorage.getItem("darkMode") === "true" || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (
+      localStorage.getItem("darkMode") === "true" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       document.body.classList.add("dark");
       localStorage.setItem("darkMode", "true");
     } else {
@@ -53,7 +57,7 @@ function FooterComponent() {
           <Footer.Link href="#" className="text-center">
             Licensing
           </Footer.Link>
-          <Footer.Link href="#" className="text-center">
+          <Footer.Link href="/contact" className="text-center">
             Contact
           </Footer.Link>
         </Footer.LinkGroup>

@@ -139,7 +139,7 @@ export default function Header() {
             Pricing
           </Navbar.Link>
           <Navbar.Link
-            href="/#pricing"
+            href="/contact"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             Contact
