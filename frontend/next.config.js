@@ -25,11 +25,15 @@ const nextConfig = {
       //     },
       {
         source: "/backend/checkout/pay",
-        destination: `http://164.92.199.46:5000/checkout/pay`
+        destination: `https://api.testalyse.nl/checkout/pay`
+      },
+      {
+        source: "/backend/content/order-history",
+        destination: `https://api.testalyse.nl/content/order-history"`
       },
       {
         source: "/backend/auth/register",
-        destination: `http://164.92.199.46:5000/auth/register`
+        destination: `https://api.testalyse.nl/auth/register`
       }
     ];
   },

@@ -9,7 +9,7 @@ export const useDark = () => {
             localStorage.setItem("darkMode", "false");
         }
 
-        if (localStorage.getItem("darkMode") === "true") {
+        if (localStorage.getItem("darkMode") === "true"|| (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.body.classList.add("dark");
         } else {
             document.body.classList.remove("dark");
