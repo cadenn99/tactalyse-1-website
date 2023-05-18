@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { Button, Card, Label, Spinner, TextInput, Toast } from "flowbite-react";
 import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
-import { HiX } from "react-icons/hi";
+import { HiCheck, HiX } from "react-icons/hi";
 import Link from "next/link";
 import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
@@ -45,7 +45,6 @@ function Register() {
 
       setLoading(false);
     } catch (err: any) {
-      console.log(err);
       setToast({
         message: err.response.data.message,
         error: true,
@@ -62,11 +61,17 @@ function Register() {
       <Head>
         <title>Login | Tactalyse</title>
       </Head>
-      {toast.error && (
+      {toast.message !== null && (
         <ToastComponent
           toast={toast}
           setToast={setToast}
-          icon={<HiX className="h-5 w-5" />}
+          icon={
+            toast.error ? (
+              <HiX className="h-5 w-5" />
+            ) : (
+              <HiCheck className="h-5 w-5" />
+            )
+          }
         />
       )}
       <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
