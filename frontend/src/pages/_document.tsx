@@ -12,6 +12,10 @@ export default function Document() {
           name="description"
           content="Homepage for football report generation by Tactalyse"
         />
+        <meta
+          name="google-site-verification"
+          content="i0jEWEOU9mTGlhLdrPM0mf9IH4MBWFbqN2Iu5vZQ1UI"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
