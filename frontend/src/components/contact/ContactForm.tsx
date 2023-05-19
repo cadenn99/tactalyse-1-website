@@ -3,11 +3,13 @@ import axios from "axios";
 import { Button, Card, Spinner, TextInput, Textarea } from "flowbite-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { BsFillPersonFill } from "react-icons/bs";
 import { MdAlternateEmail } from "react-icons/md";
 
 interface FormValues {
   email: string;
   message: string;
+  name: string;
 }
 
 function ContactForm() {
@@ -23,16 +25,23 @@ function ContactForm() {
     });
 
     setLoading(false);
-    reset({ email: "", message: "" });
+    reset({ email: "", message: "", name: "" });
   };
   return (
     <Card className="w-[500px] max-w-[90%]">
       <h2 className="text-2xl dark:text-white">Contact</h2>
       <form className="flex flex-col gap-5" onSubmit={handleSubmit(submitForm)}>
         <TextInput
+          id="name"
+          type="name"
+          placeholder="John Doe"
+          icon={BsFillPersonFill}
+          {...register("name")}
+        />
+        <TextInput
           id="email"
           type="email"
-          placeholder="name@flowbite.com"
+          placeholder="example@tactalyse.com"
           icon={MdAlternateEmail}
           {...register("email")}
         />
