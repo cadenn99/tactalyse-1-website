@@ -9,6 +9,7 @@ interface Props {
   reasons: string[];
   cta: () => void;
   ctaText: string;
+  scale?: number;
 }
 
 function PricingCard({
@@ -18,9 +19,13 @@ function PricingCard({
   reasons,
   cta,
   ctaText,
+  scale = 1,
 }: Props) {
   return (
-    <Card className="mt-8 max-w-xs w-[250px]">
+    <Card
+      className={`mt-8 max-w-xs w-[250px]`}
+      style={{ transform: `scale(${scale})` }}
+    >
       <h5 className="text-gray-500 mb-4 font-medium ">{title}</h5>
       {price && (
         <div className="flex gap-2">

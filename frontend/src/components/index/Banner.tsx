@@ -18,9 +18,8 @@ function Banner() {
         <h1 className="text-center text-5xl sm:text-left sm:text-7xl font-bold text-[#FF2301]">
           Join the elite
         </h1>
-        <p className="text-center text-sm sm:text-md sm:text-left max-w-[500px] mt-5 text-white">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua
+        <p className="text-center text-md sm:text-md sm:text-left max-w-[500px] mt-5 text-white">
+          Revolutionize your football game with personalized data reports
         </p>
         <Button className="mt-8 rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/70 max-w-[200px]">
           Order now

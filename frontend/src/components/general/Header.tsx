@@ -127,16 +127,16 @@ export default function Header() {
             Home
           </Navbar.Link>
           <Navbar.Link
-            href="/#faq"
-            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
-          >
-            FAQ
-          </Navbar.Link>
-          <Navbar.Link
             href="/#pricing"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             Pricing
+          </Navbar.Link>
+          <Navbar.Link
+            href="/#faq"
+            className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
+          >
+            FAQ
           </Navbar.Link>
           <Navbar.Link
             href="/contact"

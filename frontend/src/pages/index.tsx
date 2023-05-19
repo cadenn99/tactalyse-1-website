@@ -63,9 +63,10 @@ export default function Home() {
           <PricingCard
             title="Tactical Report"
             enterprise={true}
-            reasons={["Custom amount", "24/7 support", "Many reports"]}
+            reasons={["Custom amount", "24/7 support", "Infinite reports"]}
             cta={() => push("/contact")}
             ctaText="Get in contact"
+            scale={0.9}
           />
         </Pricing>
 
