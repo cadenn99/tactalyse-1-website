@@ -67,9 +67,9 @@ describe("Tests for order placement", () => {
     })
 })
 
-describe("Tests for payment completion", () => {
-    
-})
+// describe("Tests for payment completion", () => {
+
+// })
 
 
 
