@@ -28,9 +28,13 @@ export class DatabaseService implements DatabaseInterface {
             const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS as string));
             const hash = await bcrypt.hash(password, salt);
 
-            console.log(email)
-            return (await mongoose.model('User')
+
+            const user = (await mongoose.model('User')
                 .create({ email, hash })).toJSON();
+
+            delete user.hash
+
+            return user
         } catch (err: any) {
             if (err?.code === 11000) {
                 throw new CError('Email is already taken', 409)
@@ -47,13 +51,16 @@ export class DatabaseService implements DatabaseInterface {
      * @returns 
      */
     public async loginUser(email: string, password: string) {
-        const user = await model('User').findOne({ email })
+        let user = (await model('User').findOne({ email }))
 
         if (user === null || !(await bcrypt.compare(password, user.toJSON().hash)))
             throw new CError('User doesn\'t exist or password incorrect', 401)
 
-        console.log(user.toJSON())
-        return user.toJSON()
+        user = user.toJSON()
+
+        delete user.hash
+
+        return user
     };
 
     /**

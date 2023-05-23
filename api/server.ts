@@ -4,7 +4,7 @@ import '@src/models/db-models/User'
 import '@src/models/db-models/Order'
 import { createExpressApp } from './app'
 import { DatabaseService, StripePaymentService, MailerService } from '@src/services';
-import { model } from 'mongoose';
+
 
 require('dotenv').config();
 
@@ -16,8 +16,8 @@ const app: Application = createExpressApp(
         port: 587,
         user: 'snowboard8442@gmail.com',
         pass: '1NcGnXO24vHSDh6U',
-        email: `<h1>Hello from tactalyse</h1>`
-    })
+        email: '<h1>Hello from Tactalyse</h1>'
+    }),
 )
 
 app.get('db').connect()
