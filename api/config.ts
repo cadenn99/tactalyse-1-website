@@ -7,15 +7,15 @@ export default {
             pass: '',
             email: ''
         },
-        WORKING_EMAIL_PASSWORD: {
+        VALID_CREDENTIALS: {
             email: 'examp464le@gmail.com',
             password: '1234565789'
         },
-        BROKEN_SHORT_PASSWORD: {
+        INVALID_PASSWORD: {
             email: 'examp464le@gmail.com',
             password: '1234567'
         },
-        BROKEN_INVALID_EMAIL: {
+        INVALID_EMAIL: {
             email: 'examplegmail.com',
             password: '12345678'
         }

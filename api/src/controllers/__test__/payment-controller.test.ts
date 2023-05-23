@@ -25,7 +25,7 @@ afterEach(() => {
     vi.clearAllMocks();
 })
 
-describe("Tests for order creation", () => {
+describe("Tests for order placement", () => {
     test<TestContext>("Can create a new order", async ({ supertestInstance, app }) => {
         const response = await supertestInstance
             .post('/checkout/pay')
@@ -65,26 +65,11 @@ describe("Tests for order creation", () => {
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: 'Missing required fields' })
     })
-
-    // test<TestContext>("Rejects order creation with existing id", async ({ supertestInstance, app }) => {
-    //     app.get('db').createOrder.mockRejectedValueOnce(new CError('An order with this ID already exists', 409))
-
-    //     const response = await supertestInstance.post("/checkout/pay")
-    //         .set({ 'Authorization': "Bearer x" })
-    //         .attach('league', path.resolve(__dirname + "/test.xlsx"))
-    //         .attach('player', path.resolve(__dirname + "/test.xlsx"))
-
-    //     expect(app.get("pc").createPayment).toBeCalled()
-    //     expect(app.get('db').createOrder).toBeCalledWith(
-    //         Buffer.from(fs.readFileSync(path.resolve(__dirname + "/test.xlsx"))),
-    //         Buffer.from(fs.readFileSync(path.resolve(__dirname + "/test.xlsx"))),
-    //         10,
-    //         "1"
-    //     )
-    //     expect(response.status).toBe(409)
-    //     expect(response.body).toEqual({ message: 'An order with this ID already exists' })
-    // })
-
-    // TODO: Test other methods in PaymentController
 })
+
+describe("Tests for payment completion", () => {
+    
+})
+
+
 

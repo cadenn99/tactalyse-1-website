@@ -1,13 +1,20 @@
 import { DatabaseInterface, TokenInterface } from "@root/typings";
 import { CError } from "@src/utils"
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 
 /**
- * CLEAN UP!!!!
+ * CustomerController class responsible for handling customer specific requests
  */
 export class CustomerController {
-    public async getOrders(req: Request, res: Response) {
+
+    /**
+     * Method for retrieving all the orders of a customer
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    public async getOrders(req: Request, res: Response, next: NextFunction) {
         try {
             const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
             const databaseClient: DatabaseInterface = req.app.get('db')
@@ -15,12 +22,7 @@ export class CustomerController {
 
             res.status(200).json({ orders })
         } catch (err: any) {
-            if (err instanceof CError)
-                return res.status(err.code).json({
-                    message: err.message
-                })
-
-            return res.status(500).json({ message: 'Something went wrong' })
+            next(err)
         }
     }
 }

@@ -1,4 +1,4 @@
-export { StripePaymentService } from './StripePaymentService'
-export { MolliePaymentService } from './MolliePaymentService'
-export { DatabaseService } from './DatabaseService'
-export { MailerService } from './MailerService'
+export * from './StripePaymentService'
+export * from './MolliePaymentService'
+export * from './DatabaseService'
+export * from './MailerService'

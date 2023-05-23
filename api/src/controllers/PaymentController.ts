@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CError } from "@src/utils";
 import formidable from 'formidable';
 import {
@@ -54,7 +54,7 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public acceptPayment = async (req: Request, res: Response) => {
+    public acceptPayment = async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!createPaymentSchema.safeParse(req.body).success)
                 throw new CError("Missing required fields", 404)
@@ -74,12 +74,7 @@ export class PaymentController {
             res.status(200)
                 .json({ checkOutUrl: payment.checkOutUrl })
         } catch (err: any) {
-            if (err instanceof CError)
-                return res.status(err.code)
-                    .json({ message: err.message })
-
-            res.status(500)
-                .json({ message: err })
+            next(err)
         }
     }
 
@@ -89,7 +84,7 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public completePayment = async (req: Request, res: Response) => {
+    public completePayment = async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!paymentCompleteReqSchema.safeParse(req.body).success)
                 throw new CError("Missing order id", 404)
@@ -100,19 +95,11 @@ export class PaymentController {
 
             databaseClient.completePayment(req.body.data.object.id)
 
-            // TODO: Send customer payment complete payment + will receive report within 24 hours email
-
             res.status(200)
                 .json({ message: 'Payment completed, your report will be sent within 24 hours' })
 
         } catch (err: any) {
-            console.log(err)
-            if (err instanceof CError)
-                return res.status(err.code)
-                    .json({ message: err.message })
-
-            res.status(500)
-                .json({ message: "Something went wrong", err })
+            next(err)
         }
     }
 
@@ -122,7 +109,7 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public fulfillOrder = async (req: Request, res: Response) => {
+    public fulfillOrder = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { payload, databaseClient, mailerClient, form } = await this.getAppData(req)
 
@@ -146,11 +133,7 @@ export class PaymentController {
             res.status(200)
                 .json({ message: 'Emailed report!' })
         } catch (err: any) {
-            if (err instanceof CError)
-                return res.status(err.code)
-                    .json({ message: err.message })
-            res.status(500)
-                .json({ message: 'Something went wrong' })
+            next(err)
         }
     }
 
@@ -160,7 +143,7 @@ export class PaymentController {
      * @param req Request object
      * @param res Response object
      */
-    public noPayment = async (req: Request, res: Response) => {
+    public noPayment = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { payload, mailerClient, form } = await this.getAppData(req)
 
@@ -179,15 +162,9 @@ export class PaymentController {
             )
 
             res.status(200)
-                .sendFile(form.files.player.filepath)
-            // .json({ message: "Report sent", report: form.files.player.filePath })
+                .json({ message: "Report sent", report: form.files.player.filePath })
         } catch (err: any) {
-            if (err instanceof CError)
-                return res.status(err.code)
-                    .json({ message: err.message })
-
-            res.status(500)
-                .json({ message: 'Something went wrong' })
+            next(err)
         }
     }
 }

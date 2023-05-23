@@ -28,11 +28,11 @@ describe("Tests for user registration", () => {
     test<TestContext>('Can register a new account', async ({ supertestInstance, app }) => {
 
         const response = await supertestInstance.post('/auth/register')
-            .send(config.test.WORKING_EMAIL_PASSWORD)
+            .send(config.test.VALID_CREDENTIALS)
 
         expect(app!.get('db').createUser).toBeCalledWith(
-            config.test.WORKING_EMAIL_PASSWORD.email,
-            config.test.WORKING_EMAIL_PASSWORD.password
+            config.test.VALID_CREDENTIALS.email,
+            config.test.VALID_CREDENTIALS.password
         )
         expect(response.body).toHaveProperty('token')
         expect(response.status).toBe(200)
@@ -42,11 +42,11 @@ describe("Tests for user registration", () => {
         app!.get('db').createUser.mockRejectedValueOnce(new CError('Email is already taken', 409))
 
         const response = await supertestInstance.post('/auth/register')
-            .send(config.test.WORKING_EMAIL_PASSWORD)
+            .send(config.test.VALID_CREDENTIALS)
 
         expect(app!.get('db').createUser).toBeCalledWith(
-            config.test.WORKING_EMAIL_PASSWORD.email,
-            config.test.WORKING_EMAIL_PASSWORD.password
+            config.test.VALID_CREDENTIALS.email,
+            config.test.VALID_CREDENTIALS.password
         )
         expect(response.status).toBe(409)
         expect(response.body).toEqual({ message: 'Email is already taken' })
@@ -54,7 +54,7 @@ describe("Tests for user registration", () => {
 
     test<TestContext>('Rejects registration with invalid password format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/register')
-            .send(config.test.BROKEN_SHORT_PASSWORD)
+            .send(config.test.INVALID_PASSWORD)
 
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: "Invalid email or password format" })
@@ -62,7 +62,7 @@ describe("Tests for user registration", () => {
 
     test<TestContext>('Rejects registration with invalid email format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/register')
-            .send(config.test.BROKEN_INVALID_EMAIL)
+            .send(config.test.INVALID_EMAIL)
 
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: "Invalid email or password format" })
@@ -74,11 +74,11 @@ describe("Tests for user login", () => {
         app!.get('db').loginUser.mockResolvedValueOnce({ user: 'Some fake user' })
 
         const response = await supertestInstance.post('/auth/login')
-            .send(config.test.WORKING_EMAIL_PASSWORD)
+            .send(config.test.VALID_CREDENTIALS)
 
         expect(app!.get('db').loginUser).toBeCalledWith(
-            config.test.WORKING_EMAIL_PASSWORD.email,
-            config.test.WORKING_EMAIL_PASSWORD.password
+            config.test.VALID_CREDENTIALS.email,
+            config.test.VALID_CREDENTIALS.password
         )
         expect(response.body).toHaveProperty('token')
         expect(response.status).toBe(200)
@@ -88,11 +88,11 @@ describe("Tests for user login", () => {
         app!.get('db').loginUser.mockRejectedValueOnce(new CError('User doesn\'t exist or password incorrect', 401))
 
         const response = await supertestInstance.post('/auth/login')
-            .send(config.test.WORKING_EMAIL_PASSWORD)
+            .send(config.test.VALID_CREDENTIALS)
 
         expect(app!.get('db').loginUser).toBeCalledWith(
-            config.test.WORKING_EMAIL_PASSWORD.email,
-            config.test.WORKING_EMAIL_PASSWORD.password
+            config.test.VALID_CREDENTIALS.email,
+            config.test.VALID_CREDENTIALS.password
         )
         expect(response.status).toBe(401)
         expect(response.body).toEqual({ message: 'User doesn\'t exist or password incorrect' })
@@ -100,7 +100,7 @@ describe("Tests for user login", () => {
 
     test<TestContext>("Rejects login with invalid password format", async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/login')
-            .send(config.test.BROKEN_SHORT_PASSWORD)
+            .send(config.test.INVALID_PASSWORD)
 
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: "Invalid email or password format" })
@@ -108,7 +108,7 @@ describe("Tests for user login", () => {
 
     test<TestContext>('Rejects login with invalid email format', async ({ supertestInstance }) => {
         const response = await supertestInstance.post('/auth/login')
-            .send(config.test.BROKEN_INVALID_EMAIL)
+            .send(config.test.INVALID_EMAIL)
 
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ message: "Invalid email or password format" })

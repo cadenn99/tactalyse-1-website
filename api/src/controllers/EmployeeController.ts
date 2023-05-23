@@ -1,21 +1,26 @@
 import { DatabaseInterface, TokenInterface } from "@root/typings";
 import { CError } from "@src/utils"
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 
+/**
+ * EmployeeController class responsible for handling employee specific requests
+ */
 export class EmployeeController {
-    public async getOustandingOrders(req: Request, res: Response) {
+
+    /**
+     * Method for retrieving all orders with processing status
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    public async getOustandingOrders(req: Request, res: Response, next: NextFunction) {
         try {
             const databaseClient: DatabaseInterface = req.app.get('db')
 
             res.status(200).json({ unfilfilledOrders: await databaseClient.findAllUnfulfilledOrders() })
         } catch (err: any) {
-            if (err instanceof CError)
-                return res.status(err.code).json({
-                    message: err.message
-                })
-
-            return res.status(500).json({ message: 'Something went wrong' })
+            next(err)
         }
     }
 }
