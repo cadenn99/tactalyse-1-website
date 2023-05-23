@@ -25,7 +25,11 @@ jobs:
       - name: run tests
         working-directory: ./api
         run: sudo npm run test
-
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@main
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+          
   build-test-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -38,4 +42,7 @@ jobs:
       - name: install packages
         working-directory: ./frontend
         run: sudo npm install
-
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@main
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
