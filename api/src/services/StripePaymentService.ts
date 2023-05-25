@@ -48,13 +48,16 @@ export class StripePaymentService implements PaymentProcessorInterface {
     }
 
     /**
-     * Method for retrieving a payment
+     * Method for retrieving a payment and checking if it has been completed
      * 
      * @param id The order id
      * @returns 
      */
-    public async webhookHandler(id: string) {
-        const checkout = await this.client.checkout.sessions.retrieve(id)
+    public async webhookHandler(body: any) {
+        if (!body?.data?.object?.id)
+            throw new CError("Missing order id", 404)
+
+        const checkout = await this.client.checkout.sessions.retrieve(body.data.object.id)
 
         if (checkout.status === 'expired')
             throw new CError("Payment expired, try again", 404)
@@ -62,5 +65,6 @@ export class StripePaymentService implements PaymentProcessorInterface {
         if (checkout.status === 'open')
             throw new CError("Payment not yet completed", 402)
 
+        return body.data.object.id
     }
 }

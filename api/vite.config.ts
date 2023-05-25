@@ -11,6 +11,14 @@ export default defineConfig({
     test: {
         clearMocks: true,
         globals: true,
-        setupFiles: ['dotenv/config']
+        setupFiles: ['dotenv/config'],
+        coverage: {
+            exclude: [
+                '**/__mocks__/**/*',
+                '**/__test__/**/*',
+            ],
+            provider: 'istanbul', // or 'c8'
+            reporter: ['lcov', 'html'],
+        },
     }
 });

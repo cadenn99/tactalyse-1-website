@@ -7,7 +7,8 @@
     "test": "vitest run",
     "test-watch": "vitest",
     "build": "ttsc -P ./tsconfig.json",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon server.ts",
+    "coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,8 @@
     "@types/node": "^18.14.6",
     "@types/nodemailer": "^6.4.7",
     "@types/supertest": "^2.0.12",
+    "@vitest/coverage-c8": "^0.31.1",
+    "@vitest/coverage-istanbul": "^0.31.1",
     "esbuild-plugin-alias": "^0.2.1",
     "nodemon": "^2.0.21",
     "ts-jest": "^29.0.5",

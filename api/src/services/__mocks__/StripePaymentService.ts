@@ -5,7 +5,5 @@ export const StripePaymentService = vi.fn(() => ({
         id: "Payment Id",
         checkOutUrl: 'test'
     })),
-    getPayment: vi.fn(() => ({
-        id: "Payment Id"
-    }))
+    webhookHandler: vi.fn(() => '1')
 }))

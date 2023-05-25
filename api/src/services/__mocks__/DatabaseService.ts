@@ -11,6 +11,15 @@ export const DatabaseService = vi.fn(() => ({
         token: "c"
     })),
     createOrder: vi.fn(),
-    findOrder: vi.fn()
+    findOrder: vi.fn(() => ({
+        _id: '1'
+    })),
+    completePayment: vi.fn(),
+    findUserByOrder: vi.fn(() => ({
+        email: "test@test.com"
+    })),
+    completeOrder: vi.fn(),
+    findUserOrderHistory: vi.fn(),
+    findAllUnfulfilledOrders: vi.fn()
 }))
 

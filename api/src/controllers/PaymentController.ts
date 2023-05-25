@@ -8,8 +8,8 @@ import {
     TokenInterface,
     FormResponseInterface
 } from "@root/typings";
-import { paymentCompleteReqSchema, createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
-import jwt from 'jsonwebtoken'
+import { createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
+import { customerPurschaseSchema } from "@src/models/api-models/PaymentSchema";
 
 /**
  * PaymentController class is responsible for handling order flow
@@ -22,17 +22,15 @@ export class PaymentController {
      * @param req Request object
      * @returns 
      */
-    private async getAppData(req: Request) {
-
-        if (req.path !== '/completeOrder' && req.headers.authorization === undefined) throw new CError('Unauthorized - Missing or invalid token', 401)
+    private async getAppData(req: Request, res: Response) {
 
         const paymentClient: PaymentProcessorInterface = req.app.get('pc')
         const databaseClient: DatabaseInterface = req.app.get('db')
-        const payload = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as TokenInterface
+        const payload = res.locals.decoded
         const mailerClient: MailerInterface = req.app.get('nm')
 
         const form: FormResponseInterface = await new Promise((resolve, reject) => {
-            if (!req.headers["content-type"]!.match(/multipart\/form-data/))
+            if (!req.headers["content-type"]?.match(/multipart\/form-data/))
                 resolve({})
 
             formidable({ multiples: true })
@@ -59,7 +57,7 @@ export class PaymentController {
             if (!createPaymentSchema.safeParse(req.body).success)
                 throw new CError("Missing required fields", 404)
 
-            const { paymentClient, databaseClient, payload } = await this.getAppData(req)
+            const { paymentClient, databaseClient, payload } = await this.getAppData(req, res)
 
             const payment = await paymentClient
                 .createPayment('49.00', "EUR", "Tactalyse Report", payload.email)
@@ -86,14 +84,11 @@ export class PaymentController {
      */
     public completePayment = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            if (!paymentCompleteReqSchema.safeParse(req.body).success)
-                throw new CError("Missing order id", 404)
+            const { paymentClient, databaseClient } = await this.getAppData(req, res)
 
-            const { paymentClient, databaseClient } = await this.getAppData(req)
+            const id = await paymentClient.webhookHandler(req.body)
 
-            await paymentClient.webhookHandler(req.body.data.object.id)
-
-            databaseClient.completePayment(req.body.data.object.id)
+            databaseClient.completePayment(id)
 
             res.status(200)
                 .json({ message: 'Payment completed, your report will be sent within 24 hours' })
@@ -111,11 +106,13 @@ export class PaymentController {
      */
     public fulfillOrder = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { payload, databaseClient, mailerClient, form } = await this.getAppData(req)
+            const { payload, databaseClient, mailerClient, form } = await this.getAppData(req, res)
 
             if (!payload.isEmployee)
-                throw new CError("Missing required authorization" + payload.email, 401)
+                throw new CError("Missing required authorization", 401)
 
+            if (!customerPurschaseSchema.safeParse(form.fields).success)
+                throw new CError("Missing required field(s)", 404)
 
             const order = await databaseClient.findOrder(form.fields.id)
             const orderOwner = await databaseClient.findUserByOrder(order._id)
@@ -145,13 +142,13 @@ export class PaymentController {
      */
     public noPayment = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { payload, mailerClient, form } = await this.getAppData(req)
+            const { payload, mailerClient, form } = await this.getAppData(req, res)
 
             if (!employeePurchaseSchema.safeParse(form.fields).success)
                 throw new CError("Missing required field(s)", 404)
 
             if (!payload.isEmployee)
-                throw new CError("Missing required authorization" + payload.email, 401)
+                throw new CError("Missing required authorization", 401)
 
             // TODO: Call script
 
@@ -162,7 +159,7 @@ export class PaymentController {
             )
 
             res.status(200)
-                .json({ message: "Report sent", report: form.files.player.filePath })
+                .json({ message: "Report sent" })
         } catch (err: any) {
             next(err)
         }
