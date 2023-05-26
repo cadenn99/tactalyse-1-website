@@ -121,24 +121,28 @@ export default function Header() {
 
         <Navbar.Collapse id="menu">
           <Navbar.Link
+            as={Link}
             href="/"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             Home
           </Navbar.Link>
           <Navbar.Link
+            as={Link}
             href="/#pricing"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             Pricing
           </Navbar.Link>
           <Navbar.Link
+            as={Link}
             href="/#faq"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >
             FAQ
           </Navbar.Link>
           <Navbar.Link
+            as={Link}
             href="/contact"
             className="rounded-md hover:!text-[#FF2301] transition-all ease-in-out duration-500"
           >

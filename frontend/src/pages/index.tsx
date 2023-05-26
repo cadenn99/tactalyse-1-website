@@ -16,6 +16,7 @@ import { TbPigMoney } from "react-icons/tb";
 import { BsPeopleFill } from "react-icons/bs";
 import Discord from "@/components/index/Discord";
 import { useDark } from "@/hooks/useDark";
+import { DarkThemeToggle, Flowbite } from "flowbite-react";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
