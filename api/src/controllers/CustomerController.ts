@@ -1,5 +1,4 @@
 import { DatabaseInterface, TokenInterface } from "@root/typings";
-import { CError } from "@src/utils"
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 
@@ -10,6 +9,7 @@ export class CustomerController {
 
     /**
      * Method for retrieving all the orders of a customer
+     * 
      * @param req 
      * @param res 
      * @param next 

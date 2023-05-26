@@ -10,8 +10,10 @@ export const authMiddleware: any = async (req: Request, res: Response, next: Nex
         const token = req.headers.authorization?.split(' ')[1]
 
         if (token)
-            if (await jwt.verify(token, process.env.JWT_SECRET as string))
-                return next()
+            if (await jwt.verify(token, process.env.JWT_SECRET as string)) {
+                res.locals.decoded = jwt.decode(token)
+                next()
+            }
 
         throw new Error()
 
