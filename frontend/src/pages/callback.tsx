@@ -11,7 +11,6 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
  * @returns HTML for the /callback page.
  */
 export default function Callback() {
-  useDark();
   return (
     <div>
       <Head>
