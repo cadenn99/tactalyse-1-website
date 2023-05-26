@@ -12,7 +12,7 @@ export const authMiddleware: any = async (req: Request, res: Response, next: Nex
         if (token)
             if (await jwt.verify(token, process.env.JWT_SECRET as string)) {
                 res.locals.decoded = jwt.decode(token)
-                next()
+                return next()
             }
 
         throw new Error()
