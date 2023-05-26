@@ -1,6 +1,7 @@
 import Footer from "@/components/general/Footer";
 import Header from "@/components/general/Header";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
+import { useDark } from "@/hooks/useDark";
 import { Card } from "flowbite-react";
 import Head from "next/head";
 import { AiOutlineCheckCircle } from "react-icons/ai";
@@ -9,7 +10,8 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
  * This function contains HTMl that is loaded after a user completes a payment.
  * @returns HTML for the /callback page.
  */
-export default function Page() {
+export default function Callback() {
+  useDark();
   return (
     <div>
       <Head>

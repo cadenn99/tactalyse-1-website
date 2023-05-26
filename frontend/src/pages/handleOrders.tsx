@@ -11,8 +11,10 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { Spinner } from "flowbite-react";
+import { useDark } from "@/hooks/useDark";
 
 function HandleOrders() {
+  useDark();
   const { data: session } = useSession();
   const { data, error } = useSWR(
     session

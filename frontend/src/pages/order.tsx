@@ -6,12 +6,14 @@ import Purchase from "@/components/order/Purchase";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
 import Disclaimer from "@/components/order/Disclaimer";
 import { AiOutlineShopping } from "react-icons/ai";
+import { useDark } from "@/hooks/useDark";
 
 /**
  * This function loads the appropriate function depending on session state.
  * @returns HTML for the /order page.
  */
-export default function ComponentSwitcher() {
+export default function Order() {
+  useDark();
   return (
     <div className="px-2">
       <Head>
