@@ -1,11 +1,13 @@
 import ContactForm from "@/components/contact/ContactForm";
 import Footer from "@/components/general/Footer";
 import Header from "@/components/general/Header";
+import { useDark } from "@/hooks/useDark";
 import Head from "next/head";
 import React from "react";
 import { BsFillChatLeftFill } from "react-icons/bs";
 
-function contact() {
+function Contact() {
+  useDark();
   return (
     <div className="px-2">
       <Head>
@@ -38,4 +40,4 @@ function contact() {
   );
 }
 
-export default contact;
+export default Contact;

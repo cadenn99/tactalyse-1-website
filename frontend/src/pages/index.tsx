@@ -15,11 +15,13 @@ import { FaHandshake } from "react-icons/fa";
 import { TbPigMoney } from "react-icons/tb";
 import { BsPeopleFill } from "react-icons/bs";
 import Discord from "@/components/index/Discord";
+import { useDark } from "@/hooks/useDark";
 /**
  * This function loads the home page.
  * @returns HTMl for the / page.
  */
 export default function Home() {
+  useDark();
   const { push } = useRouter();
   return (
     <div className="px-2">
