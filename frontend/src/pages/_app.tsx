@@ -5,16 +5,16 @@ import { CustomFlowbiteTheme, Flowbite } from "flowbite-react";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 
-// const progress = new ProgressBar({
-//   size: 3,
-//   color: "#FF2301",
-//   className: "text-[#FF2301]",
-//   delay: 100,
-// });
+const progress = new ProgressBar({
+  size: 3,
+  color: "#FF2301",
+  className: "text-[#FF2301]",
+  delay: 0,
+});
 
-// Router.events.on("routeChangeStart", progress.start);
-// Router.events.on("routeChangeComplete", progress.finish);
-// Router.events.on("routeChangeError", progress.finish);
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
 
 export default function App({
   Component,
