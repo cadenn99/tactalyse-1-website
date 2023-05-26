@@ -38,7 +38,8 @@
     "ttypescript": "^1.5.15",
     "typescript": "^4.9.5",
     "typescript-transform-paths": "^3.4.6",
-    "vite": "^4.2.1"
+    "vite": "^4.2.1",
+    "vitest": "^0.31.1"
   },
   "nodemonConfig": {
     "ignore": [
@@ -74,7 +75,6 @@
     "stripe": "^12.1.1",
     "supertest": "^6.3.3",
     "tsconfig-paths": "^4.1.2",
-    "vitest": "^0.29.2",
     "vitest-tsconfig-paths": "^3.4.1",
     "winston": "^3.8.2",
     "xlsx": "^0.18.5",
