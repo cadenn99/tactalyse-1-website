@@ -2,12 +2,20 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { CustomFlowbiteTheme, Flowbite } from "flowbite-react";
+import ProgressBar from "@badrap/bar-of-progress";
+import Router from "next/router";
 
-/**
- * This function wraps the Next-Auth sessionprovider around our app.
- * @param param0 default parameter.
- * @returns -
- */
+const progress = new ProgressBar({
+  size: 3,
+  color: "#FF2301",
+  className: "text-[#FF2301]",
+  delay: 100,
+});
+
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
