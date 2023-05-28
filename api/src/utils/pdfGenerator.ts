@@ -9,10 +9,9 @@ interface Props {
     leagueFile: string
     playerFile: string
     playerName: string
-    dump?: string
 }
 
-export const pdfGenerator = async ({ leagueFile, playerFile, playerName, dump }: Props) => {
+export const pdfGenerator = async ({ leagueFile, playerFile, playerName }: Props) => {
 
     const form = new FormData()
 
