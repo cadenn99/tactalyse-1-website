@@ -10,6 +10,7 @@ import {
 import { createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
 import { customerPurschaseSchema } from "@src/models/api-models/PaymentSchema";
 import { pdfGenerator } from "@src/utils/pdfGenerator";
+import fs from 'fs'
 
 /**
  * PaymentController class is responsible for handling order flow
@@ -33,7 +34,10 @@ export class PaymentController {
             if (!req.headers["content-type"]?.match(/multipart\/form-data/))
                 resolve({})
 
-            formidable({ multiples: true })
+            formidable({
+                multiples: true,
+                keepExtensions: true
+            })
                 .parse(req, (err, fields, files) => {
                     if (err) reject(err)
                     resolve({ files, fields })
@@ -120,9 +124,9 @@ export class PaymentController {
             await databaseClient.completeOrder(order._id)
 
             const pdfBuffer = await pdfGenerator({
-                leagueFile: form.files.league.filepath,
-                playerFile: form.files.player.filepath,
-                playerName: form.fields.playerName
+                leagueFile: fs.createReadStream(form.files.player.filepath),
+                playerFile: fs.createReadStream(form.files.league.filepath),
+                playerName: form.fields.playerName,
             })
 
             await mailerClient.sendEmail(
@@ -158,9 +162,9 @@ export class PaymentController {
                 throw new CError("Missing required authorization", 401)
 
             const pdfBuffer = await pdfGenerator({
-                leagueFile: form.files.league.filepath,
-                playerFile: form.files.player.filepath,
-                playerName: form.fields.playerName
+                leagueFile: fs.createReadStream(form.files.player.filepath),
+                playerFile: fs.createReadStream(form.files.league.filepath),
+                playerName: form.fields.playerName,
             })
 
             await mailerClient.sendEmail(
