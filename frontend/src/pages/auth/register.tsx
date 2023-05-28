@@ -27,6 +27,7 @@ function Register() {
   const { push } = useRouter();
 
   const handleRegister: SubmitHandler<LoginInput> = async (values) => {
+    if (loading) return;
     try {
       setLoading(true);
 
@@ -42,13 +43,13 @@ function Register() {
           message: "Registered succesfully",
           error: false,
         });
-
-      setLoading(false);
     } catch (err: any) {
       setToast({
         message: err.response.data.message,
         error: true,
       });
+    } finally {
+      setLoading(false);
     }
   };
 

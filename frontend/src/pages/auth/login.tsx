@@ -27,6 +27,8 @@ function Login() {
   const { push } = useRouter();
 
   const handleLogin: SubmitHandler<LoginInput> = async (values) => {
+    if (loading) return;
+
     try {
       setLoading(true);
 
@@ -43,14 +45,14 @@ function Login() {
           error: true,
         });
 
-      setLoading(false);
-
       if (res?.url) push(res.url);
     } catch (err: any) {
       setToast({
         message: err.response.data.message,
         error: true,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
