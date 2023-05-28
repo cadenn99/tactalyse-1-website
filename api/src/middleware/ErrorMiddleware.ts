@@ -21,5 +21,5 @@ export const ErrorMiddleware: ErrorRequestHandler = (error, req, res, next) => {
     logger.log('error', error.stack)
 
     res.status(500)
-        .json({ message: 'Something went wrong' })
+        .json({ message: 'Something went wrong', error })
 }

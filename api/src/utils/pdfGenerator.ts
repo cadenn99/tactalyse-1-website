@@ -4,8 +4,8 @@ import fs from 'fs'
 import FormData from 'form-data'
 
 interface Props {
-    leagueFile: string
-    playerFile: string
+    leagueFile: fs.ReadStream
+    playerFile: fs.ReadStream
     playerName: string
 }
 
@@ -13,16 +13,17 @@ export const pdfGenerator = async ({ leagueFile, playerFile, playerName }: Props
 
     const form = new FormData()
 
-    form.append('league-file', fs.createReadStream(leagueFile))
-    form.append('player-file', fs.createReadStream(playerFile))
+    form.append('player-file', playerFile)
+    form.append('league-file', leagueFile)
     form.append('player-name', playerName)
 
     const data = await axios({
-        url: "https://report-api.testalyse.nl/pdf",
+        url: "http://127.0.0.1:5000/pdf",
         method: "POST",
         data: form,
-        responseType: 'arraybuffer',
+        responseType: 'arraybuffer'
     })
 
     return Buffer.from(data.data, 'base64')
 }
+

@@ -129,9 +129,9 @@ function Generator() {
           {...register("playerName")}
         />
         <Label htmlFor="file" value="League file" />
-        <FileInput id="file" {...register("player")} />
-        <Label htmlFor="file" value="Player file" />
         <FileInput id="file" {...register("league")} />
+        <Label htmlFor="file" value="Player file" />
+        <FileInput id="file" {...register("player")} />
         <Button type="submit">Generate</Button>
       </form>
     </Card>
