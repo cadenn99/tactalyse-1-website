@@ -47,7 +47,7 @@ function Generator() {
   const submitForm = async (data: FormValues) => {
     const form = formHookToFormData({ form: new FormData(), data });
 
-    const report = await generateReport(form, session!);
+    const report = await generateReport(form, session!, orderID);
 
     errorHandler({ response: report, changeError: setRequestState });
   };
