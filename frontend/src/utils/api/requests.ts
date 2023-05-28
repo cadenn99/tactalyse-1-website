@@ -9,10 +9,10 @@ import { LoginInput } from "../../../types/types";
  * @param session USer session
  * @returns Response object
  */
-export const generateReport = async (form: FormData, session: Session) => {
+export const generateReport = async (form: FormData, session: Session, hasOrderId: Boolean) => {
     let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/fulfillOrder`
 
-    if (form.get("id") === '' || !form.has('id'))
+    if (!hasOrderId)
         url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/noPayment`
 
     return await axios({

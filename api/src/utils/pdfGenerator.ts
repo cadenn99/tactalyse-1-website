@@ -2,8 +2,6 @@
 import axios from 'axios'
 import fs from 'fs'
 import FormData from 'form-data'
-import toBuffer from 'blob-to-buffer'
-import base64topdf from 'base64topdf'
 
 interface Props {
     leagueFile: string
