@@ -4,4 +4,3 @@ src/uploads/*
 **/coverage/**/*
 **/.scannerwork/**/*
 .env
-*.log
