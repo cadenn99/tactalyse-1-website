@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Footer } from "flowbite-react";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
+import Link from "next/link";
 
 function FooterComponent() {
   const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
@@ -48,16 +49,16 @@ function FooterComponent() {
       />
       <div className="flex items-center flex-col gap-6 xs:flex-row xs:gap-6 md:gap-3 xs:justify-center mt-2">
         <Footer.LinkGroup className="gap-6 md:gap-0 flex-col xs:flex-row flex mt-2 xs:mt-0">
-          <Footer.Link href="#" className="text-center">
+          <Footer.Link href="#" className="text-center" as={Link}>
             About
           </Footer.Link>
-          <Footer.Link href="#" className="text-center">
+          <Footer.Link href="#" className="text-center" as={Link}>
             Privacy Policy
           </Footer.Link>
-          <Footer.Link href="#" className="text-center">
+          <Footer.Link href="#" className="text-center" as={Link}>
             Licensing
           </Footer.Link>
-          <Footer.Link href="/contact" className="text-center">
+          <Footer.Link href="/contact" className="text-center" as={Link}>
             Contact
           </Footer.Link>
         </Footer.LinkGroup>

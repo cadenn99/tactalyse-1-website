@@ -23,6 +23,6 @@ const app: Application = createExpressApp(
 app.get('db').connect()
     .then(() => {
         app.listen(process.env.PORT, async () => {
-            console.log('>> Listening to port 5000');
+            console.log('>> Listening to port ' + process.env.PORT);
         })
     })

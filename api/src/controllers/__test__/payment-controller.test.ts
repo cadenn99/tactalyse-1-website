@@ -13,6 +13,7 @@ vi.mock('@src/services/StripePaymentService')
 vi.mock('@src/services/MailerService')
 vi.mock('jsonwebtoken')
 vi.mock('@src/middleware/AuthMiddleware')
+vi.mock('@src/utils/pdfGenerator')
 
 beforeEach<TestContext>((context) => {
     context.app = createExpressApp(
