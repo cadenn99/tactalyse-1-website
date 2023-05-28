@@ -9,6 +9,7 @@ import {
   FileInput,
   Button,
   Alert,
+  Spinner,
 } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
@@ -31,6 +32,8 @@ interface FormValues {
 function Generator() {
   const [orderID, setOrderID] = useState(false);
   const [tactalysePlayer, setTactalysePlayer] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [requestState, setRequestState] = useState({
     error: false,
     message: "",
@@ -45,11 +48,21 @@ function Generator() {
    * @param data FormValues
    */
   const submitForm = async (data: FormValues) => {
-    const form = formHookToFormData({ form: new FormData(), data });
+    if (loading) return;
 
-    const report = await generateReport(form, session!, orderID);
+    try {
+      setLoading(true);
 
-    errorHandler({ response: report, changeError: setRequestState });
+      const form = formHookToFormData({ form: new FormData(), data });
+
+      const report = await generateReport(form, session!, orderID);
+
+      errorHandler({ response: report, changeError: setRequestState });
+    } catch (err: any) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -132,7 +145,13 @@ function Generator() {
         <FileInput id="file" {...register("league")} />
         <Label htmlFor="file" value="Player file" />
         <FileInput id="file" {...register("player")} />
-        <Button type="submit">Generate</Button>
+        <Button
+          type="submit"
+          isProcessing={loading}
+          processingSpinner={<Spinner color={"gray"} size={"sm"}></Spinner>}
+        >
+          Generate
+        </Button>
       </form>
     </Card>
   );

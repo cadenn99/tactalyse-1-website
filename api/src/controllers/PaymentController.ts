@@ -124,8 +124,8 @@ export class PaymentController {
             await databaseClient.completeOrder(order._id)
 
             const pdfBuffer = await pdfGenerator({
-                leagueFile: fs.createReadStream(form.files.player.filepath),
-                playerFile: fs.createReadStream(form.files.league.filepath),
+                leagueFile: fs.createReadStream(form.files.league.filepath),
+                playerFile: fs.createReadStream(form.files.player.filepath),
                 playerName: form.fields.playerName,
             })
 
@@ -162,8 +162,8 @@ export class PaymentController {
                 throw new CError("Missing required authorization", 401)
 
             const pdfBuffer = await pdfGenerator({
-                leagueFile: fs.createReadStream(form.files.player.filepath),
-                playerFile: fs.createReadStream(form.files.league.filepath),
+                leagueFile: fs.createReadStream(form.files.league.filepath),
+                playerFile: fs.createReadStream(form.files.player.filepath),
                 playerName: form.fields.playerName,
             })
 

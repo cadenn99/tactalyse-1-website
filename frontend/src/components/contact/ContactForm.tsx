@@ -17,15 +17,19 @@ function ContactForm() {
   const [loading, setLoading] = useState(false);
 
   const submitForm = async (value: FormValues) => {
-    setLoading(true);
-    await axios({
-      url: "https://formsubmit.co/ajax/ccc62f6b4b7b07c43cede53d39879363",
-      method: "POST",
-      data: value,
-    });
-
-    setLoading(false);
-    reset({ email: "", message: "", name: "" });
+    if (loading) return;
+    try {
+      setLoading(true);
+    } catch (err: any) {
+      await axios({
+        url: "https://formsubmit.co/ajax/ccc62f6b4b7b07c43cede53d39879363",
+        method: "POST",
+        data: value,
+      });
+      reset({ email: "", message: "", name: "" });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Card className="w-[500px] max-w-[90%]">

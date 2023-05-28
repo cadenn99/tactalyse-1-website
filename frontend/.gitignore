@@ -4,4 +4,4 @@ node_modules
 .github/
 .DS_store
 .VSCodeCounter
-
+*.log
