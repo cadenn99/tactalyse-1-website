@@ -18,7 +18,7 @@ export const pdfGenerator = async ({ leagueFile, playerFile, playerName }: Props
     form.append('player-name', playerName)
 
     const data = await axios({
-        url: "http://127.0.0.1:5000/pdf",
+        url: "https://report-api.testalyse.nl/pdf",
         method: "POST",
         data: form,
         responseType: 'arraybuffer'
