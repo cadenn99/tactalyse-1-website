@@ -13,5 +13,14 @@ export const logger = winston.createLogger({
                 winston.format.logstash(),
             ),
         }),
+        new winston.transports.File({
+            level: 'error',
+            filename: "./logs/error.log",
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.errors({ stack: true }),
+                winston.format.logstash(),
+            ),
+        }),
     ],
 });

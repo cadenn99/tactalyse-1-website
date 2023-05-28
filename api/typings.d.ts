@@ -19,7 +19,7 @@ export interface PaymentProcessorInterface {
 }
 
 export interface MailerInterface {
-    sendEmail: (email: string, orderId: string, filePath: string) => Promise<any>
+    sendEmail: (email: string, attachment: Mail.Attachment) => Promise<any>
 }
 
 
@@ -42,3 +42,4 @@ export interface TokenInterface {
     isEmployee: boolean
     _id: string
 }
+

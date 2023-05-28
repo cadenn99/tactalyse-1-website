@@ -5,11 +5,11 @@ import {
     DatabaseInterface,
     MailerInterface,
     PaymentProcessorInterface,
-    TokenInterface,
     FormResponseInterface
 } from "@root/typings";
 import { createPaymentSchema, employeePurchaseSchema } from "@src/models/api-models";
 import { customerPurschaseSchema } from "@src/models/api-models/PaymentSchema";
+import { pdfGenerator } from "@src/utils/pdfGenerator";
 
 /**
  * PaymentController class is responsible for handling order flow
@@ -117,14 +117,21 @@ export class PaymentController {
             const order = await databaseClient.findOrder(form.fields.id)
             const orderOwner = await databaseClient.findUserByOrder(order._id)
 
-            // TODO: Call script API
-
             await databaseClient.completeOrder(order._id)
+
+            const pdfBuffer = await pdfGenerator({
+                leagueFile: form.files.league.filepath,
+                playerFile: form.files.player.filepath,
+                playerName: form.fields.playerName
+            })
 
             await mailerClient.sendEmail(
                 orderOwner.email,
-                form.fields.id,
-                form.files.player.filepath // FIXME: Change to file name of report
+                {
+                    filename: 'Report.pdf',
+                    content: pdfBuffer,
+                    contentType: "application/pdf"
+                }
             )
 
             res.status(200)
@@ -150,12 +157,19 @@ export class PaymentController {
             if (!payload.isEmployee)
                 throw new CError("Missing required authorization", 401)
 
-            // TODO: Call script
+            const pdfBuffer = await pdfGenerator({
+                leagueFile: form.files.league.filepath,
+                playerFile: form.files.player.filepath,
+                playerName: form.fields.playerName
+            })
 
             await mailerClient.sendEmail(
                 form.fields.email,
-                "Employee purchase",
-                form.files.player.filepath // FIXME: Change to file name of report
+                {
+                    filename: 'Report.pdf',
+                    content: pdfBuffer,
+                    contentType: "application/pdf"
+                }
             )
 
             res.status(200)
