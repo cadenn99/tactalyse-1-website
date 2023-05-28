@@ -9,7 +9,7 @@ export const logger = winston.createLogger({
             level: 'error',
             format: winston.format.combine(
                 winston.format.timestamp(),
-                winston.format.errors({ stack: true }),
+                winston.format.errors(),
                 winston.format.logstash(),
             ),
         }),
@@ -18,7 +18,7 @@ export const logger = winston.createLogger({
             filename: "./logs/error.log",
             format: winston.format.combine(
                 winston.format.timestamp(),
-                winston.format.errors({ stack: true }),
+                winston.format.errors(),
                 winston.format.logstash(),
             ),
         }),
