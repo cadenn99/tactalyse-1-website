@@ -1,10 +1,10 @@
 import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginInput, ToastInterface } from "../../../types/types";
 import { useRouter } from "next/router";
-import { Button, Card, Label, Spinner, TextInput, Toast } from "flowbite-react";
+import { Button, Card, Label, Spinner, TextInput, Toast, useTheme } from "flowbite-react";
 import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
 import { HiX } from "react-icons/hi";
@@ -13,18 +13,22 @@ import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
 import { ToastContext } from "@/contexts/ToastContext";
 
+interface FormValues {
+  email: string;
+  password: string;
+}
+
 function Login() {
+  const theme = useTheme().theme.textInput
   useDark();
   const { data: session } = useSession();
   const toast = useContext(ToastContext);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, reset } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
   const { push } = useRouter();
 
-  const handleLogin: SubmitHandler<LoginInput> = async (values) => {
+  const handleLogin = async (values: FormValues) => {
     if (loading) return;
 
     try {
@@ -32,8 +36,7 @@ function Login() {
 
       const res = await signIn("credentials", {
         redirect: false,
-        email: values.email,
-        password: values.password,
+        ...values,
         callbackUrl: `${window.location.origin}`,
       });
 
@@ -53,6 +56,7 @@ function Login() {
       });
     } finally {
       setLoading(false);
+      reset({ email: "", password: "" });
     }
   };
 
@@ -79,7 +83,10 @@ function Login() {
                 className="dark:hidden w-[50%] mx-auto cursor-pointer"
                 onClick={() => push("/")}
               />
-              <form className="flex flex-col gap-2">
+              <form
+                className="flex flex-col gap-2"
+                onSubmit={handleSubmit(handleLogin)}
+              >
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="email" value="Email" />
                   <TextInput
@@ -87,7 +94,7 @@ function Login() {
                     type="text"
                     sizing={"md"}
                     icon={MdAlternateEmail}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...register("email")}
                   />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -97,13 +104,13 @@ function Login() {
                     type="password"
                     sizing={"md"}
                     icon={BsKeyFill}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...register("password")}
                   />
                 </div>
                 <Button
                   className="mt-3"
-                  onClick={() => handleLogin({ email, password })}
                   isProcessing={loading}
+                  type="submit"
                   processingSpinner={
                     <Spinner color={"gray"} size={"sm"}></Spinner>
                   }

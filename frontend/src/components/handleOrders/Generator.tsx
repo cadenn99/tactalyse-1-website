@@ -1,3 +1,4 @@
+"use client";
 import { ToastContext } from "@/contexts/ToastContext";
 import { formHookToFormData } from "@/utils/FormToFormData";
 import { generateReport } from "@/utils/api/requests";
@@ -135,6 +136,7 @@ function Generator() {
         <TextInput
           icon={BsFillPersonFill}
           placeholder="Player name"
+          type="text"
           {...register("playerName")}
         />
         <Label htmlFor="file" value="League file" />

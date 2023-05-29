@@ -90,8 +90,7 @@ function FrequentlyAskedQuestions() {
         </Accordion.Panel>
         <Accordion.Panel>
           <Accordion.Title>
-            Question: What leagues are covered by Tactalyse according to the
-            data?
+            What leagues are covered by Tactalyse according to the data?
           </Accordion.Title>
           <Accordion.Content>
             <p className="dark:text-[#848C99]">

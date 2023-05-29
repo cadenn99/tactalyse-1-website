@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import { CustomFlowbiteTheme, Flowbite } from "flowbite-react";
+import { CustomFlowbiteTheme, Flowbite, useTheme } from "flowbite-react";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
@@ -22,6 +22,7 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const currentTheme = useTheme().theme;
   const theme: CustomFlowbiteTheme = {
     timeline: {
       item: {
@@ -56,6 +57,7 @@ export default function App({
       toggle: {
         checked: {
           on: "toggle-bg h-6 w-11 rounded-full border group-focus:ring-4 group-focus:!ring-[#FF2301]/25 after:translate-x-full after:border-white  !bg-[#FF2301] !border-[#FF2301]",
+          off: "toggle-bg h-6 w-11 rounded-full border group-focus:ring-4 group-focus:!ring-[#FF2301]/25 border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700",
         },
       },
     },
@@ -68,6 +70,15 @@ export default function App({
     },
     textarea: {
       base: "block w-full rounded-lg border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:!border-[#FF2301]/80 focus:!ring-[#FF2301]/80 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:!border-[#FF2301]/80 dark:!focus:ring-[#FF2301]/80",
+    },
+    fileInput: {
+      field: {
+        input: {
+          base:
+            currentTheme.fileInput.field.input.base +
+            " focus:!border-[#FF2301]/80 focus:!ring-[#FF2301]/80 dark:focus:!border-[#FF2301]/80 dark:focus:!ring-[#FF2301]/80",
+        },
+      },
     },
   };
   return (

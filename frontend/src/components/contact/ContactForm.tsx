@@ -21,6 +21,7 @@ function ContactForm() {
 
   const submitForm = async (value: FormValues) => {
     if (loading) return;
+    
     try {
       setLoading(true);
       await axios({
