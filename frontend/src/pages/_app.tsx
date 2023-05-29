@@ -62,7 +62,7 @@ export default function App({
     textInput: {
       field: {
         input: {
-          base: "block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-[#FF2301]/80 focus:ring-[#FF2301]/80 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-[#FF2301]/80 dark:focus:ring-[#FF2301]/80 pl-10 rounded-lg p-2.5 text-sm",
+          base: "block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:!border-[#FF2301]/80 focus:!ring-[#FF2301]/80 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:!border-[#FF2301]/80 dark:focus:!ring-[#FF2301]/80 pl-10 rounded-lg p-2.5 text-sm",
         },
       },
     },
