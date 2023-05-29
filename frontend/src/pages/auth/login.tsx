@@ -1,6 +1,6 @@
 import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginInput, ToastInterface } from "../../../types/types";
 import { useRouter } from "next/router";
@@ -11,14 +11,12 @@ import { HiX } from "react-icons/hi";
 import Link from "next/link";
 import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
+import { ToastContext } from "@/contexts/ToastContext";
 
 function Login() {
   useDark();
   const { data: session } = useSession();
-  const [toast, setToast] = useState<ToastInterface>({
-    message: null,
-    error: false,
-  });
+  const toast = useContext(ToastContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,16 +38,18 @@ function Login() {
       });
 
       if (res?.error)
-        setToast({
+        toast?.setToast({
           message: res.error,
           error: true,
+          icon: <HiX className="h-5 w-5" />,
         });
 
       if (res?.url) push(res.url);
     } catch (err: any) {
-      setToast({
+      toast?.setToast({
         message: err.response.data.message,
         error: true,
+        icon: <HiX className="h-5 w-5" />,
       });
     } finally {
       setLoading(false);
@@ -65,13 +65,6 @@ function Login() {
       <Head>
         <title>Login | Tactalyse</title>
       </Head>
-      {toast.error && (
-        <ToastComponent
-          toast={toast}
-          setToast={setToast}
-          icon={<HiX className="h-5 w-5" />}
-        />
-      )}
       <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
         <div className="absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%]">
           <div className="w-[400px] p-4 max-w-[100vw]">

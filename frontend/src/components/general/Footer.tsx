@@ -1,42 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Footer } from "flowbite-react";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 import Link from "next/link";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 function FooterComponent() {
-  const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
-
-  useEffect(() => {
-    if (localStorage.getItem("darkMode") === null) {
-      localStorage.setItem("darkMode", "false");
-    }
-
-    setDarkMode(localStorage.getItem("darkMode") === "true");
-    if (
-      localStorage.getItem("darkMode") === "true" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.body.classList.add("dark");
-      localStorage.setItem("darkMode", "true");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("darkMode", "false");
-    }
-  }, []);
+  const theme = useContext(ThemeContext);
 
   const handleDarkMode = () => {
-    const darkModeIsSet = localStorage.getItem("darkMode") === "true";
-
-    if (darkModeIsSet) {
-      document.body.classList.remove("dark");
-      localStorage.setItem("darkMode", "false");
-      setDarkMode(false);
-    } else {
-      document.body.classList.add("dark");
-      localStorage.setItem("darkMode", "true");
-      setDarkMode(true);
-    }
+    if (theme?.darkMode) return theme.setDarkMode(false);
+    theme?.setDarkMode(true);
   };
 
   return (
@@ -62,7 +35,7 @@ function FooterComponent() {
             Contact
           </Footer.Link>
         </Footer.LinkGroup>
-        {!darkMode ? (
+        {!theme?.darkMode ? (
           <BsFillMoonFill
             className="text-[#8B929E] cursor-pointer"
             onClick={handleDarkMode}

@@ -9,7 +9,11 @@ interface Props {
 }
 function ToastComponent({ toast, setToast, icon }: Props) {
   return (
-    <Toast className="absolute top-[5%] right-[5%] md:top-10 md:right-10 z-[100]">
+    <Toast
+      className={`absolute top-[5%] right-[5%] md:top-10 md:right-10 z-[100] border-2 ${
+        toast.error ? "!border-red-500" : "!border-green-500"
+      }`}
+    >
       <div
         className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
           toast.error
@@ -20,7 +24,9 @@ function ToastComponent({ toast, setToast, icon }: Props) {
         {icon}
       </div>
       <div className="ml-3 text-sm font-normal capitalize">{toast.message}</div>
-      <Toast.Toggle onClick={() => setToast({ message: null, error: false })} />
+      <Toast.Toggle
+        onClick={() => setToast({ message: null, error: false, icon: null })}
+      />
     </Toast>
   );
 }

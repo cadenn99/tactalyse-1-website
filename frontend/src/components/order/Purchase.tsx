@@ -1,13 +1,12 @@
-import { Alert, Button, Card, Spinner, TextInput } from "flowbite-react";
+import { Button, Card, Spinner, TextInput } from "flowbite-react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
-import { formHookToFormData } from "@/utils/FormToFormData";
 import { purchaseReport } from "@/utils/api/requests";
-import { errorHandler } from "@/utils/ErrorHandler";
-import { HiCheckCircle } from "react-icons/hi";
+import { HiCheck, HiX } from "react-icons/hi";
+import { ToastContext } from "@/contexts/ToastContext";
 
 interface FormValues {
   playerName: string;
@@ -16,36 +15,39 @@ interface FormValues {
 function Purchase() {
   const { register, handleSubmit } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
-  const [requestState, setRequestState] = useState({
-    error: false,
-    message: "",
-  });
+  const toast = useContext(ToastContext);
   const { push } = useRouter();
 
   const { data: session } = useSession();
 
   const submitForm = async (data: FormValues) => {
-    console.log(data);
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const report = await purchaseReport(data, session!);
+      const report = await purchaseReport(data, session!);
 
-    setLoading(false);
+      toast?.setToast({
+        message: "You will be redirected in a moment!",
+        error: false,
+        icon: <HiCheck className="h-5 w-5" />,
+      });
 
-    await errorHandler({ response: report, changeError: setRequestState });
-
-    push(report.data.checkOutUrl);
+      setTimeout(() => {
+        push(report.data.checkOutUrl);
+      }, 3000);
+    } catch (err: any) {
+      toast?.setToast({
+        message: err.message,
+        error: true,
+        icon: <HiX className="h-5 w-5" />,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Card className="w-full self-start">
-      {requestState.message !== "" && (
-        <Alert color="success" icon={HiCheckCircle}>
-          <span>
-            <span className="font-medium">{requestState.message}</span>
-          </span>
-        </Alert>
-      )}
       <form
         className="w-full gap-2 flex flex-col"
         noValidate
