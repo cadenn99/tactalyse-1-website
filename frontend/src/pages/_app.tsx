@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { CustomFlowbiteTheme, Flowbite } from "flowbite-react";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
+import { ThemeContextProvider } from "@/contexts/ThemeContext";
 
 const progress = new ProgressBar({
   size: 3,
@@ -59,10 +60,12 @@ export default function App({
     },
   };
   return (
-    <SessionProvider session={session}>
-      <Flowbite theme={{ theme }}>
-        <Component {...pageProps} />
-      </Flowbite>
-    </SessionProvider>
+    <ThemeContextProvider>
+      <SessionProvider session={session}>
+        <Flowbite theme={{ theme }}>
+          <Component {...pageProps} />
+        </Flowbite>
+      </SessionProvider>
+    </ThemeContextProvider>
   );
 }
