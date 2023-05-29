@@ -1,6 +1,6 @@
 import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginInput, ToastInterface } from "../../../types/types";
 import { useRouter } from "next/router";
@@ -11,8 +11,13 @@ import { HiCheck, HiX } from "react-icons/hi";
 import Link from "next/link";
 import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
-import { register } from "@/utils/api/requests";
+import { register as registerRequest } from "@/utils/api/requests";
 import { ToastContext } from "@/contexts/ToastContext";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 function Register() {
   const { data: session } = useSession();
@@ -22,36 +27,33 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const { push } = useRouter();
 
-  const handleRegister: SubmitHandler<LoginInput> = async (values) => {
+  const handleRegister = async (values: FormValues) => {
     if (loading) return;
     try {
       setLoading(true);
 
-      const res = await register(values);
+      const res = await registerRequest(values);
 
-      if (res?.status !== 200)
-        toast?.setToast({
-          message: res.data.message,
-          error: true,
-          icon: <HiX className="h-5 w-5" />
-        });
-      else
-        toast?.setToast({
-          message: "Registered succesfully",
-          error: false,
-          icon: <HiCheck className="h-5 w-5" />
-        });
+      if (res?.status !== 200) throw Error(res.data.message);
+
+      toast?.setToast({
+        message: "Registered succesfully",
+        error: false,
+        icon: <HiCheck className="h-5 w-5" />,
+      });
     } catch (err: any) {
       toast?.setToast({
-        message: err.response.data.message,
+        message: err.message,
         error: true,
-        icon: <HiX className="h-5 w-5" />
+        icon: <HiX className="h-5 w-5" />,
       });
     } finally {
       setLoading(false);
+      reset({ email: "", password: "" });
     }
   };
 
@@ -78,7 +80,10 @@ function Register() {
                 className="dark:hidden w-[50%] mx-auto cursor-pointer"
                 onClick={() => push("/")}
               />
-              <form className="flex flex-col gap-2">
+              <form
+                className="flex flex-col gap-2"
+                onSubmit={handleSubmit(handleRegister)}
+              >
                 <div className="flex flex-col gap-1">
                   <Label htmlFor="email" value="Email" />
                   <TextInput
@@ -86,7 +91,7 @@ function Register() {
                     type="text"
                     sizing={"md"}
                     icon={MdAlternateEmail}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...register("email")}
                   />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -96,13 +101,13 @@ function Register() {
                     type="password"
                     sizing={"md"}
                     icon={BsKeyFill}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...register("password")}
                   />
                 </div>
                 <Button
                   className="mt-3"
-                  onClick={() => handleRegister({ email, password })}
                   isProcessing={loading}
+                  type="submit"
                   processingSpinner={
                     <Spinner color={"gray"} size={"sm"}></Spinner>
                   }
