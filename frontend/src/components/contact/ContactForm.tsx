@@ -50,7 +50,7 @@ function ContactForm() {
       <form className="flex flex-col gap-5" onSubmit={handleSubmit(submitForm)}>
         <TextInput
           id="name"
-          type="name"
+          type="text"
           placeholder="John Doe"
           icon={BsFillPersonFill}
           {...register("name")}
