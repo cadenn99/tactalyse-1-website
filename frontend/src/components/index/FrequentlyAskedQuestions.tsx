@@ -88,6 +88,19 @@ function FrequentlyAskedQuestions() {
             </p>
           </Accordion.Content>
         </Accordion.Panel>
+        <Accordion.Panel>
+          <Accordion.Title>
+            Question: What leagues are covered by Tactalyse according to the
+            data?
+          </Accordion.Title>
+          <Accordion.Content>
+            <p className="dark:text-[#848C99]">
+              Tactalyse covers a total of 20 leagues, and if there is any
+              uncertainty, please feel free to reach out to us via email for
+              assistance, ensuring a refund if necessary.
+            </p>
+          </Accordion.Content>
+        </Accordion.Panel>
       </Accordion>
     </div>
   );
