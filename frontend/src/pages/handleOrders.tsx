@@ -4,7 +4,7 @@ import FulFillOrder from "@/components/handleOrders/Generator";
 import Header from "@/components/general/Header";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
 import Head from "next/head";
-import React from "react";
+import React, { useContext } from "react";
 import { BiPackage } from "react-icons/bi";
 import OutstandingOrders from "@/components/handleOrders/OutstandingOrders";
 import { useSession } from "next-auth/react";
@@ -12,10 +12,13 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import { Spinner } from "flowbite-react";
 import { useDark } from "@/hooks/useDark";
+import { ToastContext } from "@/contexts/ToastContext";
+import { HiX } from "react-icons/hi";
 
 function HandleOrders() {
   useDark();
   const { data: session } = useSession();
+  const toast = useContext(ToastContext);
   const { data, error } = useSWR(
     session
       ? {
@@ -28,7 +31,12 @@ function HandleOrders() {
     fetcher
   );
 
-  if (error) return console.log(error);
+  if (error)
+    return toast?.setToast({
+      message: error.message,
+      error: true,
+      icon: <HiX className="h-5 w-5" />,
+    });
 
   return (
     <div className="px-2">

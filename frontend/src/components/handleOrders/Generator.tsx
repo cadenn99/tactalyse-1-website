@@ -1,4 +1,4 @@
-import { errorHandler } from "@/utils/ErrorHandler";
+import { ToastContext } from "@/contexts/ToastContext";
 import { formHookToFormData } from "@/utils/FormToFormData";
 import { generateReport } from "@/utils/api/requests";
 import {
@@ -12,11 +12,11 @@ import {
   Spinner,
 } from "flowbite-react";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineBarcode } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
-import { HiCheckCircle } from "react-icons/hi";
+import { HiCheck, HiX } from "react-icons/hi";
 import { MdEmail } from "react-icons/md";
 
 interface FormValues {
@@ -33,12 +33,7 @@ function Generator() {
   const [orderID, setOrderID] = useState(false);
   const [tactalysePlayer, setTactalysePlayer] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [requestState, setRequestState] = useState({
-    error: false,
-    message: "",
-  });
-
+  const toast = useContext(ToastContext);
   const { register, handleSubmit, resetField } = useForm<FormValues>();
   const { data: session } = useSession();
 
@@ -55,11 +50,19 @@ function Generator() {
 
       const form = formHookToFormData({ form: new FormData(), data });
 
-      const report = await generateReport(form, session!, orderID);
+      await generateReport(form, session!, orderID);
 
-      errorHandler({ response: report, changeError: setRequestState });
+      toast?.setToast({
+        message: "Emailed Report!",
+        error: false,
+        icon: <HiCheck className="h-5 w-5" />,
+      });
     } catch (err: any) {
-      console.log(err);
+      toast?.setToast({
+        message: err.message,
+        error: true,
+        icon: <HiX className="h-5 w-5" />,
+      });
     } finally {
       setLoading(false);
     }
@@ -67,13 +70,6 @@ function Generator() {
 
   return (
     <Card className="w-full md:w-[50%] ml-auto self-start">
-      {requestState.message !== "" && (
-        <Alert color="success" icon={HiCheckCircle}>
-          <span>
-            <span className="font-medium">{requestState.message}</span>
-          </span>
-        </Alert>
-      )}
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col gap-4"

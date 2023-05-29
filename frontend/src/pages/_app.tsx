@@ -5,6 +5,7 @@ import { CustomFlowbiteTheme, Flowbite } from "flowbite-react";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { ThemeContextProvider } from "@/contexts/ThemeContext";
+import { ToastContextProvider } from "@/contexts/ToastContext";
 
 const progress = new ProgressBar({
   size: 3,
@@ -61,11 +62,13 @@ export default function App({
   };
   return (
     <ThemeContextProvider>
-      <SessionProvider session={session}>
-        <Flowbite theme={{ theme }}>
-          <Component {...pageProps} />
-        </Flowbite>
-      </SessionProvider>
+      <ToastContextProvider>
+        <SessionProvider session={session}>
+          <Flowbite theme={{ theme }}>
+            <Component {...pageProps} />
+          </Flowbite>
+        </SessionProvider>
+      </ToastContextProvider>
     </ThemeContextProvider>
   );
 }

@@ -45,4 +45,5 @@ export interface ReportInput {
 export interface ToastInterface {
   message: null | string,
   error: boolean
+  icon: JSX.Element
 }

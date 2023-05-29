@@ -1,6 +1,6 @@
 import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginInput, ToastInterface } from "../../../types/types";
 import { useRouter } from "next/router";
@@ -12,13 +12,12 @@ import Link from "next/link";
 import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
 import { register } from "@/utils/api/requests";
+import { ToastContext } from "@/contexts/ToastContext";
 
 function Register() {
   const { data: session } = useSession();
-  const [toast, setToast] = useState<ToastInterface>({
-    message: null,
-    error: false,
-  });
+  const toast = useContext(ToastContext);
+
   useDark();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,19 +33,22 @@ function Register() {
       const res = await register(values);
 
       if (res?.status !== 200)
-        setToast({
+        toast?.setToast({
           message: res.data.message,
           error: true,
+          icon: <HiX className="h-5 w-5" />
         });
       else
-        setToast({
+        toast?.setToast({
           message: "Registered succesfully",
           error: false,
+          icon: <HiCheck className="h-5 w-5" />
         });
     } catch (err: any) {
-      setToast({
+      toast?.setToast({
         message: err.response.data.message,
         error: true,
+        icon: <HiX className="h-5 w-5" />
       });
     } finally {
       setLoading(false);
@@ -62,19 +64,6 @@ function Register() {
       <Head>
         <title>Login | Tactalyse</title>
       </Head>
-      {toast.message !== null && (
-        <ToastComponent
-          toast={toast}
-          setToast={setToast}
-          icon={
-            toast.error ? (
-              <HiX className="h-5 w-5" />
-            ) : (
-              <HiCheck className="h-5 w-5" />
-            )
-          }
-        />
-      )}
       <main className="max-w-7xl mx-auto mt-0 flex flex-col gap-10 relative min-h-screen">
         <div className="absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%]">
           <div className="w-[400px] p-4 max-w-[100vw]">
