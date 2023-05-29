@@ -1,9 +1,11 @@
+import { ToastContext } from "@/contexts/ToastContext";
 import { formHookToFormData } from "@/utils/FormToFormData";
 import axios from "axios";
 import { Button, Card, Spinner, TextInput, Textarea } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsFillPersonFill } from "react-icons/bs";
+import { HiCheck, HiX } from "react-icons/hi";
 import { MdAlternateEmail } from "react-icons/md";
 
 interface FormValues {
@@ -15,18 +17,29 @@ interface FormValues {
 function ContactForm() {
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+  const toast = useContext(ToastContext);
 
   const submitForm = async (value: FormValues) => {
     if (loading) return;
     try {
       setLoading(true);
-    } catch (err: any) {
       await axios({
         url: "https://formsubmit.co/ajax/ccc62f6b4b7b07c43cede53d39879363",
         method: "POST",
         data: value,
       });
+      toast?.setToast({
+        message: "Submitted form!",
+        error: false,
+        icon: <HiCheck className="h-5 w-5" />,
+      });
       reset({ email: "", message: "", name: "" });
+    } catch (err: any) {
+      toast?.setToast({
+        message: err.message,
+        error: true,
+        icon: <HiX className="h-5 w-5" />,
+      });
     } finally {
       setLoading(false);
     }

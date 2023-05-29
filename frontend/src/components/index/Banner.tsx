@@ -1,7 +1,9 @@
 import { Button } from "flowbite-react";
+import { useRouter } from "next/router";
 import React from "react";
 
 function Banner() {
+  const { push } = useRouter();
   return (
     <div
       className="h-[50vh] min-h-[400px] bg-red-500 flex items-center bg-cover bg-no-repeat rounded-md p-10"
@@ -21,7 +23,10 @@ function Banner() {
         <p className="text-center text-md sm:text-md sm:text-left max-w-[500px] mt-5 text-white">
           Revolutionize your football game with personalized data reports
         </p>
-        <Button className="mt-8 rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/70 max-w-[200px]">
+        <Button
+          className="mt-8 rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/70 max-w-[200px]"
+          onClick={() => push("/auth/login")}
+        >
           Order now
         </Button>
       </div>
