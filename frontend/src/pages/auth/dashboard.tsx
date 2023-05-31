@@ -6,11 +6,15 @@ import Head from "next/head";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
 import Orders from "@/components/dashboard/Orders";
+import { useContext } from "react";
+import { HiX } from "react-icons/hi";
+import { ToastContext } from "@/contexts/ToastContext";
 
-export default function Dashboard() {
+function Dashboard() {
   const { data: session } = useSession();
+  const toast = useContext(ToastContext);
 
-  const { data: dataUser, error: errorUser } = useSWR(
+  const { data, error } = useSWR(
     session && !session.user.isEmployee
       ? {
           url: process.env.NEXT_PUBLIC_BACKEND_URL + "/content/order-history",
@@ -20,7 +24,12 @@ export default function Dashboard() {
     fetcher
   );
 
-  if (errorUser) return console.log(errorUser);
+  if (error)
+    return toast?.setToast({
+      message: error.message,
+      error: true,
+      icon: <HiX className="h-5 w-5" />,
+    });
 
   return (
     <div className="px-2">
@@ -40,7 +49,7 @@ export default function Dashboard() {
             </span>
           </h1>
 
-          <Orders orders={dataUser?.orders ?? []} />
+          <Orders orders={data?.orders ?? []} />
 
           <Footer />
         </main>
@@ -48,3 +57,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;
