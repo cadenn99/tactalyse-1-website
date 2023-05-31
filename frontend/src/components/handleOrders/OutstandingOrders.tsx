@@ -5,13 +5,14 @@ import { TfiReload } from "react-icons/tfi";
 
 interface Props {
   orders: OrderInterface[];
+  className?: string;
 }
 
-function OutstandingOrders({ orders }: Props) {
+function OutstandingOrders({ orders, className }: Props) {
   const [pageNumber, setPageNumber] = useState(1);
 
   return (
-    <Card className="w-full md:w-[50%] self-start">
+    <Card className={className}>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl dark:text-white">Outstanding Orders</h2>
       </div>

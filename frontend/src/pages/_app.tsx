@@ -41,6 +41,16 @@ export default function App({
     button: {
       base: "text-white group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg rounded-md !bg-[#FF2301] hover:!bg-[#FF2301]/80 focus:!ring-0 focus:!ring-transparent",
     },
+    accordion: {
+      title: {
+        base:
+          currentTheme.accordion.title.base +
+          " dark:focus:!ring-transparent focus:!ring-transparent",
+      },
+      content: {
+        base: currentTheme.accordion.content.base + " text-slate-500",
+      },
+    },
     tab: {
       tablist: {
         tabitem: {
@@ -78,7 +88,7 @@ export default function App({
       field: {
         input: {
           base:
-            currentTheme.fileInput.field.input.base +
+            // currentTheme.fileInput.field.input.base +
             " focus:!border-[#FF2301]/80 focus:!ring-[#FF2301]/80 dark:focus:!border-[#FF2301]/80 dark:focus:!ring-[#FF2301]/80",
         },
       },

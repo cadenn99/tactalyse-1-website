@@ -1,3 +1,4 @@
+"use client";
 import Footer from "@/components/general/Footer";
 import Generator from "@/components/handleOrders/Generator";
 import FulFillOrder from "@/components/handleOrders/Generator";
@@ -5,15 +6,16 @@ import Header from "@/components/general/Header";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
 import Head from "next/head";
 import React, { useContext } from "react";
-import { BiPackage } from "react-icons/bi";
+import { BiHelpCircle, BiPackage } from "react-icons/bi";
 import OutstandingOrders from "@/components/handleOrders/OutstandingOrders";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { Spinner } from "flowbite-react";
+import { Accordion, Spinner } from "flowbite-react";
 import { useDark } from "@/hooks/useDark";
 import { ToastContext } from "@/contexts/ToastContext";
 import { HiX } from "react-icons/hi";
+import InfoModal from "@/components/handleOrders/InfoModal";
 
 function HandleOrders() {
   useDark();
@@ -62,15 +64,23 @@ function HandleOrders() {
               Handle orders
             </h1>
           </div>
+          <div className="ml-auto dark:text-white px-3">
+            <BiHelpCircle className="h-5 w-5 hover:cursor-pointer" />
+            <InfoModal show={true} />
+          </div>
           <div className="flex flex-col-reverse gap-5 md:flex-row">
             {data ? (
-              <OutstandingOrders orders={data?.unfilfilledOrders || []} />
+              <OutstandingOrders
+                orders={data?.unfilfilledOrders || []}
+                className="flex flex-col w-full md:w-[50%] self-start gap-5"
+              />
             ) : (
               <div className="w-full md:w-[50%] flex items-center justify-center">
                 <Spinner color={"gray"} size={"md"} />
               </div>
             )}
-            <Generator />
+
+            <Generator className="w-full md:w-[50%] ml-auto self-start" />
           </div>
 
           <Footer />
