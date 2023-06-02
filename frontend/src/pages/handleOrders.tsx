@@ -1,23 +1,23 @@
 "use client";
 import Footer from "@/components/general/Footer";
 import Generator from "@/components/handleOrders/Generator";
-import FulFillOrder from "@/components/handleOrders/Generator";
 import Header from "@/components/general/Header";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
 import Head from "next/head";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BiHelpCircle, BiPackage } from "react-icons/bi";
 import OutstandingOrders from "@/components/handleOrders/OutstandingOrders";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { Accordion, Spinner } from "flowbite-react";
+import { Spinner } from "flowbite-react";
 import { useDark } from "@/hooks/useDark";
 import { ToastContext } from "@/contexts/ToastContext";
 import { HiX } from "react-icons/hi";
 import InfoModal from "@/components/handleOrders/InfoModal";
 
 function HandleOrders() {
+  const [modal, setModal] = useState(false);
   useDark();
   const { data: session } = useSession();
   const toast = useContext(ToastContext);
@@ -65,8 +65,11 @@ function HandleOrders() {
             </h1>
           </div>
           <div className="ml-auto dark:text-white px-3">
-            <BiHelpCircle className="h-5 w-5 hover:cursor-pointer" />
-            <InfoModal show={true} />
+            <BiHelpCircle
+              className="h-5 w-5 hover:cursor-pointer"
+              onClick={() => setModal(true)}
+            />
+            <InfoModal show={modal} setShow={setModal} />
           </div>
           <div className="flex flex-col-reverse gap-5 md:flex-row">
             {data ? (

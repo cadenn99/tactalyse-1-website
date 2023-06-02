@@ -1,8 +1,6 @@
-import { Button, Card } from "flowbite-react";
 import { useRouter } from "next/router";
 import React from "react";
-import { AiFillCheckCircle } from "react-icons/ai";
-import PricingCard from "./PricingCard";
+
 
 interface Props {
   children: JSX.Element | JSX.Element[];

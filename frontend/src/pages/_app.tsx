@@ -23,7 +23,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const currentTheme = useTheme().theme;
-  console.log(currentTheme.fileInput.field.input.base);
+
   const theme: CustomFlowbiteTheme = {
     timeline: {
       item: {
@@ -88,8 +88,15 @@ export default function App({
       field: {
         input: {
           base:
-            // currentTheme.fileInput.field.input.base +
+            currentTheme.fileInput.field.input.base +
             " focus:!border-[#FF2301]/80 focus:!ring-[#FF2301]/80 dark:focus:!border-[#FF2301]/80 dark:focus:!ring-[#FF2301]/80",
+        },
+      },
+    },
+    modal: {
+      root: {
+        show: {
+          on: currentTheme.modal.root.show.on + " !h-full",
         },
       },
     },

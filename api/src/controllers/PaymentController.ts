@@ -127,6 +127,8 @@ export class PaymentController {
                 leagueFile: fs.createReadStream(form.files.league.filepath),
                 playerFile: fs.createReadStream(form.files.player.filepath),
                 playerName: form.fields.playerName,
+                startDate: form.fields?.startDate,
+                endDate: form.fields?.endDate
             })
 
             await mailerClient.sendEmail(
@@ -165,6 +167,8 @@ export class PaymentController {
                 leagueFile: fs.createReadStream(form.files.league.filepath),
                 playerFile: fs.createReadStream(form.files.player.filepath),
                 playerName: form.fields.playerName,
+                startDate: form.fields?.startDate,
+                endDate: form.fields?.endDate
             })
 
             await mailerClient.sendEmail(

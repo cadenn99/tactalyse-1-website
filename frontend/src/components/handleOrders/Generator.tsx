@@ -93,7 +93,11 @@ function Generator({ className }: Props) {
         <ToggleSwitch
           checked={tactalysePlayer}
           label="Tactalyse player?"
-          onChange={() => setTactalysePlayer(!tactalysePlayer)}
+          onChange={() => {
+            resetField("startDate");
+            resetField("endDate");
+            setTactalysePlayer(!tactalysePlayer);
+          }}
           className="self-start"
         />
         {orderID ? (

@@ -7,9 +7,11 @@ interface Props {
     leagueFile: fs.ReadStream
     playerFile: fs.ReadStream
     playerName: string
+    startDate?: number | string | undefined
+    endDate?: number | string | undefined
 }
 
-export const pdfGenerator = async ({ leagueFile, playerFile, playerName }: Props) => {
+export const pdfGenerator = async ({ leagueFile, playerFile, playerName, startDate, endDate }: Props) => {
 
     const form = new FormData()
 
@@ -17,8 +19,11 @@ export const pdfGenerator = async ({ leagueFile, playerFile, playerName }: Props
     form.append('league-file', leagueFile)
     form.append('player-name', playerName)
 
+    if (startDate !== "undefined") form.append('start-date', startDate)
+    if (endDate !== "undefined") form.append('end-date', endDate)
+
     const data = await axios({
-        url: "https://report-api.testalyse.nl/pdf",
+        url: process.env.REPORT_API,
         method: "POST",
         data: form,
         responseType: 'arraybuffer'

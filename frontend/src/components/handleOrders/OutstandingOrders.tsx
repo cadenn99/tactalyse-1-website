@@ -1,7 +1,6 @@
 import { Card, Pagination, Table, Tooltip } from "flowbite-react";
 import React, { useState } from "react";
 import { OrderInterface } from "../../../types/types";
-import { TfiReload } from "react-icons/tfi";
 
 interface Props {
   orders: OrderInterface[];

@@ -1,7 +1,7 @@
 import { Button, Card } from "flowbite-react";
 import React from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { ImPriceTag } from "react-icons/im";
+
 interface Props {
   title: string;
   price?: string;
