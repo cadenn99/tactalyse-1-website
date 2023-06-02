@@ -1,4 +1,4 @@
-import { Alert, Card } from "flowbite-react";
+import { Alert } from "flowbite-react";
 import Link from "next/link";
 import React from "react";
 import { AiFillWarning } from "react-icons/ai";

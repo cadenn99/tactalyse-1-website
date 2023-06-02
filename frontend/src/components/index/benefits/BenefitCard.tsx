@@ -1,7 +1,5 @@
 import { Card } from "flowbite-react";
 import React from "react";
-import { IconType } from "react-icons";
-import { CgGym } from "react-icons/cg";
 
 interface Props {
   icon: JSX.Element;

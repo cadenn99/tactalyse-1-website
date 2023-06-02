@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Footer } from "flowbite-react";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 import Link from "next/link";

@@ -1,7 +1,4 @@
 "use client";
-import { ToastContext } from "@/contexts/ToastContext";
-import { formHookToFormData } from "@/utils/FormToFormData";
-import { generateReport } from "@/utils/api/requests";
 import {
   Card,
   ToggleSwitch,
@@ -9,9 +6,12 @@ import {
   Label,
   FileInput,
   Button,
-  Alert,
   Spinner,
 } from "flowbite-react";
+import { ToastContext } from "@/contexts/ToastContext";
+import { formHookToFormData } from "@/utils/FormToFormData";
+import { generateReport } from "@/utils/api/requests";
+
 import { useSession } from "next-auth/react";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -30,7 +30,11 @@ interface FormValues {
   league: File;
 }
 
-function Generator() {
+interface Props {
+  className?: string;
+}
+
+function Generator({ className }: Props) {
   const [orderID, setOrderID] = useState(false);
   const [tactalysePlayer, setTactalysePlayer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -70,7 +74,7 @@ function Generator() {
   };
 
   return (
-    <Card className="w-full md:w-[50%] ml-auto self-start">
+    <Card className={className}>
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col gap-4"
@@ -89,7 +93,11 @@ function Generator() {
         <ToggleSwitch
           checked={tactalysePlayer}
           label="Tactalyse player?"
-          onChange={() => setTactalysePlayer(!tactalysePlayer)}
+          onChange={() => {
+            resetField("startDate");
+            resetField("endDate");
+            setTactalysePlayer(!tactalysePlayer);
+          }}
           className="self-start"
         />
         {orderID ? (

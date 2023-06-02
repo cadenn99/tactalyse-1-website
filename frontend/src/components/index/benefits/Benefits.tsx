@@ -1,9 +1,4 @@
-import { Card } from "flowbite-react";
 import React from "react";
-import { BsPeopleFill } from "react-icons/bs";
-import { CgGym } from "react-icons/cg";
-import { FaHandshake } from "react-icons/fa";
-import { TbPigMoney } from "react-icons/tb";
 
 interface Props {
   children: JSX.Element | JSX.Element[];

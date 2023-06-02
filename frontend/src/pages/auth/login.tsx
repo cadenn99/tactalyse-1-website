@@ -4,7 +4,15 @@ import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginInput, ToastInterface } from "../../../types/types";
 import { useRouter } from "next/router";
-import { Button, Card, Label, Spinner, TextInput, Toast, useTheme } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Label,
+  Spinner,
+  TextInput,
+  Toast,
+  useTheme,
+} from "flowbite-react";
 import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
 import { HiX } from "react-icons/hi";
@@ -19,7 +27,7 @@ interface FormValues {
 }
 
 function Login() {
-  const theme = useTheme().theme.textInput
+  const theme = useTheme().theme.textInput;
   useDark();
   const { data: session } = useSession();
   const toast = useContext(ToastContext);
