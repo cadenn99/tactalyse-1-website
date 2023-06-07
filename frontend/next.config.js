@@ -42,6 +42,4 @@ const nextConfig = {
   }
 };
 
-// TODO: the above rewrites are defined at build time; To fix this issue, we need to make some dynamic API routes that can work with env variables instead.
-
 module.exports = nextConfig

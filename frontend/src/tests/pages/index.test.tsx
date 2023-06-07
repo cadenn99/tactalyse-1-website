@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react"
 import Home from "../../pages"
 import { SessionProvider } from "next-auth/react";
+import React from "react";
 
 describe ('Home', () => {
   it('should render properly', () => {
