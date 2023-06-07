@@ -80,10 +80,11 @@ function Generator({ className }: Props) {
         className="flex flex-col gap-4"
         noValidate
       >
-        <h2 className="text-2xl dark:text-white">Generate Reports</h2>
+        <h2 className="text-2xl dark:text-white" data-testid="Generator">Generate Reports</h2>
         <ToggleSwitch
           checked={orderID}
           label="Fulfilling an order?"
+          data-testid="orderSwitch"
           onChange={() => {
             setOrderID(!orderID);
             resetField(orderID ? "id" : "email");
@@ -93,6 +94,7 @@ function Generator({ className }: Props) {
         <ToggleSwitch
           checked={tactalysePlayer}
           label="Tactalyse player?"
+          data-testid="tactSwitch"
           onChange={() => {
             resetField("startDate");
             resetField("endDate");
@@ -104,6 +106,7 @@ function Generator({ className }: Props) {
           <TextInput
             id="orderid"
             type="text"
+            data-testid="orderid"
             icon={AiOutlineBarcode}
             placeholder="Order id..."
             required={true}
@@ -113,6 +116,7 @@ function Generator({ className }: Props) {
           <TextInput
             id="email"
             type="text"
+            data-testid="email"
             icon={MdEmail}
             placeholder="Email"
             required={true}
@@ -127,6 +131,7 @@ function Generator({ className }: Props) {
               placeholder="Start date..."
               required={true}
               addon="Start"
+              data-testid="startDate"
               className="w-[50%]"
               {...register("startDate")}
             />
@@ -136,6 +141,7 @@ function Generator({ className }: Props) {
               placeholder="End date..."
               required={true}
               addon="End"
+              data-testid="endDate"
               className="w-[50%]"
               {...register("endDate")}
             />
@@ -145,12 +151,13 @@ function Generator({ className }: Props) {
           icon={BsFillPersonFill}
           placeholder="Player name"
           type="text"
+          data-testid="playerName"
           {...register("playerName")}
         />
         <Label htmlFor="file" value="League file" />
-        <FileInput id="file" {...register("league")} />
+        <FileInput data-testid="leagueFile" id="file" {...register("league")} />
         <Label htmlFor="file" value="Player file" />
-        <FileInput id="file" {...register("player")} />
+        <FileInput data-testid="playerFile" id="file" {...register("player")} />
         <Button
           type="submit"
           isProcessing={loading}
