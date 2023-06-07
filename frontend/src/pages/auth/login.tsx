@@ -101,6 +101,7 @@ function Login() {
                     id="email"
                     type="text"
                     sizing={"md"}
+                    data-testid="email"
                     icon={MdAlternateEmail}
                     {...register("email")}
                   />
@@ -111,6 +112,7 @@ function Login() {
                     id="password"
                     type="password"
                     sizing={"md"}
+                    data-testid="password"
                     icon={BsKeyFill}
                     {...register("password")}
                   />

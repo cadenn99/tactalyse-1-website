@@ -12,7 +12,7 @@ function OutstandingOrders({ orders, className }: Props) {
   const [tooltip, setTooltip] = useState("Copy to clipboard");
 
   return (
-    <Card className={className}>
+    <Card className={className} data-testid="OutstandingOrders">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl dark:text-white">Outstanding Orders</h2>
       </div>

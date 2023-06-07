@@ -47,7 +47,7 @@ function Purchase() {
   };
 
   return (
-    <Card className="w-full self-start">
+    <Card className="w-full self-start" data-testid="orderForm">
       <form
         className="w-full gap-2 flex flex-col"
         noValidate

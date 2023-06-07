@@ -1,3 +1,5 @@
 
 api/logs/error.log
 *.log
+
+fronted/node_modues/

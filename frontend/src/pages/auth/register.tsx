@@ -90,6 +90,7 @@ function Register() {
                     id="email"
                     type="text"
                     sizing={"md"}
+                    data-testid="email"
                     icon={MdAlternateEmail}
                     {...register("email")}
                   />
@@ -100,6 +101,7 @@ function Register() {
                     id="password"
                     type="password"
                     sizing={"md"}
+                    data-testid="password"
                     icon={BsKeyFill}
                     {...register("password")}
                   />

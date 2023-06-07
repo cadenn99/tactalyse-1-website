@@ -20,6 +20,7 @@ function Discord() {
             channel="1100044656244428894"
             height={"600px"}
             className="w-full"
+            data-testid="DiscordWidget"
           />
         </>
       )}
