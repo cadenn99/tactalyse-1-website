@@ -51,7 +51,7 @@ export class DatabaseService implements DatabaseInterface {
      * @returns 
      */
     public async loginUser(email: string, password: string) {
-        let user = (await model('User').findOne({ email }))
+        let user = (await mongoose.model('User').findOne({ email }))
 
         if (user === null || !(await bcrypt.compare(password, user.toJSON().hash)))
             throw new CError('User doesn\'t exist or password incorrect', 401)
@@ -70,7 +70,7 @@ export class DatabaseService implements DatabaseInterface {
      * @returns 
      */
     public async findUserByOrder(orderId: string) {
-        const user = await model('User')
+        const user = await mongoose.model('User')
             .findOne(
                 { orderHistory: orderId }
             )
@@ -92,7 +92,7 @@ export class DatabaseService implements DatabaseInterface {
      */
     public async createOrder(playerName: string, orderId: string, userId: string) {
         try {
-            const order = await model('Order')
+            const order = await mongoose.model('Order')
                 .create({
                     playerName,
                     orderId,
@@ -120,7 +120,7 @@ export class DatabaseService implements DatabaseInterface {
      */
     public async findOrder(orderId: string) {
         try {
-            const order = await model('Order').findOne({ orderId })
+            const order = await mongoose.model('Order').findOne({ orderId })
 
             if (order === null)
                 throw new CError('An order with this ID doesn\'t exists', 409)
@@ -140,7 +140,7 @@ export class DatabaseService implements DatabaseInterface {
      * @param orderId Order id
      */
     public async completePayment(orderId: string) {
-        await model('Order')
+        await mongoose.model('Order')
             .updateOne(
                 { orderId },
                 { $set: { completedPayment: true } }
@@ -153,12 +153,12 @@ export class DatabaseService implements DatabaseInterface {
      * 
      */
     public async findUserOrderHistory(id: string) {
-        const orderHistoryIds = await model('User').findOne({ _id: new Types.ObjectId(id) })
+        const orderHistoryIds = await mongoose.model('User').findOne({ _id: new Types.ObjectId(id) })
 
         if (orderHistoryIds === null)
             throw new CError('No user with this order id', 404)
 
-        const orderHistory = await model('Order').find({
+        const orderHistory = await mongoose.model('Order').find({
             _id: { $in: orderHistoryIds?.orderHistory }
         })
 
@@ -170,7 +170,7 @@ export class DatabaseService implements DatabaseInterface {
      * 
      */
     public async findAllUnfulfilledOrders() {
-        return await model('Order').find({ status: "processing" })
+        return await mongoose.model('Order').find({ status: "processing" })
     }
 
     /**
@@ -179,7 +179,7 @@ export class DatabaseService implements DatabaseInterface {
      */
     public async completeOrder(id: string) {
         try {
-            await model('Order').updateOne({ _id: id }, { $set: { status: "Completed" } })
+            await mongoose.model('Order').updateOne({ _id: id }, { $set: { status: "Completed" } })
         } catch (err: any) {
             if (err?.code === 11000) {
                 throw new CError('An order with this ID doesn\'t exists', 409)

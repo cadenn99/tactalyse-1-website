@@ -43,16 +43,16 @@ export default function Header() {
           <div className="flex md:order-2 gap-1 items-center">
             <Dropdown
               label={
-                <Avatar
-                  rounded={true}
-                  status="online"
-                  size={"sm"}
-                  className="cursor-pointer"
-                >
-                  <span className="hidden md:inline-block capitalize dark:text-white transition-all ease-in-out duration-500">
-                    {session?.user.email.split("@")[0]}
-                  </span>
-                </Avatar>
+                // <Avatar
+                //   rounded={true}
+                //   status="online"
+                //   size={"sm"}
+                //   className="cursor-pointer"
+                // >
+                <span className="hidden md:inline-block capitalize dark:text-white transition-all ease-in-out duration-500">
+                  {session?.user.email.split("@")[0]}
+                </span>
+                // </Avatar>
               }
               arrowIcon={false}
               inline={true}

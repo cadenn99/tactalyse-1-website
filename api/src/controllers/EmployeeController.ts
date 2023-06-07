@@ -1,7 +1,5 @@
-import { DatabaseInterface, TokenInterface } from "@root/typings";
-import { CError } from "@src/utils"
+import { DatabaseInterface } from "@root/typings";
 import { NextFunction, Request, Response } from "express";
-import jwt from 'jsonwebtoken'
 
 /**
  * EmployeeController class responsible for handling employee specific requests

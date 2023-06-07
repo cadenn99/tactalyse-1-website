@@ -1,8 +1,8 @@
 import { Application } from "express"
 
 export interface DatabaseInterface {
-    connect: Function
-    createUser: Function
+    connect: () => void
+    createUser: (email: string, password: string) => object
     loginUser: Function
     createOrder: Function
     findOrder: Function

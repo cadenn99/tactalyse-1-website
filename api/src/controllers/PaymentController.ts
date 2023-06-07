@@ -36,7 +36,8 @@ export class PaymentController {
 
             formidable({
                 multiples: true,
-                keepExtensions: true
+                keepExtensions: true,
+                maxFileSize: 8000000
             })
                 .parse(req, (err, fields, files) => {
                     if (err) reject(err)
