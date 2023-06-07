@@ -3,7 +3,6 @@ import { DatabaseService } from '../DatabaseService'
 import mongoose from 'mongoose'
 import { TestContext } from '@root/typings';
 import config from '@root/config';
-import bcrypt from 'bcryptjs'
 import { CError } from '@src/utils';
 
 vi.mock('mongoose')
@@ -36,7 +35,7 @@ describe("Tests for database service class user creation", () => {
     })
 
     // test<TestContext>("Does the database reject user registration with existing email", async ({ db }) => {
-    //     (mongoose.model("User").create as Mock).mockRejectedValueOnce(new CError("Email is already taken", 409))
+    //     (mongoose.model('User').create as Mock).mockRejectedValueOnce(new CError("Email is already taken", 409))
 
     //     await db?.createUser(config.test.VALID_CREDENTIALS.email, config.test.VALID_CREDENTIALS.password)
 
