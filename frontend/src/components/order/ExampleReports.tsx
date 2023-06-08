@@ -3,7 +3,7 @@ import React from "react";
 
 function ExampleReports() {
   return (
-    <Card className="w-full lg:w-[50%] self-start">
+    <Card className="w-full lg:w-[50%] self-start" data-testid="exampleReports">
       <h2 className="text-2xl dark:text-white">Example reports</h2>
       <Tabs.Group style="default" className="flex">
         <Tabs.Item title="Player 1">

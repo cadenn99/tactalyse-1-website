@@ -78,7 +78,7 @@ function HandleOrders() {
                 className="flex flex-col w-full md:w-[50%] self-start gap-5"
               />
             ) : (
-              <div className="w-full md:w-[50%] flex items-center justify-center">
+              <div className="w-full md:w-[50%] flex items-center justify-center" data-testid="OutstandingOrders">
                 <Spinner color={"gray"} size={"md"} />
               </div>
             )}

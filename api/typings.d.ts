@@ -1,8 +1,8 @@
 import { Application } from "express"
 
 export interface DatabaseInterface {
-    connect: Function
-    createUser: Function
+    connect: () => void
+    createUser: (email: string, password: string) => object
     loginUser: Function
     createOrder: Function
     findOrder: Function
@@ -27,6 +27,8 @@ export interface TestContext {
     app?: Application
     supertestInstance?: supertest.Test
     db?: DatabaseInterface
+    nm?: MailerInterface
+    pc?: PaymentProcessorInterface
     mockReq?: Partial<Request>
     mockRes?: Partial<Response>
     mockNext?: Partial<NextFunction>

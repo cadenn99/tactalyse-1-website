@@ -1,18 +1,33 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react"
-import Home from "../../pages"
+import { describe, it, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react"
+import Home from "../../pages/index";
 import { SessionProvider } from "next-auth/react";
+import React from "react";
+import { Session } from "next-auth";
 
-describe ('Home', () => {
+afterEach(cleanup)
+
+/**
+ * Renders the component with a custom session State.
+ * @param session sessionState to use during render.
+ */
+async function renderHome(session: Session | null | undefined) {
+  render(
+    <SessionProvider session={session}>
+      <Home />
+    </SessionProvider>
+  );
+};
+
+describe ('Page', () => {
   it('should render properly', () => {
-    
-    render(
-      <SessionProvider session={null}>
-        <Home />
-      </SessionProvider>
-    );
+    renderHome(null);
     expect(screen.getByRole('main')).toBeDefined();
   })
 })
 
-//todo: write tests for this when we've implemented the new figma design
+describe('discordWidget', () => {
+  it('should be rendered', () => {
+    renderHome(null);
+  })
+})

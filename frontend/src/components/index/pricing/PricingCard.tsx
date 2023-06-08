@@ -42,7 +42,7 @@ function PricingCard({
       )}
       <ul role="list" className="mt-8 space-y-2">
         {reasons.map((item, index) => (
-          <li className="flex gap-5 items-center" key={index}>
+          <li className="flex gap-5 items-center" key={item}>
             <AiFillCheckCircle className="text-[#FF2301]/70" />
             <span className="dark:text-[#848C99]">{item}</span>
           </li>

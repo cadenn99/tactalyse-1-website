@@ -3,7 +3,6 @@ import { authReqSchema } from "@src/models/api-models";
 import { CError } from "@src/utils/CError";
 import jwt from 'jsonwebtoken'
 import { DatabaseInterface } from "@root/typings";
-import { logger } from "@src/utils";
 
 /**
  * AuthController class responsible for handling user registeration and logging in

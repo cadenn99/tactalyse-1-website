@@ -12,7 +12,7 @@ function Orders({ orders }: Props) {
   return (
     <Card className="w-full lg:w-[50%] relative flex flex-col justify-center">
       <h2 className="text-center text-2xl dark:text-white">Orders</h2>
-      <Table hoverable={true}>
+      <Table hoverable={true} data-testid="orderHistory">
         <Table.Head>
           <Table.HeadCell>Report ID</Table.HeadCell>
           <Table.HeadCell className="hidden xs:table-cell">

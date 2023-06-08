@@ -9,9 +9,10 @@ interface Props {
 
 function OutstandingOrders({ orders, className }: Props) {
   const [pageNumber, setPageNumber] = useState(1);
+  const [tooltip, setTooltip] = useState("Copy to clipboard");
 
   return (
-    <Card className={className}>
+    <Card className={className} data-testid="OutstandingOrders">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl dark:text-white">Outstanding Orders</h2>
       </div>
@@ -36,12 +37,14 @@ function OutstandingOrders({ orders, className }: Props) {
                   className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:cursor-pointer"
                   key={order._id}
                 >
-                  <Tooltip content="Copy to clipboard" placement="left">
+                  <Tooltip content={tooltip} placement="left">
                     <Table.Cell
                       className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate"
-                      onClick={() =>
-                        navigator.clipboard.writeText(order.orderId)
-                      }
+                      onClick={() => {
+                        setTooltip("Copied!");
+                        navigator.clipboard.writeText(order.orderId);
+                      }}
+                      onMouseLeave={() => setTooltip("Copy to clipboard")}
                     >
                       {order?.orderId.slice(0, 8)}...
                     </Table.Cell>

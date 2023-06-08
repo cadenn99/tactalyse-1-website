@@ -1,15 +1,13 @@
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { LoginInput, ToastInterface } from "../../../types/types";
+import { useContext, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Button, Card, Label, Spinner, TextInput, Toast } from "flowbite-react";
+import { Button, Card, Label, Spinner, TextInput } from "flowbite-react";
 import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
 import { HiCheck, HiX } from "react-icons/hi";
 import Link from "next/link";
-import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
 import { register as registerRequest } from "@/utils/api/requests";
 import { ToastContext } from "@/contexts/ToastContext";
@@ -24,8 +22,6 @@ function Register() {
   const toast = useContext(ToastContext);
 
   useDark();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormValues>();
 
@@ -90,6 +86,7 @@ function Register() {
                     id="email"
                     type="text"
                     sizing={"md"}
+                    data-testid="email"
                     icon={MdAlternateEmail}
                     {...register("email")}
                   />
@@ -100,6 +97,7 @@ function Register() {
                     id="password"
                     type="password"
                     sizing={"md"}
+                    data-testid="password"
                     icon={BsKeyFill}
                     {...register("password")}
                   />

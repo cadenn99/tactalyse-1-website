@@ -1,7 +1,6 @@
 import Footer from "@/components/general/Footer";
 import Header from "@/components/general/Header";
 import ProtectedRoute from "@/components/general/ProtectedRoute";
-import { useDark } from "@/hooks/useDark";
 import { Card } from "flowbite-react";
 import Head from "next/head";
 import { AiOutlineCheckCircle } from "react-icons/ai";
