@@ -29,7 +29,7 @@ export class MailerService implements MailerInterface {
     }
 
     /**
-     * Method for sending a report to the client
+     * Method for sending a report to the customer
      * 
      * @param email Email of the receiver
      * @param orderId Order id

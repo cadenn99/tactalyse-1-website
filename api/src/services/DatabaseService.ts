@@ -99,7 +99,7 @@ export class DatabaseService implements DatabaseInterface {
                     creationTimestamp: new Date().getTime()
                 })
 
-            await model('User')
+            await mongoose.model('User')
                 .updateOne(
                     { _id: userId },
                     { $push: { orderHistory: order._id } }
@@ -153,7 +153,7 @@ export class DatabaseService implements DatabaseInterface {
      * 
      */
     public async findUserOrderHistory(id: string) {
-        const orderHistoryIds = await mongoose.model('User').findOne({ _id: new Types.ObjectId(id) })
+        const orderHistoryIds = await mongoose.model('User').findOne({ _id: new mongoose.Types.ObjectId(id) })
 
         if (orderHistoryIds === null)
             throw new CError('No user with this order id', 404)
