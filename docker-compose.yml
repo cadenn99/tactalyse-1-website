@@ -25,3 +25,15 @@ services:
       - SALT_ROUNDS=10
       - MOLLIE_API_KEY=test_mKdenUnyR3FHCWMSndC4nSCEWVVyJD
       - STRIPE_API_KEY=sk_test_51MwhjWJMTSQqzUddwKUR2IDTSaF1ukB1hqz9AqgcqOGdHREmhekCArdd1KDVZuR6FDaCaAEQpw5ERX8HJmUJNxLg00Zqaehxmp
+
+  frontend:
+    build: ./frontend
+    container_name: tactalyse-client
+    ports:
+      - 3000:3000
+    restart: always
+    environment:
+      - NEXTAUTH_SECRET=JWTSECRETTOKEN #very secret
+      - NEXTAUTH_URL=http://localhost:3000
+      - NODE_ENV=development
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
