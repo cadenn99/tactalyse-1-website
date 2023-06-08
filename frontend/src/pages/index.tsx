@@ -15,7 +15,6 @@ import { FaHandshake } from "react-icons/fa";
 import { TbPigMoney } from "react-icons/tb";
 import { BsPeopleFill } from "react-icons/bs";
 import { useDark } from "@/hooks/useDark";
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import Discord from "@/components/index/Discord";
 
 /**

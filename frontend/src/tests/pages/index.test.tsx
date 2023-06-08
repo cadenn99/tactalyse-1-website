@@ -1,10 +1,8 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
+import { describe, it, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react"
 import Home from "../../pages/index";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
-import mockRouter from 'next-router-mock';
-import userEvent from '@testing-library/user-event';
 import { Session } from "next-auth";
 
 afterEach(cleanup)
@@ -31,6 +29,5 @@ describe ('Page', () => {
 describe('discordWidget', () => {
   it('should be rendered', () => {
     renderHome(null);
-    // expect(screen.getByTestId('DiscordWidget')).toBeDefined;
   })
 })

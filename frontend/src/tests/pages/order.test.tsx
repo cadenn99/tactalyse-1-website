@@ -1,8 +1,7 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import Order from "../../pages/order";
 import { SessionProvider } from "next-auth/react";
-import { Session } from "next-auth";
 import React from "react";
 import mockRouter from 'next-router-mock';
 import userEvent from '@testing-library/user-event';

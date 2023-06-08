@@ -1,10 +1,9 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
+import { describe, it, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react"
 import Generator from "../../../components/handleOrders/Generator"
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import React from "react";
-import mockRouter from 'next-router-mock';
 import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup)
@@ -45,7 +44,6 @@ describe('Component', () => {
     userEvent.click(screen.getByTestId('orderSwitch'));
 
     expect(screen.getByTestId('email')).not.toBeDefined;
-    // expect(screen.getByTestId('orderid')).toBeDefined;
     expect(screen.getByTestId('playerName')).toBeDefined;
     expect(screen.getByTestId('leagueFile')).toBeDefined;
     expect(screen.getByTestId('playerFile')).toBeDefined;
@@ -61,8 +59,6 @@ describe('Component', () => {
     expect(screen.getByTestId('playerName')).toBeDefined;
     expect(screen.getByTestId('leagueFile')).toBeDefined;
     expect(screen.getByTestId('playerFile')).toBeDefined;
-    // expect(screen.getByTestId('startDate')).toBeDefined;
-    // expect(screen.getByTestId('endDate')).toBeDefined;
     expect(screen.getByRole('button')).toBeDefined;
   })
 })

@@ -8,7 +8,16 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
+    clearMocks: true,
     environment: 'jsdom',
     setupFiles: ["vitestSetup.ts"],
-  },
+    coverage: {
+      exclude: [
+        '**/__mocks__/**/*',
+        '**/__test__/**/*',
+      ],
+      provider: 'istanbul', // or 'c8'
+      reporter: ['lcov', 'html'],
+    }
+  }
 })

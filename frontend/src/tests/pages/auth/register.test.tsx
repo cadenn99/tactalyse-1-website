@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react"
 import Register from "../../../pages/auth/register"
 import { SessionProvider } from "next-auth/react";

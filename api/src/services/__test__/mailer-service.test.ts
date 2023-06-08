@@ -1,4 +1,4 @@
-import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest'
+import { vi, describe, test, expect, beforeEach, afterEach, Mock } from 'vitest'
 import { TestContext } from '@root/typings';
 import { MailerService } from '@src/services';
 import Mail from 'nodemailer/lib/mailer';
@@ -26,5 +26,19 @@ describe("Tests for the Mailer Service class", () => {
         await nm?.sendEmail("email", "" as Mail.Attachment)
 
         expect(nodemailer.createTransport, 'sendMail').toBeCalled()
+    })
+
+    test<TestContext>("Can the Mailer Service send an email", async ({ nm }) => {
+
+        (nodemailer.createTransport.prototype.sendMail as Mock).mockImplementationOnce(() => ({
+            accept: []
+        }))
+
+        try {
+            await nm?.sendEmail("email", "" as Mail.Attachment)
+        } catch (err: any) {
+            console.log(err)
+        }
+
     })
 })

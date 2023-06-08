@@ -1,4 +1,4 @@
-import mongoose, { model, Types } from "mongoose";
+import mongoose from "mongoose";
 import { DatabaseInterface } from "@root/typings";
 import { CError } from "@src/utils";
 import bcrypt from 'bcryptjs';

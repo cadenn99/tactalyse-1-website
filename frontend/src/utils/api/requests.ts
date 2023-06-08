@@ -9,7 +9,7 @@ import { LoginInput } from "../../../types/types";
  * @param session USer session
  * @returns Response object
  */
-export const generateReport = async (form: FormData, session: Session, hasOrderId: Boolean) => {
+export const generateReport = async (form: FormData, session: Session, hasOrderId: boolean) => {
     let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/fulfillOrder`
 
     if (!hasOrderId)

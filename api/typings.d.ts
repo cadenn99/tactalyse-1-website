@@ -28,6 +28,7 @@ export interface TestContext {
     supertestInstance?: supertest.Test
     db?: DatabaseInterface
     nm?: MailerInterface
+    pc?: PaymentProcessorInterface
     mockReq?: Partial<Request>
     mockRes?: Partial<Response>
     mockNext?: Partial<NextFunction>

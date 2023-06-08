@@ -7,8 +7,8 @@ interface Props {
     leagueFile: fs.ReadStream
     playerFile: fs.ReadStream
     playerName: string
-    startDate?: number | string | undefined
-    endDate?: number | string | undefined
+    startDate?: number | string
+    endDate?: number | string 
 }
 
 export const pdfGenerator = async ({ leagueFile, playerFile, playerName, startDate, endDate }: Props) => {

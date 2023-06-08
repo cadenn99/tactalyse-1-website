@@ -1,13 +1,10 @@
-import { useRouter } from "next/router";
 import React from "react";
-
 
 interface Props {
   children: JSX.Element | JSX.Element[];
 }
 
 function Pricing({ children }: Props) {
-  const { push } = useRouter();
   return (
     <div
       className="flex flex-col items-center py-5 -mt-5"

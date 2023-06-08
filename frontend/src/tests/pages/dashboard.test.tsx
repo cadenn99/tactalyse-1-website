@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { cleanup, render, screen, within } from "@testing-library/react"
+import { describe, it, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react"
 import Dashboard from "../../pages/dashboard"
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";

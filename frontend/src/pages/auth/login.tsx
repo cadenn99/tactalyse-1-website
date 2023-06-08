@@ -1,8 +1,7 @@
 import { useSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { LoginInput, ToastInterface } from "../../../types/types";
+import { useContext, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import {
   Button,
@@ -10,14 +9,11 @@ import {
   Label,
   Spinner,
   TextInput,
-  Toast,
-  useTheme,
 } from "flowbite-react";
 import { MdAlternateEmail } from "react-icons/md";
 import { BsKeyFill } from "react-icons/bs";
 import { HiX } from "react-icons/hi";
 import Link from "next/link";
-import ToastComponent from "@/components/general/Toast";
 import { useDark } from "@/hooks/useDark";
 import { ToastContext } from "@/contexts/ToastContext";
 
@@ -27,7 +23,6 @@ interface FormValues {
 }
 
 function Login() {
-  const theme = useTheme().theme.textInput;
   useDark();
   const { data: session } = useSession();
   const toast = useContext(ToastContext);
