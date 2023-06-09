@@ -1,0 +1,10 @@
+{"@fields":{"level":"error"},"@message":"TypeError: form is not a function\n    at pdfGenerator (C:\\Users\\Caden\\Desktop\\Github\\tactalyse-1-website\\api\\src\\utils\\pdfGenerator.ts:22:20)\n    at noPayment (C:\\Users\\Caden\\Desktop\\Github\\tactalyse-1-website\\api\\src\\controllers\\PaymentController.ts:166:49)","@timestamp":"2023-06-02T09:52:43.114Z"}
+{"@fields":{"level":"error"},"@message":"TypeError: form is not a function\n    at pdfGenerator (C:\\Users\\Caden\\Desktop\\Github\\tactalyse-1-website\\api\\src\\utils\\pdfGenerator.ts:22:20)\n    at noPayment (C:\\Users\\Caden\\Desktop\\Github\\tactalyse-1-website\\api\\src\\controllers\\PaymentController.ts:166:49)","@timestamp":"2023-06-02T09:53:29.591Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:01:28.654Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:01:40.509Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:02:27.209Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:04:37.945Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:05:14.254Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:05:58.353Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:07:02.632Z"}
+{"@fields":{"level":"error"},"@timestamp":"2023-06-02T10:07:56.209Z"}

@@ -17,14 +17,14 @@ function ExampleReports() {
           <embed
             className="w-full h-[400px] rounded-md"
             type="application/pdf"
-            src="/report_1.pdf"
+            src="/report_2.pdf"
           />
         </Tabs.Item>
         <Tabs.Item title="Player 3">
           <embed
             className="w-full h-[400px] rounded-md"
             type="application/pdf"
-            src="/report_1.pdf"
+            src="/report_3.pdf"
           />
         </Tabs.Item>
       </Tabs.Group>

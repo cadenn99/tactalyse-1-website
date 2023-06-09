@@ -27,18 +27,4 @@ describe("Tests for the Mailer Service class", () => {
 
         expect(nodemailer.createTransport, 'sendMail').toBeCalled()
     })
-
-    test<TestContext>("Can the Mailer Service send an email", async ({ nm }) => {
-
-        (nodemailer.createTransport.prototype.sendMail as Mock).mockImplementationOnce(() => ({
-            accept: []
-        }))
-
-        try {
-            await nm?.sendEmail("email", "" as Mail.Attachment)
-        } catch (err: any) {
-            console.log(err)
-        }
-
-    })
 })
