@@ -18,6 +18,7 @@ export const ErrorMiddleware: ErrorRequestHandler = (error, req, res, next) => {
             message: error.message
         })
 
+    logger.log('error', error)
     logger.log('error', error.stack)
 
     res.status(500)
